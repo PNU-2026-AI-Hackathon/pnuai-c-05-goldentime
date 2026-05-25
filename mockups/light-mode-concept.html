@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>my119 라이트모드 시안 (toss soft)</title>
+<style>
+  /* ===== DARK (현재) ===== */
+  [data-theme="dark"]{
+    --page-bg:#030712; --card-bg:rgba(17,24,39,0.55); --card-border:rgba(31,41,55,0.65);
+    --surface:rgba(31,41,55,0.65); --divider:rgba(31,41,55,0.6);
+    --text-primary:#e5e7eb; --text-body:#9ca3af; --text-muted:#6b7280;
+    --accent:#2dd4bf; --accent-strong:#14b8a6; --accent-soft:rgba(20,184,166,0.12); --accent-border:rgba(20,184,166,0.30);
+    --node-bg:rgba(17,24,39,0.55); --node-active-bg:rgba(20,184,166,0.12); --node-active-border:rgba(20,184,166,0.50);
+    --critical:#f87171; --critical-bg:rgba(220,38,38,0.12); --critical-border:rgba(220,38,38,0.30);
+    --warning:#fbbf24; --warning-bg:rgba(217,119,6,0.12); --warning-border:rgba(217,119,6,0.30);
+    --stable:#34d399; --stable-bg:rgba(22,163,74,0.12); --stable-border:rgba(22,163,74,0.30);
+    /* 글로우 (다크 전용) */
+    --elev-card: 0 0 24px rgba(20,184,166,0.08);
+    --elev-active: 0 0 18px rgba(20,184,166,0.25);
+    --elev-btn: 0 0 14px rgba(20,184,166,0.20);
+    --btn-bg:rgba(20,184,166,0.15); --btn-color:#2dd4bf; --btn-border:rgba(20,184,166,0.30);
+    --ghost-bg:rgba(31,41,55,0.4); --ghost-color:#9ca3af; --ghost-border:rgba(55,65,81,0.55);
+  }
+  /* ===== LIGHT (제안: toss soft, 글로우→부드러운 그림자) ===== */
+  [data-theme="light"]{
+    --page-bg:#f6f7f9; --card-bg:#ffffff; --card-border:rgba(0,0,0,0.07);
+    --surface:#f1f3f5; --divider:rgba(0,0,0,0.07);
+    --text-primary:#0f172a; --text-body:#475569; --text-muted:#94a3b8;
+    --accent:#0d9488; --accent-strong:#0f766e; --accent-soft:rgba(13,148,136,0.08); --accent-border:rgba(13,148,136,0.28);
+    --node-bg:#ffffff; --node-active-bg:rgba(13,148,136,0.07); --node-active-border:rgba(13,148,136,0.45);
+    --critical:#dc2626; --critical-bg:rgba(220,38,38,0.07); --critical-border:rgba(220,38,38,0.22);
+    --warning:#d97706; --warning-bg:rgba(217,119,6,0.08); --warning-border:rgba(217,119,6,0.22);
+    --stable:#059669; --stable-bg:rgba(5,150,105,0.07); --stable-border:rgba(5,150,105,0.22);
+    /* 글로우 대신 toss soft 그림자 */
+    --elev-card: 0 2px 8px rgba(0,0,0,0.04), 0 12px 32px rgba(0,0,0,0.07);
+    --elev-active: 0 2px 8px rgba(13,148,136,0.10), 0 10px 28px rgba(13,148,136,0.14);
+    --elev-btn: 0 1px 2px rgba(0,0,0,0.04), 0 6px 16px rgba(13,148,136,0.12);
+    --btn-bg:rgba(13,148,136,0.10); --btn-color:#0d9488; --btn-border:rgba(13,148,136,0.28);
+    --ghost-bg:#ffffff; --ghost-color:#475569; --ghost-border:rgba(0,0,0,0.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+  .mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+  .stage{min-height:100vh;background:var(--page-bg);color:var(--text-primary);padding:32px 24px 100px;transition:background .3s,color .3s}
+  .wrap{max-width:920px;margin:0 auto}
+  .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+  h1{font-size:20px;font-weight:700;letter-spacing:-.02em}
+  .toggle{display:flex;gap:6px;padding:5px;border-radius:999px;border:1px solid var(--card-border);background:var(--card-bg)}
+  .toggle button{background:transparent;border:none;color:var(--text-muted);padding:7px 16px;border-radius:999px;font-size:13px;font-weight:600;cursor:pointer}
+  .toggle button.on{color:#fff;background:var(--accent-strong)}
+  .blurb{color:var(--text-muted);font-size:13px;margin:10px 0 30px;line-height:1.6}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:720px){.grid{grid-template-columns:1fr}}
+  .lbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.18em;color:var(--accent);margin-bottom:12px}
+
+  .card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:16px;box-shadow:var(--elev-card);backdrop-filter:blur(8px);padding:20px;transition:all .3s}
+  .card h3{font-size:15px;font-weight:700;margin-bottom:6px}
+  .card p{font-size:13px;color:var(--text-body);line-height:1.6}
+
+  /* pipeline node (실제 WorkflowNodeBox 재현) */
+  .node{border-radius:12px;padding:12px 16px;border:1px solid var(--card-border);background:var(--node-bg);margin-bottom:8px;transition:all .3s}
+  .node.active{background:var(--node-active-bg);border-color:var(--node-active-border);box-shadow:var(--elev-active)}
+  .node .row{display:flex;align-items:center;justify-content:space-between}
+  .node .nm{font-size:12px;font-weight:600}.mono.nm{font-family:ui-monospace,monospace}
+  .node.active .nm{color:var(--accent)} .node:not(.active) .nm{color:var(--text-body)}
+  .node .dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+  .badges{display:flex;gap:5px;margin-top:8px;flex-wrap:wrap}
+  .badge{font-size:9px;font-family:ui-monospace,monospace;padding:2px 7px;border-radius:5px;color:var(--accent);background:var(--accent-soft);border:1px solid var(--accent-border)}
+
+  .btnrow{display:flex;gap:10px;margin-top:6px}
+  .btn-primary{background:var(--btn-bg);color:var(--btn-color);border:1px solid var(--btn-border);border-radius:10px;font-weight:600;font-size:14px;padding:11px 22px;box-shadow:var(--elev-btn);cursor:pointer}
+  .btn-ghost{background:var(--ghost-bg);color:var(--ghost-color);border:1px solid var(--ghost-border);border-radius:10px;font-weight:600;font-size:14px;padding:11px 22px;cursor:pointer}
+
+  .triage{display:flex;gap:10px;flex-wrap:wrap}
+  .pill{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;padding:7px 13px;border-radius:10px}
+  .pill .d{width:7px;height:7px;border-radius:50%}
+  .pill.crit{color:var(--critical);background:var(--critical-bg);border:1px solid var(--critical-border)}.pill.crit .d{background:var(--critical)}
+  .pill.warn{color:var(--warning);background:var(--warning-bg);border:1px solid var(--warning-border)}.pill.warn .d{background:var(--warning)}
+  .pill.stab{color:var(--stable);background:var(--stable-bg);border:1px solid var(--stable-border)}.pill.stab .d{background:var(--stable)}
+
+  .tag{font-family:ui-monospace,monospace;font-size:11px;padding:4px 10px;border-radius:8px;border:1px solid var(--accent-border);background:var(--accent-soft);color:var(--accent)}
+  .sectionlbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.18em;color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="stage" data-theme="light" id="stage">
+  <div class="wrap">
+    <div class="topbar">
+      <h1>my119 — 라이트모드 시안</h1>
+      <div class="toggle">
+        <button data-t="dark">다크 (현재)</button>
+        <button data-t="light" class="on">라이트 (toss soft)</button>
+      </div>
+    </div>
+    <p class="blurb">흰 배경에선 네온 글로우가 안 보여서 → <b>부드러운 toss 그림자</b>로 대체. 청록 액센트는 흰 배경 대비를 위해 한 톤 진하게(#0d9488). 토글로 비교하세요.</p>
+
+    <div class="grid">
+      <div>
+        <div class="lbl">LangGraph 파이프라인 노드</div>
+        <div class="node active"><div class="row"><span class="nm mono">Webhook In</span><span class="dot"></span></div></div>
+        <div class="node active"><div class="row"><span class="nm mono">Document Chunker</span><span class="dot"></span></div><div class="badges"><span class="badge">문서 단위 청킹</span></div></div>
+        <div class="node"><div class="row"><span class="nm mono">RAG Retriever</span></div><div class="badges"><span class="badge">pgvector</span><span class="badge">EmbeddingGemma 300M</span></div></div>
+        <div class="node"><div class="row"><span class="nm mono">MedGemma 27B</span></div><div class="badges"><span class="badge">vLLM</span><span class="badge">QLoRA r=16</span></div></div>
+      </div>
+      <div>
+        <div class="lbl">카드 · 버튼 · 배지</div>
+        <div class="card" style="margin-bottom:16px">
+          <span class="sectionlbl">Pipeline</span>
+          <h3 style="margin-top:8px">결과 대시보드</h3>
+          <p>30초 이내에 구조화된 JSON 응답을 반환합니다. Split View에서 원본과 요약을 대조하며, 이상 수치는 즉시 강조됩니다.</p>
+          <div class="btnrow"><button class="btn-primary">분석 시작</button><button class="btn-ghost">예시 보기</button></div>
+        </div>
+        <div class="lbl">트리아지 (의미색, 라이트 대비 보정)</div>
+        <div class="triage">
+          <span class="pill crit"><span class="d"></span>Critical</span>
+          <span class="pill warn"><span class="d"></span>Warning</span>
+          <span class="pill stab"><span class="d"></span>Stable</span>
+        </div>
+        <div style="margin-top:18px"><span class="tag">MedGemma 27B · vLLM</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  const stage=document.getElementById('stage');
+  document.querySelectorAll('.toggle button').forEach(b=>b.addEventListener('click',()=>{
+    stage.dataset.theme=b.dataset.t;
+    document.querySelectorAll('.toggle button').forEach(x=>x.classList.toggle('on',x===b));
+  }));
+</script>
+</body>
+</html>
