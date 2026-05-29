@@ -38,7 +38,7 @@ export default async function Image() {
           overflow: 'hidden',
         }}
       >
-        {/* Accent glow blob — top right (teal) */}
+        {/* Accent glow blob — top right (blue) */}
         <div
           style={{
             position: 'absolute',
@@ -47,12 +47,12 @@ export default async function Image() {
             width: 620,
             height: 620,
             borderRadius: 9999,
-            background: 'rgba(20,184,166,0.45)',
+            background: 'rgba(24,74,255,0.45)',
             filter: 'blur(140px)',
             display: 'flex',
           }}
         />
-        {/* Accent glow blob — bottom left (emerald) */}
+        {/* Accent glow blob — bottom left (blue) */}
         <div
           style={{
             position: 'absolute',
@@ -61,7 +61,7 @@ export default async function Image() {
             width: 520,
             height: 520,
             borderRadius: 9999,
-            background: 'rgba(52,211,153,0.32)',
+            background: 'rgba(59,130,246,0.35)',
             filter: 'blur(140px)',
             display: 'flex',
           }}
@@ -80,7 +80,7 @@ export default async function Image() {
           <div
             style={{
               fontSize: 22,
-              color: '#5eead4',
+              color: '#60A5FA',           // 밝은 블루
               letterSpacing: 4,
               textTransform: 'uppercase',
               fontWeight: 700,
@@ -106,7 +106,7 @@ export default async function Image() {
           >
             <div style={{ display: 'flex' }}>길고 긴 EMR,</div>
             <div style={{ display: 'flex' }}>
-              <span style={{ color: '#2dd4bf', marginRight: 24 }}>5초 안에</span>
+              <span style={{ color: '#184AFF', marginRight: 24 }}>5초 안에</span>
               차트원샷이 읽습니다
             </div>
           </div>

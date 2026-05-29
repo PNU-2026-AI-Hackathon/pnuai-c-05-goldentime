@@ -59,28 +59,28 @@ function MiniSyntheaLoader({ onComplete }: { onComplete: () => void }) {
     <div
       className="rounded-2xl p-5 max-w-sm mx-auto"
       style={{
-        background: 'rgb(var(--card-rgb) / 0.6)',
-        border: '1px solid rgb(var(--surface-rgb) / 0.7)',
+        background: 'rgba(17,24,39,0.6)',
+        border: '1px solid rgba(31,41,55,0.7)',
         boxShadow: 'var(--glow-card-soft)',
         backdropFilter: 'blur(8px)',
       }}
     >
       <div className="flex items-center gap-2 mb-3">
         <span className="text-sm text-[color:var(--color-accent)]">⚕</span>
-        <span className="text-xs font-semibold text-[color:var(--c-text)] font-mono uppercase tracking-widest">
+        <span className="text-xs font-semibold text-gray-200 font-mono uppercase tracking-widest">
           Synthea&trade; Quick Load
         </span>
       </div>
       <div
         className="h-1.5 rounded-full mb-3 overflow-hidden"
-        style={{ background: 'rgb(var(--surface-rgb) / 0.7)' }}
+        style={{ background: 'rgba(31,41,55,0.7)' }}
       >
         <div
           className="h-full rounded-full transition-all duration-75"
           style={{
             width: `${progress}%`,
-            background: 'linear-gradient(90deg, var(--c-accent-strong), var(--c-accent))',
-            boxShadow: '0 0 10px rgb(var(--accent-rgb) / 0.5)',
+            background: 'linear-gradient(90deg, #14b8a6, #184AFF)',
+            boxShadow: '0 0 10px rgba(20,184,166,0.5)',
           }}
         />
       </div>
@@ -88,13 +88,13 @@ function MiniSyntheaLoader({ onComplete }: { onComplete: () => void }) {
         {miniSteps.map((step, i) => (
           <div key={i} className="flex items-center gap-2 text-xs">
             {i < completedSteps ? (
-              <span className="text-[color:var(--c-stable)] font-bold">✓</span>
+              <span className="text-[#34d399] font-bold">✓</span>
             ) : i === completedSteps ? (
               <span className="text-[color:var(--color-accent)] animate-accent-pulse font-bold">◉</span>
             ) : (
-              <span className="text-[color:var(--c-text-faint)]">○</span>
+              <span className="text-gray-700">○</span>
             )}
-            <span className={i <= completedSteps ? 'text-[color:var(--c-text-body)]' : 'text-[color:var(--c-text-dim)]'}>{step}</span>
+            <span className={i <= completedSteps ? 'text-gray-300' : 'text-gray-600'}>{step}</span>
           </div>
         ))}
       </div>
@@ -119,30 +119,30 @@ function ChoiceCard({
   const letter = String.fromCharCode(65 + index); // A, B, C, D
 
   // Color logic based on reveal state
-  let bg = 'rgb(var(--card-rgb) / 0.55)';
-  let border = 'rgb(var(--border-rgb) / 0.55)';
-  let textColor = 'var(--c-text)';
-  let dotColor = 'var(--c-text-body)';
+  let bg = 'rgba(17,24,39,0.55)';
+  let border = 'rgba(55,65,81,0.55)';
+  let textColor = '#e5e7eb';
+  let dotColor = '#9ca3af';
   let glow = 'none';
 
   if (revealed) {
     if (choice.isCorrect) {
-      bg = 'rgb(var(--stable-rgb) / 0.15)';
-      border = 'rgb(var(--stable-rgb) / 0.55)';
-      textColor = 'var(--c-stable)';
-      dotColor = 'var(--c-stable)';
-      glow = '0 0 22px rgb(var(--stable-rgb) / 0.40)';
+      bg = 'rgba(22,163,74,0.15)';
+      border = 'rgba(22,163,74,0.55)';
+      textColor = '#d1fae5';
+      dotColor = '#34d399';
+      glow = '0 0 22px rgba(22,163,74,0.40)';
     } else if (picked) {
-      bg = 'rgb(var(--critical-rgb) / 0.15)';
-      border = 'rgb(var(--critical-rgb) / 0.55)';
-      textColor = 'var(--c-critical)';
-      dotColor = 'var(--c-critical)';
-      glow = '0 0 22px rgb(var(--critical-rgb) / 0.40)';
+      bg = 'rgba(220,38,38,0.15)';
+      border = 'rgba(220,38,38,0.55)';
+      textColor = '#fecaca';
+      dotColor = '#f87171';
+      glow = '0 0 22px rgba(220,38,38,0.40)';
     } else {
-      bg = 'rgb(var(--card-rgb) / 0.35)';
-      border = 'rgb(var(--border-rgb) / 0.30)';
-      textColor = 'var(--c-text-muted)';
-      dotColor = 'var(--c-text-dim)';
+      bg = 'rgba(17,24,39,0.35)';
+      border = 'rgba(55,65,81,0.30)';
+      textColor = '#6b7280';
+      dotColor = '#4b5563';
     }
   }
 
@@ -160,9 +160,9 @@ function ChoiceCard({
           ? {}
           : {
               y: -2,
-              borderColor: 'rgb(var(--accent-rgb) / 0.60)',
-              backgroundColor: 'rgb(var(--accent-rgb) / 0.08)',
-              boxShadow: '0 6px 20px rgb(var(--black-rgb) / 0.45), 0 0 18px rgb(var(--accent-rgb) / 0.20)',
+              borderColor: 'rgba(20,184,166,0.60)',
+              backgroundColor: 'rgba(20,184,166,0.08)',
+              boxShadow: '0 6px 20px rgba(0,0,0,0.45), 0 0 18px rgba(20,184,166,0.20)',
             }
       }
       transition={{ duration: 0.18, ease: [0.4, 0, 0.2, 1] }}
@@ -173,10 +173,10 @@ function ChoiceCard({
         className="flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center text-sm font-mono font-bold"
         style={{
           background: revealed && choice.isCorrect
-            ? 'rgb(var(--stable-rgb) / 0.25)'
+            ? 'rgba(22,163,74,0.25)'
             : revealed && picked
-            ? 'rgb(var(--critical-rgb) / 0.25)'
-            : 'rgb(var(--surface-rgb) / 0.7)',
+            ? 'rgba(220,38,38,0.25)'
+            : 'rgba(31,41,55,0.7)',
           color: dotColor,
           border: `1px solid ${border}`,
         }}
@@ -190,10 +190,10 @@ function ChoiceCard({
         {choice.title}
       </span>
       {revealed && choice.isCorrect && (
-        <Check size={18} className="text-[color:var(--c-stable)] flex-shrink-0" strokeWidth={2.5} />
+        <Check size={18} className="text-[#34d399] flex-shrink-0" strokeWidth={2.5} />
       )}
       {revealed && picked && !choice.isCorrect && (
-        <X size={18} className="text-[color:var(--c-critical)] flex-shrink-0" strokeWidth={2.5} />
+        <X size={18} className="text-[#f87171] flex-shrink-0" strokeWidth={2.5} />
       )}
     </motion.button>
   );
@@ -287,20 +287,20 @@ export default function DoctorChallenge() {
   const speedMultiple = stopwatch.time > 0 ? (stopwatch.time / AI_ANALYSIS_TIME).toFixed(1) : '0';
 
   return (
-    <section className="relative py-20 lg:py-28" style={{ background: 'var(--c-page)' }}>
+    <section className="relative py-20 lg:py-28" style={{ background: '#030712' }}>
       <div ref={ref} className="mx-auto max-w-7xl px-5 md:px-8">
         {/* Header */}
         <div className="text-center mb-12" data-animate="fade-up">
           <span className="inline-block mb-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-[color:var(--color-accent)]">
             Challenge
           </span>
-          <h2 className="font-display text-3xl font-bold tracking-[-0.02em] text-[color:var(--c-text)] mb-4">
+          <h2 className="font-display text-3xl font-bold tracking-[-0.02em] text-gray-100 mb-4">
             당신이 의사라면, AI보다 빠를까요?
           </h2>
-          <p className="text-[color:var(--c-text-body)] text-base max-w-xl mx-auto leading-relaxed">
+          <p className="text-gray-400 text-base max-w-xl mx-auto leading-relaxed">
             긴 외래 차트를 읽고 환자의{' '}
             <strong className="text-[color:var(--color-accent)] font-semibold">주요 질환</strong>을
-            판단해보세요. 차트원샷이 같은 작업을{' '}
+            판단해보세요.<br/> 차트원샷이 같은 작업을{' '}
             <strong className="text-[color:var(--color-accent)] font-mono">5초</strong>에
             끝내는 동안, 당신은 몇 초가 걸리는지 비교합니다.
           </p>
@@ -321,7 +321,7 @@ export default function DoctorChallenge() {
               <button
                 onClick={startChallenge}
                 className="btn-primary inline-flex items-center gap-2 text-base px-8 py-4"
-                style={{ boxShadow: '0 0 22px rgb(var(--accent-rgb) / 0.35)' }}
+                style={{ boxShadow: '0 0 22px rgba(20,184,166,0.35)' }}
               >
                 <Stethoscope size={18} strokeWidth={1.75} /> 도전하기
               </button>
@@ -354,19 +354,19 @@ export default function DoctorChallenge() {
               <div
                 className="rounded-2xl overflow-hidden max-w-3xl mx-auto"
                 style={{
-                  background: 'rgb(var(--card-rgb) / 0.6)',
-                  border: '1px solid rgb(var(--surface-rgb) / 0.7)',
+                  background: 'rgba(17,24,39,0.6)',
+                  border: '1px solid rgba(31,41,55,0.7)',
                   boxShadow: 'var(--glow-card-soft)',
                   backdropFilter: 'blur(8px)',
                 }}
               >
                 <div
                   className="flex items-center justify-between px-5 py-3 border-b"
-                  style={{ background: 'rgb(var(--surface-rgb) / 0.4)', borderColor: 'rgb(var(--surface-rgb) / 0.7)' }}
+                  style={{ background: 'rgba(31,41,55,0.4)', borderColor: 'rgba(31,41,55,0.7)' }}
                 >
                   <div className="flex items-center gap-2 min-w-0">
-                    <FileText size={14} strokeWidth={1.5} className="text-[color:var(--c-text-muted)] flex-shrink-0" />
-                    <span className="text-xs font-medium text-[color:var(--c-text-body)] truncate">
+                    <FileText size={14} strokeWidth={1.5} className="text-gray-500 flex-shrink-0" />
+                    <span className="text-xs font-medium text-gray-300 truncate">
                       {patient.demographics} · {patient.caseSummary}
                     </span>
                   </div>
@@ -377,10 +377,10 @@ export default function DoctorChallenge() {
                       </span>
                     ) : (
                       <>
-                        <Timer size={14} strokeWidth={1.5} className="text-[color:var(--c-critical)]" />
+                        <Timer size={14} strokeWidth={1.5} className="text-[#f87171]" />
                         <span
-                          className="text-sm font-mono font-bold text-[color:var(--c-critical)] tabular-nums"
-                          style={{ textShadow: '0 0 8px rgb(var(--critical-rgb) / 0.4)' }}
+                          className="text-sm font-mono font-bold text-[#f87171] tabular-nums"
+                          style={{ textShadow: '0 0 8px rgba(220,38,38,0.4)' }}
                         >
                           {stopwatch.time.toFixed(1)}초
                         </span>
@@ -389,12 +389,12 @@ export default function DoctorChallenge() {
                   </div>
                 </div>
                 <div className="max-h-[420px] overflow-y-auto px-5 py-4">
-                  <pre className="text-xs leading-[1.7] text-[color:var(--c-text-body)] whitespace-pre-wrap font-body">
+                  <pre className="text-xs leading-[1.7] text-gray-300 whitespace-pre-wrap font-body">
                     {typingDone ? patient.emrText : displayedText}
                     {!typingDone && (
                       <span
                         className="inline-block w-0.5 h-3.5 animate-blink ml-0.5 align-middle"
-                        style={{ background: 'var(--c-accent)', boxShadow: '0 0 6px rgb(var(--accent-rgb) / 0.7)' }}
+                        style={{ background: '#184AFF', boxShadow: '0 0 6px rgba(20,184,166,0.7)' }}
                       />
                     )}
                   </pre>
@@ -411,8 +411,8 @@ export default function DoctorChallenge() {
                     className="max-w-2xl mx-auto mt-8"
                   >
                     <div className="flex items-center justify-center gap-2 mb-5">
-                      <Star size={16} className="text-[color:var(--c-accent-bright)]" strokeWidth={2} />
-                      <h3 className="text-lg md:text-xl font-bold text-[color:var(--c-text)]">
+                      <Star size={16} className="text-[#60A5FA]" strokeWidth={2} />
+                      <h3 className="text-lg md:text-xl font-bold text-gray-100">
                         이 환자의 주요 질환은?
                       </h3>
                     </div>
@@ -446,26 +446,26 @@ export default function DoctorChallenge() {
               <div
                 className="rounded-2xl p-8"
                 style={{
-                  background: 'rgb(var(--card-rgb) / 0.6)',
-                  border: '1px solid rgb(var(--surface-rgb) / 0.7)',
-                  boxShadow: '0 0 32px rgb(var(--accent-rgb) / 0.10)',
+                  background: 'rgba(17,24,39,0.6)',
+                  border: '1px solid rgba(31,41,55,0.7)',
+                  boxShadow: '0 0 32px rgba(20,184,166,0.10)',
                   backdropFilter: 'blur(8px)',
                 }}
               >
                 {/* Time comparison */}
                 <div className="grid grid-cols-2 gap-6 mb-8">
                   <div className="text-center">
-                    <p className="text-[10px] font-semibold uppercase tracking-widest text-[color:var(--c-text-muted)] mb-2 font-mono">
+                    <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-500 mb-2 font-mono">
                       당신
                     </p>
                     <p
                       className={`text-3xl font-bold tabular-nums font-mono ${
-                        isCorrect ? 'text-[color:var(--c-text)]' : 'text-[color:var(--c-critical)]'
+                        isCorrect ? 'text-gray-100' : 'text-[#f87171]'
                       }`}
                     >
                       {stopwatch.time.toFixed(1)}초
                     </p>
-                    <p className="text-[11px] text-[color:var(--c-text-muted)] mt-1 font-mono">
+                    <p className="text-[11px] text-gray-500 mt-1 font-mono">
                       {isCorrect ? '✓ 정답' : '✗ 오답'}
                     </p>
                   </div>
@@ -475,27 +475,27 @@ export default function DoctorChallenge() {
                     </p>
                     <p
                       className="text-3xl font-bold tabular-nums font-mono text-[color:var(--color-accent)]"
-                      style={{ textShadow: '0 0 14px rgb(var(--accent-rgb) / 0.4)' }}
+                      style={{ textShadow: '0 0 14px rgba(20,184,166,0.4)' }}
                     >
                       {aiTimeDisplay}초
                     </p>
-                    <p className="text-[11px] text-[color:var(--c-accent-bright)] mt-1 font-mono">✓ 정답</p>
+                    <p className="text-[11px] text-[#60A5FA] mt-1 font-mono">✓ 정답</p>
                   </div>
                 </div>
 
                 {/* Verdict */}
                 <div className="border-t border-[color:var(--color-divider)] pt-6 mb-6 text-center">
                   {isCorrect ? (
-                    <p className="text-base md:text-lg font-bold text-[color:var(--c-stable)] leading-relaxed">
+                    <p className="text-base md:text-lg font-bold text-[#34d399] leading-relaxed">
                       정확합니다. 하지만 차트원샷은 같은 작업을{' '}
                       <span className="font-mono">{AI_ANALYSIS_TIME}초</span>에 끝냈습니다.
                     </p>
                   ) : (
-                    <p className="text-base md:text-lg font-bold text-[color:var(--c-text)] leading-relaxed">
+                    <p className="text-base md:text-lg font-bold text-gray-100 leading-relaxed">
                       차트원샷이 당신보다{' '}
                       <span
                         className="text-[color:var(--color-accent)] font-mono"
-                        style={{ textShadow: '0 0 12px rgb(var(--accent-rgb) / 0.4)' }}
+                        style={{ textShadow: '0 0 12px rgba(20,184,166,0.4)' }}
                       >
                         {speedMultiple}배
                       </span>{' '}
@@ -506,7 +506,7 @@ export default function DoctorChallenge() {
 
                 {/* Choices revealed */}
                 <div className="mb-6">
-                  <p className="text-[10px] font-semibold uppercase tracking-widest text-[color:var(--c-text-muted)] mb-3 font-mono">
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-500 mb-3 font-mono">
                     선택지
                   </p>
                   <div className="grid gap-2">
@@ -531,22 +531,22 @@ export default function DoctorChallenge() {
                   <div
                     className="p-4 rounded-lg"
                     style={{
-                      background: 'rgb(var(--accent-rgb) / 0.06)',
-                      borderLeft: '2px solid var(--c-accent)',
+                      background: 'rgba(20,184,166,0.06)',
+                      borderLeft: '2px solid #184AFF',
                     }}
                   >
-                    <p className="text-sm font-semibold text-[color:var(--c-text)] mb-2">
+                    <p className="text-sm font-semibold text-gray-100 mb-2">
                       {patient.expectedResult.primary_concern.title}
                     </p>
-                    <p className="text-sm text-[color:var(--c-text-body)] leading-relaxed mb-3">
+                    <p className="text-sm text-gray-300 leading-relaxed mb-3">
                       {patient.expectedResult.primary_concern.summary}
                     </p>
                     <ul className="space-y-1.5">
                       {patient.expectedResult.primary_concern.key_trends.map((t, i) => (
-                        <li key={i} className="text-xs text-[color:var(--c-text-body)] flex items-start gap-2 leading-relaxed">
+                        <li key={i} className="text-xs text-gray-400 flex items-start gap-2 leading-relaxed">
                           <span
                             className="mt-1.5 flex-shrink-0 w-1 h-1 rounded-full"
-                            style={{ background: 'var(--c-accent-bright)', boxShadow: '0 0 4px var(--c-accent-bright)' }}
+                            style={{ background: '#60A5FA', boxShadow: '0 0 4px #60A5FA' }}
                           />
                           <span>{t}</span>
                         </li>
@@ -567,9 +567,9 @@ export default function DoctorChallenge() {
                     if (nextPool.length === 0) return null;
                     const next = nextPool[0];
                     return (
-                      <p className="text-xs text-[color:var(--c-text-dim)] mt-4 font-mono">
+                      <p className="text-xs text-gray-600 mt-4 font-mono">
                         다음 환자:{' '}
-                        <span className="font-medium text-[color:var(--c-text-body)]">{next.demographics}</span> ·{' '}
+                        <span className="font-medium text-gray-400">{next.demographics}</span> ·{' '}
                         {next.caseSummary}
                       </p>
                     );

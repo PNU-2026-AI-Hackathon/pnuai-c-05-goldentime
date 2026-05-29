@@ -1,308 +1,280 @@
 @import "tailwindcss";
 
 /* ─────────────────────────────────────
-   Design DNA — Mode B (teal + emerald)
-   Medical domain palette
-   Page bg #030712, neon glow accents
+   차트원샷 (Chart One Shot) — Design System v1.0
+   Premium Wellness × AI EMR Summary
+   Base: Ice Blue Navy #0A1118
+   Primary: Royal Vivid Blue #184AFF
 ───────────────────────────────────── */
 
-:root,
-[data-theme='dark'] {
-  /* ── Color triplets (space-separated → rgb(var(--x) / A)) ──
-     Components use rgb(var(--accent-rgb) / 0.12) etc.; only these flip per theme. */
-  --accent-rgb: 20 184 166;
-  --secondary-rgb: 52 211 153;
-  --card-rgb: 17 24 39;        /* card / elevated surfaces */
-  --surface-rgb: 31 41 55;     /* panels & dividers */
-  --border-rgb: 55 65 81;      /* borders */
-  --textbody-rgb: 156 163 175;
-  --critical-rgb: 220 38 38;
-  --warning-rgb: 217 119 6;
-  --stable-rgb: 22 163 74;
-  --violet-rgb: 124 58 237;
-  --rose-rgb: 244 63 94;
-  --pink-rgb: 219 39 119;
-  --black-rgb: 0 0 0;
-  --page-rgb: 3 7 18;
+:root {
+  /* Primary palette (Royal Vivid Blue) */
+  --primary-400: #4A6FFF;
+  --primary-500: #184AFF;
+  --primary-600: #1240E6;
+  --primary-rgb: 24 74 255;
 
-  /* ── Solid semantic colors ── */
-  --c-page: #030712;
-  --c-accent: #2dd4bf;
-  --c-accent-strong: #14b8a6;
-  --c-accent-bright: #5eead4;
-  --c-critical: #f87171;
-  --c-critical-strong: #ef4444;
-  --c-warning: #fbbf24;
-  --c-stable: #34d399;
-  --c-stable-strong: #10b981;
-  --c-violet: #a78bfa;
-  --c-rose: #fb7185;
-  --c-pink: #f472b6;
-  --c-text: #e5e7eb;
-  --c-text-body: #9ca3af;
-  --c-text-muted: #6b7280;
-  --c-text-dim: #4b5563;
-  --c-text-faint: #374151;
+  /* Semantic */
+  --semantic-success: #1F5EFF;  
+  --semantic-warning: #F59E0B;  /* Amber */
+  --semantic-error:   #F43F5E;  /* Rose Red */
 
-  /* backward-compat aliases */
-  --accent-300: var(--c-accent-bright);
-  --accent-400: var(--c-accent);
-  --accent-500: var(--c-accent-strong);
-  --accent-600: #0d9488;
-  --secondary-300: #6ee7b7;
-  --secondary-400: var(--c-stable);
-  --secondary-500: var(--c-stable-strong);
+  /* Glows — Royal Vivid Blue 기반의 깊이감 (Do: 카드 뒤편 은은한 빛) */
+  --glow-card-soft:    0 0 28px rgba(24,74,255,0.10);
+  --glow-card-hover:   0 12px 40px rgba(0,0,0,0.5), 0 0 32px rgba(24,74,255,0.22);
+  --glow-button-rest:  0 0 16px rgba(255,255,255,0.10);
+  --glow-button-hover: 0 0 28px rgba(255,255,255,0.20);
+  --glow-text:         drop-shadow(0 0 6px rgba(24,74,255,0.5)) drop-shadow(0 0 14px rgba(24,74,255,0.25));
+  --glow-cell-hover:   0 0 14px rgba(24,74,255,0.45);
 
-  /* ── Elevation: neon glow (dark) ── */
-  --glow-card-soft:    0 0 24px rgb(var(--accent-rgb) / 0.08);
-  --glow-card-hover:   0 10px 36px rgb(var(--black-rgb) / 0.55), 0 0 28px rgb(var(--accent-rgb) / 0.18);
-  --glow-button-rest:  0 0 14px rgb(var(--accent-rgb) / 0.20);
-  --glow-button-hover: 0 0 24px rgb(var(--accent-rgb) / 0.45);
-  --glow-text:         drop-shadow(0 0 6px rgb(var(--accent-rgb) / 0.5)) drop-shadow(0 0 14px rgb(var(--accent-rgb) / 0.2));
-  --glow-cell-hover:   0 0 12px rgb(var(--accent-rgb) / 0.45);
-  --elev-active:       0 0 18px rgb(var(--accent-rgb) / 0.25);
-}
-
-[data-theme='light'] {
-  /* Light values: grays are LIGHT so dark-tuned alphas render as subtle-light.
-     Accent one step darker (#0d9488) for contrast on white. */
-  --accent-rgb: 13 148 136;
-  --secondary-rgb: 5 150 105;
-  --card-rgb: 255 255 255;
-  --surface-rgb: 226 232 240;  /* slate-200 → faint panels/dividers on white */
-  --border-rgb: 203 213 225;   /* slate-300 → subtle borders */
-  --textbody-rgb: 71 85 105;
-  --critical-rgb: 220 38 38;
-  --warning-rgb: 217 119 6;
-  --stable-rgb: 5 150 105;
-  --violet-rgb: 124 58 237;
-  --rose-rgb: 225 29 72;
-  --pink-rgb: 190 24 93;
-  --black-rgb: 15 23 42;       /* shadows tint slate, softer than pure black */
-  --page-rgb: 246 247 249;
-
-  --c-page: #f6f7f9;
-  --c-accent: #0d9488;
-  --c-accent-strong: #0f766e;
-  --c-accent-bright: #14b8a6;
-  --c-critical: #dc2626;
-  --c-critical-strong: #b91c1c;
-  --c-warning: #d97706;
-  --c-stable: #059669;
-  --c-stable-strong: #047857;
-  --c-violet: #7c3aed;
-  --c-rose: #e11d48;
-  --c-pink: #be185d;
-  --c-text: #0f172a;
-  --c-text-body: #475569;
-  --c-text-muted: #94a3b8;
-  --c-text-dim: #cbd5e1;
-  --c-text-faint: #e2e8f0;
-
-  --accent-600: #0f766e;
-  --secondary-300: #34d399;
-
-  /* ── Elevation: toss-soft shadows (glow off on white) ── */
-  --glow-card-soft:    0 2px 8px rgb(var(--black-rgb) / 0.04), 0 12px 32px rgb(var(--black-rgb) / 0.07);
-  --glow-card-hover:   0 4px 12px rgb(var(--black-rgb) / 0.06), 0 18px 48px rgb(var(--black-rgb) / 0.10);
-  --glow-button-rest:  0 1px 2px rgb(var(--black-rgb) / 0.04), 0 6px 16px rgb(var(--accent-rgb) / 0.14);
-  --glow-button-hover: 0 2px 6px rgb(var(--black-rgb) / 0.06), 0 10px 24px rgb(var(--accent-rgb) / 0.22);
-  --glow-text:         none;
-  --glow-cell-hover:   0 2px 10px rgb(var(--accent-rgb) / 0.18);
-  --elev-active:       0 2px 8px rgb(var(--accent-rgb) / 0.10), 0 10px 28px rgb(var(--accent-rgb) / 0.14);
-  /* soft shadows (override the dark @theme --shadow-* on white) */
-  --shadow-xs: 0 1px 2px rgb(var(--black-rgb) / 0.04);
-  --shadow-sm: 0 2px 8px rgb(var(--black-rgb) / 0.06);
-  --shadow-md: 0 4px 16px rgb(var(--black-rgb) / 0.08);
-  --shadow-lg: 0 8px 32px rgb(var(--black-rgb) / 0.10);
-  --shadow-xl: 0 16px 48px rgb(var(--black-rgb) / 0.12);
+  --blur-glass: 30px;
+  --blur-nav: 20px;
 }
 
 @theme {
-  /* Page / surface — aliased to themeable semantic vars (defined in :root / [data-theme]) */
-  --color-page-bg: var(--c-page);
-  --color-card-bg: rgb(var(--card-rgb) / 0.55);
-  --color-card-bg-hover: rgb(var(--card-rgb) / 0.75);
-  --color-surface: rgb(var(--surface-rgb) / 0.65);
-  --color-surface-strong: rgb(var(--surface-rgb) / 0.85);
-  --color-elevated: rgb(var(--card-rgb) / 0.7);
+  /* ── Base & Surface ── */
+  --color-page-bg:        #0A1118;                    /* Ice Blue Navy */
+  --color-card-bg:        rgba(22,34,47,0.50);        /* Glass Navy 50% */
+  --color-card-bg-hover:  rgba(22,34,47,0.65);
+  --color-surface:        rgba(22,34,47,0.40);
+  --color-surface-strong: rgba(22,34,47,0.70);
+  --color-elevated:       rgba(22,34,47,0.60);
 
-  /* Borders */
-  --color-divider: rgb(var(--surface-rgb) / 0.6);
-  --color-border-soft: rgb(var(--surface-rgb) / 0.6);
-  --color-border: rgb(var(--border-rgb) / 0.55);
-  --color-border-strong: rgb(var(--border-rgb) / 0.75);
+  /* ── Borders (White 10~15%) ── */
+  --color-divider:        rgba(255,255,255,0.08);
+  --color-border-soft:    rgba(255,255,255,0.10);
+  --color-border:         rgba(255,255,255,0.12);
+  --color-border-strong:  rgba(255,255,255,0.18);
 
-  /* Text */
-  --color-text-primary: var(--c-text);
-  --color-text-body: var(--c-text-body);
-  --color-text-muted: var(--c-text-muted);
-  --color-text-dim: var(--c-text-dim);
-  --color-text-faint: var(--c-text-faint);
+  /* ── Text (위계는 투명도로) ── */
+  --color-text-primary: #FFFFFF;                /* Neutral 01 — 100% */
+  --color-text-body:    rgba(255,255,255,0.60); /* Neutral 02 — 60%  */
+  --color-text-muted:   rgba(255,255,255,0.40);
+  --color-text-dim:     rgba(255,255,255,0.28);
+  --color-text-faint:   rgba(255,255,255,0.16);
 
-  /* Accent (teal) */
-  --color-accent: var(--c-accent);
-  --color-accent-strong: var(--c-accent-strong);
-  --color-accent-soft: rgb(var(--accent-rgb) / 0.15);
-  --color-accent-subtle: rgb(var(--accent-rgb) / 0.10);
-  --color-accent-border: rgb(var(--accent-rgb) / 0.30);
-  --color-accent-hover: var(--c-accent-strong);
+  /* ── Primary (Royal Vivid Blue) ── */
+  --color-accent:         #184AFF;
+  --color-accent-strong:  #1240E6;
+  --color-accent-soft:    rgba(24,74,255,0.18);
+  --color-accent-subtle:  rgba(24,74,255,0.10);
+  --color-accent-border:  rgba(24,74,255,0.35);
+  --color-accent-hover:   #4A6FFF;
 
-  /* Secondary (emerald) */
-  --color-secondary: var(--c-stable);
-  --color-secondary-soft: rgb(var(--secondary-rgb) / 0.12);
-  --color-secondary-border: rgb(var(--secondary-rgb) / 0.30);
+  /* ── Accent (Pure White — CTA용) ── */
+  --color-cta-bg:   #FFFFFF;
+  --color-cta-text: #0A1118;
 
-  /* Triage — semantic; light-tuned values flip via the rgb triplets */
-  --color-critical: var(--c-critical);
-  --color-critical-strong: var(--c-critical-strong);
-  --color-critical-bg: rgb(var(--critical-rgb) / 0.12);
-  --color-critical-border: rgb(var(--critical-rgb) / 0.30);
+  /* ── Semantic ── */
+  --color-critical:        #F43F5E;
+  --color-critical-strong: #E11D48;
+  --color-critical-bg:     rgba(244,63,94,0.12);
+  --color-critical-border: rgba(244,63,94,0.30);
 
-  --color-warning-triage: var(--c-warning);
-  --color-warning-bg: rgb(var(--warning-rgb) / 0.12);
-  --color-warning-border: rgb(var(--warning-rgb) / 0.30);
+  --color-warning-triage:  #F59E0B;
+  --color-warning-bg:      rgba(245,158,11,0.12);
+  --color-warning-border:  rgba(245,158,11,0.30);
 
-  --color-stable: var(--c-stable);
-  --color-stable-bg: rgb(var(--stable-rgb) / 0.12);
-  --color-stable-border: rgb(var(--stable-rgb) / 0.30);
+  --color-stable:          #4A6FFF;
+  --color-stable-bg:       rgba(24,74,255,0.12);
+  --color-stable-border:   rgba(24,74,255,0.30);
 
-  /* Legacy gray palette */
+  /* ── Neutrals ── */
   --color-white: #FFFFFF;
-  --color-gray-50:  #FAFAFA;
-  --color-gray-100: #F5F5F5;
-  --color-gray-200: #E5E5E5;
-  --color-gray-300: #D4D4D4;
-  --color-gray-400: #A3A3A3;
-  --color-gray-500: #737373;
-  --color-gray-600: #525252;
-  --color-gray-700: #404040;
-  --color-gray-800: #262626;
-  --color-gray-900: #171717;
-  --color-gray-950: #0A0A0A;
+  --color-gray-50:  #F7F9FB;
+  --color-gray-100: #EDF1F5;
+  --color-gray-200: #D6DEE7;
+  --color-gray-300: #B0BCCB;
+  --color-gray-400: #8593A6;
+  --color-gray-500: #5C6B80;
+  --color-gray-600: #3F4C5E;
+  --color-gray-700: #2A3543;
+  --color-gray-800: #1A2330;
+  --color-gray-900: #111923;
+  --color-gray-950: #0A1118;
 
-  /* Aliases */
-  --color-primary: var(--color-accent);
+  
+
+  /* ── Aliases ── */
+  --color-primary:           var(--color-accent);
   --color-surface-secondary: var(--color-card-bg);
-  --color-surface-tertiary: var(--color-surface);
-  --color-border-light: var(--color-border-soft);
+  --color-surface-tertiary:  var(--color-surface);
+  --color-border-light:      var(--color-border-soft);
 
-  /* Fonts */
-  --font-display: var(--font-inter), system-ui, sans-serif;
-  --font-body:    var(--font-inter), system-ui, sans-serif;
-  --font-mono:    var(--font-jetbrains-mono), ui-monospace, 'SF Mono', Menlo, monospace;
+  
 
-  /* Shadows */
-  --shadow-xs: 0 1px 2px rgba(0,0,0,0.5);
-  --shadow-sm: 0 2px 8px rgba(0,0,0,0.55);
-  --shadow-md: 0 4px 16px rgba(0,0,0,0.55);
-  --shadow-lg: 0 8px 32px rgba(0,0,0,0.6);
-  --shadow-xl: 0 16px 48px rgba(0,0,0,0.7);
+  /* ── Fonts (Outfit + Pretendard) ── */
+  --font-display: var(--font-pretendard), var(--font-outfit), system-ui, sans-serif;
+  --font-body:    var(--font-pretendard), var(--font-outfit), system-ui, sans-serif;
+  --font-mono:    var(--font-outfit), ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* ── Shadows ── */
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.4);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.45);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.50);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.55);
+  --shadow-xl: 0 16px 48px rgba(0,0,0,0.65);
 }
 
 html { scroll-behavior: smooth; }
 
 body {
-  background: var(--c-page);
-  color: var(--c-text);
+  background: #0A1118;
+  color: #FFFFFF;
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  transition: background 0.3s ease, color 0.3s ease;
 }
 
-::selection { background: rgb(var(--accent-rgb) / 0.28); color: var(--c-text); }
+/* 선택/스크롤바 — Primary Blue 적용 */
+::selection { background: rgba(24,74,255,0.32); color: #FFFFFF; }
 ::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: rgb(var(--surface-rgb) / 0.5); }
-::-webkit-scrollbar-thumb { background: rgb(var(--border-rgb) / 0.8); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: rgb(var(--border-rgb) / 1); }
+::-webkit-scrollbar-track { background: #0A1118; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.22); }
 
 /* ─── Animations ─── */
 @keyframes fadeScaleIn {
   from { opacity: 0; transform: scale(0.97); }
-  to { opacity: 1; transform: scale(1); }
+  to   { opacity: 1; transform: scale(1); }
 }
 @keyframes fade-in-up {
   from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 @keyframes accent-pulse {
   0%, 100% { opacity: 0.4; }
-  50% { opacity: 1; }
+  50%      { opacity: 1; }
 }
 .animate-accent-pulse { animation: accent-pulse 1.5s ease-in-out infinite; }
 
 /* ─── Buttons ─── */
+/* 디자인 시스템 4번:
+   - Primary CTA: 흰 배경 + 검정 텍스트 (시선 집중)
+   - Secondary:   Royal Vivid Blue 배경 + 흰 텍스트
+   - 형태: 알약(pill, radius 999px) */
 .btn-primary {
-  background: rgb(var(--accent-rgb) / 0.15);
-  color: var(--c-accent);
-  border: 1px solid rgb(var(--accent-rgb) / 0.30);
-  border-radius: 10px;
+  background: #FFFFFF;
+  color: #0A1118;
+  border: 1px solid rgba(255,255,255,0.0);
+  border-radius: 999px;
   font-weight: 600;
   font-size: 14px;
-  padding: 12px 24px;
+  padding: 12px 28px;
   letter-spacing: 0.01em;
   box-shadow: var(--glow-button-rest);
   transition: all 0.2s;
 }
 .btn-primary:hover {
-  background: rgb(var(--accent-rgb) / 0.22);
-  border-color: rgb(var(--accent-rgb) / 0.45);
+  background: #F5F5F5;
   box-shadow: var(--glow-button-hover);
-  color: var(--c-accent-bright);
+  transform: translateY(-1px);
 }
 .btn-primary:disabled,
 .btn-primary[disabled] {
-  background: rgb(var(--surface-rgb) / 0.6);
-  border-color: rgb(var(--border-rgb) / 0.5);
-  color: var(--c-text-muted);
+  background: rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.40);
   box-shadow: none;
   cursor: not-allowed;
+  transform: none;
+}
+
+.btn-secondary {
+  background: #184AFF;
+  color: #FFFFFF;
+  border: 1px solid rgba(24,74,255,0.0);
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 12px 28px;
+  letter-spacing: 0.01em;
+  box-shadow: 0 0 18px rgba(24,74,255,0.30);
+  transition: all 0.2s;
+}
+.btn-secondary:hover {
+  background: #4A6FFF;
+  box-shadow: 0 0 28px rgba(24,74,255,0.50);
+  transform: translateY(-1px);
 }
 
 .btn-ghost {
-  background: rgb(var(--surface-rgb) / 0.4);
-  color: var(--c-text-body);
-  border: 1px solid rgb(var(--border-rgb) / 0.55);
-  border-radius: 10px;
-  font-weight: 600;
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.80);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 999px;
+  font-weight: 500;
   font-size: 14px;
   padding: 12px 24px;
   transition: all 0.2s;
 }
 .btn-ghost:hover {
-  border-color: rgb(var(--border-rgb) / 0.7);
-  background: rgb(var(--surface-rgb) / 0.6);
-  color: var(--c-text);
+  border-color: rgba(255,255,255,0.22);
+  background: rgba(255,255,255,0.08);
+  color: #FFFFFF;
 }
 
-/* ─── Card ─── */
+/* ─── Card (Bento Box) ───
+   디자인 시스템 4번:
+   - 배경: Glass Navy 50% + Blur 30px
+   - 라운딩: 24px (또는 32px)
+   - 테두리: White 10~15% (항상 1px) */
 .card {
-  background: rgb(var(--card-rgb) / 0.5);
-  border: 1px solid rgb(var(--surface-rgb) / 0.65);
-  border-radius: 16px;
+  background: rgba(22,34,47,0.50);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 24px;
   box-shadow: var(--glow-card-soft);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
   transition: all 0.3s;
 }
 .card:hover {
-  border-color: rgb(var(--accent-rgb) / 0.30);
+  border-color: rgba(255,255,255,0.18);
   box-shadow: var(--glow-card-hover);
+}
+
+.card-lg {
+  background: rgba(22,34,47,0.50);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 32px;
+  box-shadow: var(--glow-card-soft);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  transition: all 0.3s;
+}
+
+/* ─── Input ───
+   디자인 시스템 4번:
+   - 라운딩 16px
+   - 기본 투명도 10%, 포커스 시 20% + Primary 테두리 */
+.input {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 16px;
+  color: #FFFFFF;
+  font-size: 16px;
+  padding: 14px 18px;
+  transition: all 0.2s;
+}
+.input::placeholder { color: rgba(255,255,255,0.40); }
+.input:focus {
+  outline: none;
+  background: rgba(255,255,255,0.10);
+  border-color: #184AFF;
+  box-shadow: 0 0 0 3px rgba(24,74,255,0.15);
 }
 
 /* ─── Glass nav ─── */
 .glass-nav {
-  background: rgb(var(--page-rgb) / 0.78);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgb(var(--surface-rgb) / 0.6);
+  background: rgba(10,17,24,0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
 /* ─── Noise texture ─── */
 .noise-bg { position: relative; }
 .noise-bg::after {
-  content: ''; position: absolute; inset: 0; opacity: 0.05;
+  content: ''; position: absolute; inset: 0; opacity: 0.04;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   pointer-events: none; z-index: 1;
 }
@@ -310,25 +282,42 @@ body {
 /* ─── Typing cursor ─── */
 @keyframes blink-cursor {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+  50%      { opacity: 0; }
 }
 
-/* ─── Hero aura blobs ─── */
+/* ─── Hero aura blobs ───
+   Radial Gradient Blur (#184AFF 10~20%) — 화면 깊이감 극대화 */
 @keyframes aura-drift-1 {
   0%, 100% { transform: translate(0, 0); }
-  25% { transform: translate(25px, -20px); }
-  50% { transform: translate(-15px, 30px); }
-  75% { transform: translate(20px, 15px); }
+  25%      { transform: translate(25px, -20px); }
+  50%      { transform: translate(-15px, 30px); }
+  75%      { transform: translate(20px, 15px); }
 }
 @keyframes aura-drift-2 {
   0%, 100% { transform: translate(0, 0); }
-  25% { transform: translate(-20px, 25px); }
-  50% { transform: translate(30px, -10px); }
-  75% { transform: translate(-25px, -20px); }
+  25%      { transform: translate(-20px, 25px); }
+  50%      { transform: translate(30px, -10px); }
+  75%      { transform: translate(-25px, -20px); }
+}
+
+.aura-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  background:
+  radial-gradient(
+    circle,
+    rgba(74,111,255,0.25) 0%,
+    rgba(24,74,255,0.15) 35%,
+    rgba(24,74,255,0) 75%
+    )
+    ;
 }
 
 /* ─── Scroll animations ─── */
-[data-animate] { opacity: 0; transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+[data-animate] 
+{ opacity: 1; transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
 [data-animate].animate-visible { opacity: 1; }
 [data-animate="fade-up"] { transform: translateY(30px); }
 [data-animate="fade-up"].animate-visible { transform: translateY(0); }
@@ -347,31 +336,67 @@ body {
 [data-animate="slide-right"] { transform: translateX(40px); }
 [data-animate="slide-right"].animate-visible { transform: translateX(0); }
 
+
 .tabular-nums { font-variant-numeric: tabular-nums; }
 
 @keyframes blink {
-  0%, 50% { opacity: 1; }
+  0%, 50%   { opacity: 1; }
   51%, 100% { opacity: 0; }
 }
 .animate-blink { animation: blink 0.8s step-end infinite; }
 
-/* DNA section label utility */
+/* ─── Section label ─── */
 .section-label {
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: var(--c-accent);
+  letter-spacing: 0.20em;
+  color: #4A6FFF;
+  font-family: var(--font-mono);
 }
 
-/* DNA monospace tag/badge */
+/* ─── Badges / Tags ───
+   디자인 시스템 4번: 콤팩트한 알약 형태 (radius 999px)
+   Ghost 스타일(White 20% Stroke) 또는 배경 투명도 15% */
 .tag-mono {
   font-family: var(--font-mono);
   font-size: 11px;
-  letter-spacing: 0.04em;
-  padding: 4px 10px;
-  border-radius: 8px;
-  border: 1px solid rgb(var(--accent-rgb) / 0.30);
-  background: rgb(var(--accent-rgb) / 0.10);
-  color: var(--c-accent-bright);
+  letter-spacing: 0.06em;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.20);
+  background: transparent;
+  color: rgba(255,255,255,0.80);
+}
+
+.tag-primary {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(24,74,255,0.35);
+  background: rgba(24,74,255,0.15);
+  color: #4A6FFF;
+}
+
+/* ─── Typography helpers (디자인 시스템 2번) ─── */
+.text-display    { font-size: 48px; font-weight: 800; line-height: 1.30; letter-spacing: -0.02em; }
+.text-title-01   { font-size: 32px; font-weight: 600; line-height: 1.40; letter-spacing: -0.01em; }
+.text-title-02   { font-size: 24px; font-weight: 600; line-height: 1.40; letter-spacing: -0.01em; }
+.text-body-main  { font-size: 16px; font-weight: 500; line-height: 1.60; }
+.text-body-sub   { font-size: 14px; font-weight: 400; line-height: 1.60; }
+.text-caption    { font-size: 12px; font-weight: 400; line-height: 1.50; }
+
+@font-face {
+  font-family: 'Pretendard Variable';
+  font-weight: 100 900; /* 범위 지정 필수 */
+  font-display: swap;
+  src: url('/fonts/PretendardVariable.woff2') format('woff2-variations');
+}
+
+body {
+  font-family: 'Pretendard Variable', sans-serif;
 }

@@ -53,24 +53,27 @@ const infraSpec = [
 function WorkflowNodeBox({ node, active }: { node: WorkflowNode; active: boolean }) {
   return (
     <div
-      className="w-full rounded-xl px-4 py-3 border transition-all duration-300"
+      className="w-full rounded-2xl px-4 py-3 border transition-all duration-300"
       style={
         active
           ? {
-              background: 'rgb(var(--accent-rgb) / 0.12)',
-              borderColor: 'rgb(var(--accent-rgb) / 0.50)',
-              boxShadow: '0 0 18px rgb(var(--accent-rgb) / 0.25)',
+              background: 'rgba(24,74,255,0.12)',
+              borderColor: 'rgba(24,74,255,0.45)',
+              boxShadow:
+                '0 0 24px rgba(24,74,255,0.25), inset 0 1px 0 rgba(255,255,255,0.06)',
             }
           : {
-              background: 'rgb(var(--card-rgb) / 0.55)',
-              borderColor: 'rgb(var(--border-rgb) / 0.5)',
+              background: 'rgba(22,34,47,0.50)',
+              borderColor: 'rgba(255,255,255,0.08)',
+              backdropFilter: 'blur(30px)',
+              WebkitBackdropFilter: 'blur(30px)',
             }
       }
     >
       <div className="flex items-center justify-between gap-2">
         <span
-          className={`text-[12px] font-mono font-semibold transition-colors duration-300 ${
-            active ? 'text-[color:var(--color-accent)]' : 'text-[color:var(--c-text-body)]'
+          className={`text-[12px] font-mono font-medium transition-colors duration-300 ${
+            active ? 'text-[#4A6FFF]' : 'text-white/70'
           }`}
         >
           {node.label}
@@ -78,7 +81,7 @@ function WorkflowNodeBox({ node, active }: { node: WorkflowNode; active: boolean
         {active && (
           <span
             className="w-1.5 h-1.5 rounded-full animate-accent-pulse"
-            style={{ background: 'var(--c-accent)', boxShadow: '0 0 6px var(--c-accent)' }}
+            style={{ background: '#184AFF', boxShadow: '0 0 8px #184AFF' }}
           />
         )}
       </div>
@@ -87,18 +90,18 @@ function WorkflowNodeBox({ node, active }: { node: WorkflowNode; active: boolean
           {node.badges.map((b, bi) => (
             <span
               key={bi}
-              className="text-[9px] font-mono px-1.5 py-0.5 rounded transition-colors duration-300"
+              className="text-[9px] font-mono px-1.5 py-0.5 rounded-full transition-colors duration-300"
               style={
                 active
                   ? {
-                      color: 'var(--c-accent-bright)',
-                      background: 'rgb(var(--accent-rgb) / 0.10)',
-                      border: '1px solid rgb(var(--accent-rgb) / 0.30)',
+                      color: '#4A6FFF',
+                      background: 'rgba(24,74,255,0.10)',
+                      border: '1px solid rgba(24,74,255,0.28)',
                     }
                   : {
-                      color: 'var(--c-text-body)',
-                      background: 'rgb(var(--surface-rgb) / 0.6)',
-                      border: '1px solid rgb(var(--border-rgb) / 0.4)',
+                      color: 'rgba(255,255,255,0.55)',
+                      background: 'rgba(255,255,255,0.04)',
+                      border: '1px solid rgba(255,255,255,0.08)',
                     }
               }
             >
@@ -114,7 +117,7 @@ function WorkflowNodeBox({ node, active }: { node: WorkflowNode; active: boolean
 function NodeArrow() {
   return (
     <div className="flex flex-col items-center my-0.5">
-      <svg width="10" height="14" viewBox="0 0 10 14" fill="none" className="text-[color:var(--c-text-faint)]">
+      <svg width="10" height="14" viewBox="0 0 10 14" fill="none" className="text-white/20">
         <path
           d="M5 0v10M1.5 7l3.5 4 3.5-4"
           stroke="currentColor"
@@ -130,32 +133,35 @@ function NodeArrow() {
 function DifferentiationStrip() {
   return (
     <div
-      className="rounded-2xl overflow-hidden"
+      className="rounded-3xl overflow-hidden"
       style={{
         background:
-          'linear-gradient(135deg, rgb(var(--accent-rgb) / 0.15) 0%, rgb(var(--accent-rgb) / 0.04) 100%)',
-        border: '1px solid rgb(var(--accent-rgb) / 0.45)',
-        boxShadow: '0 0 24px rgb(var(--accent-rgb) / 0.20)',
+          'linear-gradient(135deg, rgba(24,74,255,0.14) 0%, rgba(24,74,255,0.04) 100%)',
+        border: '1px solid rgba(24,74,255,0.32)',
+        boxShadow:
+          '0 0 28px rgba(24,74,255,0.18), inset 0 1px 0 rgba(255,255,255,0.06)',
+        backdropFilter: 'blur(30px)',
+        WebkitBackdropFilter: 'blur(30px)',
       }}
     >
       <div className="px-5 py-4 space-y-2.5">
         <div className="flex items-center gap-2.5">
-          <X size={14} className="text-[color:var(--c-text-muted)] flex-shrink-0" strokeWidth={2.5} />
-          <span className="text-[12px] text-[color:var(--c-text-muted)] line-through">
+          <X size={14} className="text-white/35 flex-shrink-0" strokeWidth={2.25} />
+          <span className="text-[12px] text-white/40 line-through">
             Baseline MedGemma 27B 그대로 사용
           </span>
         </div>
         <div className="flex items-start gap-2.5">
           <Check
             size={14}
-            className="text-[color:var(--c-stable)] flex-shrink-0 mt-0.5"
-            strokeWidth={2.5}
+            className="text-[#4A6FFF] flex-shrink-0 mt-0.5"
+            strokeWidth={2.25}
           />
           <div>
-            <p className="text-sm text-[color:var(--c-text)] font-semibold leading-snug">
+            <p className="text-sm text-white font-semibold leading-snug">
               분과별 QLoRA PEFT 어댑터로 한국 임상 특화
             </p>
-            <p className="text-[11px] text-[color:var(--c-text-muted)] font-mono mt-1">
+            <p className="text-[11px] text-white/40 font-mono mt-1">
               + DPO 후속 적용 (3단계 로드맵)
             </p>
           </div>
@@ -168,41 +174,43 @@ function DifferentiationStrip() {
 function InfraSpecCard() {
   return (
     <div
-      className="rounded-2xl overflow-hidden"
+      className="rounded-3xl overflow-hidden"
       style={{
-        background: 'rgb(var(--card-rgb) / 0.55)',
-        border: '1px solid rgb(var(--surface-rgb) / 0.65)',
-        boxShadow: 'var(--glow-card-soft)',
-        backdropFilter: 'blur(8px)',
+        background: 'rgba(22,34,47,0.50)',
+        border: '1px solid rgba(255,255,255,0.10)',
+        boxShadow:
+          '0 8px 32px rgba(0,0,0,0.35), 0 0 28px rgba(24,74,255,0.08), inset 0 1px 0 rgba(255,255,255,0.05)',
+        backdropFilter: 'blur(30px)',
+        WebkitBackdropFilter: 'blur(30px)',
       }}
     >
-      <div className="flex items-center justify-between px-5 py-3 border-b border-[color:var(--color-divider)]">
+      <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/[0.06]">
         <div className="flex items-center gap-2">
-          <Network size={13} className="text-[color:var(--color-accent)]" strokeWidth={1.75} />
-          <span className="text-[11px] font-semibold uppercase tracking-widest text-[color:var(--c-text-body)] font-mono">
+          <Network size={13} className="text-[#4A6FFF]" strokeWidth={1.75} />
+          <span className="text-[10px] font-medium uppercase tracking-[0.20em] text-white/65 font-mono">
             LangGraph Inference Pipeline
           </span>
         </div>
         <span
-          className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest rounded-full font-mono"
+          className="px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.16em] rounded-full font-mono"
           style={{
-            color: 'var(--c-stable)',
-            background: 'rgb(var(--stable-rgb) / 0.15)',
-            border: '1px solid rgb(var(--stable-rgb) / 0.30)',
+            color: '#4A6FFF',
+            background: 'rgba(24,74,255,0.12)',
+            border: '1px solid rgba(24, 74, 255, 1)',
           }}
         >
           Ready
         </span>
       </div>
 
-      <div className="px-5 py-4">
-        <div className="grid grid-cols-2 gap-x-4 gap-y-2.5">
+      <div className="px-5 py-5">
+        <div className="grid grid-cols-2 gap-x-4 gap-y-3">
           {infraSpec.map((item) => (
             <div key={item.key} className="flex flex-col">
-              <span className="text-[9px] font-semibold uppercase tracking-widest text-[color:var(--c-text-muted)] font-mono">
+              <span className="text-[9px] font-medium uppercase tracking-[0.18em] text-white/40 font-mono">
                 {item.key}
               </span>
-              <span className="text-[12px] font-mono font-medium text-[color:var(--c-text)] mt-0.5">
+              <span className="text-[12px] font-mono font-medium text-white/85 mt-1">
                 {item.value}
               </span>
             </div>
@@ -210,20 +218,20 @@ function InfraSpecCard() {
         </div>
       </div>
 
-      <div className="px-5 pb-4 space-y-2.5">
-        <p className="text-xs text-[color:var(--c-text-muted)] text-center leading-relaxed">
+      <div className="px-5 pb-5 space-y-3">
+        <p className="text-xs text-white/45 text-center leading-relaxed font-light">
           노드 교체만으로 모델·검색·청크 전략을 유연하게 변경 가능
         </p>
-        <p className="text-[11px] text-[color:var(--c-text-dim)] text-center font-mono leading-relaxed pt-2.5 border-t border-[color:var(--color-divider)]">
+        <p className="text-[11px] text-white/40 text-center font-mono leading-relaxed pt-3 border-t border-white/[0.06]">
           적응 로드맵 ·{' '}
-          <span className="text-[color:var(--c-accent-bright)]">RAG + Few-shot</span>
-          <span className="text-[color:var(--c-text-faint)]"> (1) </span>
+          <span className="text-[#4A6FFF]">RAG + Few-shot</span>
+          <span className="text-white/25"> (1) </span>
           →{' '}
-          <span className="text-[color:var(--c-accent-bright)]">+ QLoRA SFT</span>
-          <span className="text-[color:var(--c-text-faint)]"> (2) </span>
+          <span className="text-[#4A6FFF]">+ QLoRA SFT</span>
+          <span className="text-white/25"> (2) </span>
           →{' '}
-          <span className="text-[color:var(--c-accent-bright)]">+ DPO</span>
-          <span className="text-[color:var(--c-text-faint)]"> (3, 옵션)</span>
+          <span className="text-[#4A6FFF]">+ DPO</span>
+          <span className="text-white/25"> (3, 옵션)</span>
         </p>
       </div>
     </div>
@@ -235,7 +243,6 @@ export default function HowItWorks() {
   const [activeStep, setActiveStep] = useState(0);
   const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
   const stepRefsMobile = useRef<(HTMLDivElement | null)[]>([]);
-  const nodeRefsMobile = useRef<(HTMLDivElement | null)[]>([]);
 
   const setStepRef = useCallback(
     (index: number) => (el: HTMLDivElement | null) => {
@@ -246,12 +253,6 @@ export default function HowItWorks() {
   const setStepRefMobile = useCallback(
     (index: number) => (el: HTMLDivElement | null) => {
       stepRefsMobile.current[index] = el;
-    },
-    [],
-  );
-  const setNodeRefMobile = useCallback(
-    (index: number) => (el: HTMLDivElement | null) => {
-      nodeRefsMobile.current[index] = el;
     },
     [],
   );
@@ -273,25 +274,10 @@ export default function HowItWorks() {
       observer.observe(el);
       observers.push(observer);
     };
-    // 모바일에선 노드 다이어그램이 스텝과 분리 배치(sticky 아님)라, 노드 자체도 관찰해
-    // 화면 밴드에 들어온 노드의 stepIndex로 activeStep을 갱신 → 노드 점등이 스크롤을 따라감.
-    const attachNode = (el: HTMLDivElement | null, i: number) => {
-      if (!el) return;
-      const stepIndex = workflowNodes[i]?.stepIndex ?? 0;
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) setActiveStep(stepIndex);
-        },
-        { rootMargin: '-20% 0px -40% 0px', threshold: 0 },
-      );
-      observer.observe(el);
-      observers.push(observer);
-    };
     // 데스크탑·모바일 step 둘 다 observe.
     // display:none element는 isIntersecting false라 자동 무시 → 충돌 X
     stepRefs.current.forEach(attach);
     stepRefsMobile.current.forEach(attach);
-    nodeRefsMobile.current.forEach(attachNode);
     return () => observers.forEach((obs) => obs.disconnect());
   }, []);
 
@@ -300,25 +286,51 @@ export default function HowItWorks() {
   return (
     <section
       id="how-it-works"
-      className="relative py-20 lg:py-28"
-      style={{ background: 'var(--c-page)' }}
+      className="relative py-20 lg:py-28 overflow-hidden"
+      style={{ background: '#0A1118' }}
     >
-      <div ref={sectionRef} className="mx-auto max-w-7xl px-5 md:px-8">
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          top: '15%',
+          right: '-10%',
+          width: '600px',
+          height: '600px',
+          background:
+            'radial-gradient(circle, rgba(24,74,255,0.12) 0%, rgba(24,74,255,0) 65%)',
+          filter: 'blur(50px)',
+        }}
+      />
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          bottom: '10%',
+          left: '-8%',
+          width: '500px',
+          height: '500px',
+          background:
+            'radial-gradient(circle, rgba(74,111,255,0.10) 0%, rgba(74,111,255,0) 70%)',
+          filter: 'blur(60px)',
+        }}
+      />
+
+      <div ref={sectionRef} className="relative mx-auto max-w-7xl px-5 md:px-8">
         {/* Header */}
         <div className="text-center mb-16">
           <span
             data-animate="fade-up"
-            className="inline-block mb-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-[color:var(--color-accent)]"
+            className="section-label inline-flex items-center gap-2 mb-5"
           >
+            <span className="w-1 h-1 rounded-full bg-[#4A6FFF] shadow-[0_0_8px_#184AFF]" />
             Pipeline
           </span>
           <h2
             data-animate="fade-up"
-            className="font-display text-[2rem] font-bold tracking-[-0.02em] text-[color:var(--c-text)] mb-5"
+            className="font-display text-[2.25rem] lg:text-[2.5rem] font-semibold tracking-[-0.025em] text-white mb-4"
           >
             How It Works
           </h2>
-          <p data-animate="fade-up-1" className="text-[color:var(--c-text-body)] text-base">
+          <p data-animate="fade-up-1" className="text-white/55 text-[15px] font-light">
             데이터가 인사이트로 변하는 과정 — LangGraph 추론 파이프라인
           </p>
         </div>
@@ -359,40 +371,40 @@ export default function HowItWorks() {
                 <div key={i} ref={setStepRef(i)} className="py-16 lg:py-20">
                   <div className="flex items-start gap-5">
                     <div
-                      className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl border transition-all duration-300"
+                      className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl border transition-all duration-300"
                       style={
                         active
                           ? {
-                              background: 'rgb(var(--accent-rgb) / 0.12)',
-                              borderColor: 'rgb(var(--accent-rgb) / 0.35)',
-                              boxShadow: '0 0 16px rgb(var(--accent-rgb) / 0.25)',
+                              background: 'rgba(24,74,255,0.14)',
+                              borderColor: 'rgba(24,74,255,0.35)',
+                              boxShadow: '0 0 20px rgba(24,74,255,0.30)',
                             }
                           : {
-                              background: 'rgb(var(--card-rgb) / 0.55)',
-                              borderColor: 'rgb(var(--border-rgb) / 0.5)',
+                              background: 'rgba(22,34,47,0.50)',
+                              borderColor: 'rgba(255,255,255,0.10)',
                             }
                       }
                     >
                       <Icon
-                        size={24}
+                        size={22}
                         strokeWidth={1.5}
                         className={`transition-colors duration-300 ${
-                          active ? 'text-[color:var(--color-accent)]' : 'text-[color:var(--c-text-muted)]'
+                          active ? 'text-[#4A6FFF]' : 'text-white/45'
                         }`}
                       />
                     </div>
                     <div>
-                      <span className="text-[11px] font-semibold uppercase tracking-widest text-[color:var(--c-text-muted)] font-mono">
+                      <span className="text-[10px] font-medium uppercase tracking-[0.20em] text-white/40 font-mono">
                         Step {String(i + 1).padStart(2, '0')}
                       </span>
                       <h3
-                        className={`text-xl font-bold mt-1 mb-3 transition-colors duration-300 ${
-                          active ? 'text-[color:var(--color-accent)]' : 'text-[color:var(--c-text)]'
+                        className={`text-xl font-semibold mt-1.5 mb-3 tracking-[-0.01em] transition-colors duration-300 ${
+                          active ? 'text-white' : 'text-white/80'
                         }`}
                       >
                         {step.title}
                       </h3>
-                      <p className="text-base text-[color:var(--c-text-body)] leading-relaxed max-w-md">
+                      <p className="text-[15px] text-white/55 leading-[1.7] max-w-md font-light">
                         {step.desc}
                       </p>
                     </div>
@@ -408,7 +420,7 @@ export default function HowItWorks() {
           {/* LangGraph nodes — vertical stack */}
           <div className="space-y-0 mb-10 max-w-md mx-auto" data-animate="fade-up">
             {workflowNodes.map((node, i) => (
-              <div key={node.id} ref={setNodeRefMobile(i)} className="flex flex-col items-stretch">
+              <div key={node.id} className="flex flex-col items-stretch">
                 <WorkflowNodeBox node={node} active={isNodeActive(node)} />
                 {i < workflowNodes.length - 1 && <NodeArrow />}
               </div>
@@ -430,21 +442,21 @@ export default function HowItWorks() {
                   }
                 >
                   {i < steps.length - 1 && (
-                    <div className="absolute left-[23px] top-[52px] bottom-0 w-px border-l border-dashed border-[color:var(--color-border)]" />
+                    <div className="absolute left-[23px] top-[52px] bottom-0 w-px border-l border-dashed border-white/10" />
                   )}
                   <div
                     className="relative z-10 flex h-[46px] w-[46px] flex-shrink-0 items-center justify-center rounded-full border transition-all duration-300"
                     style={
                       active
                         ? {
-                            background: 'rgb(var(--accent-rgb) / 0.15)',
-                            borderColor: 'rgb(var(--accent-rgb) / 0.50)',
-                            boxShadow: '0 0 18px rgb(var(--accent-rgb) / 0.30)',
+                            background: 'rgba(24,74,255,0.15)',
+                            borderColor: 'rgba(24,74,255,0.45)',
+                            boxShadow: '0 0 22px rgba(24,74,255,0.35)',
                           }
                         : {
-                            background: 'rgb(var(--card-rgb) / 0.7)',
-                            borderColor: 'rgb(var(--border-rgb) / 0.6)',
-                            boxShadow: '0 0 12px rgb(var(--accent-rgb) / 0.10)',
+                            background: 'rgba(22,34,47,0.65)',
+                            borderColor: 'rgba(255,255,255,0.10)',
+                            boxShadow: '0 0 14px rgba(24,74,255,0.08)',
                           }
                     }
                   >
@@ -452,22 +464,24 @@ export default function HowItWorks() {
                       size={20}
                       strokeWidth={1.5}
                       className={`transition-colors duration-300 ${
-                        active ? 'text-[color:var(--color-accent)]' : 'text-[color:var(--c-text-body)]'
+                        active ? 'text-[#4A6FFF]' : 'text-white/55'
                       }`}
                     />
                   </div>
                   <div className="pt-0.5">
-                    <span className="text-[11px] font-semibold text-[color:var(--c-text-muted)] uppercase tracking-widest font-mono">
+                    <span className="text-[10px] font-medium text-white/40 uppercase tracking-[0.20em] font-mono">
                       Step {String(i + 1).padStart(2, '0')}
                     </span>
                     <h3
-                      className={`font-display text-lg font-bold mt-1 mb-1.5 transition-colors duration-300 ${
-                        active ? 'text-[color:var(--color-accent)]' : 'text-[color:var(--c-text)]'
+                      className={`font-display text-lg font-semibold mt-1 mb-1.5 tracking-[-0.01em] transition-colors duration-300 ${
+                        active ? 'text-white' : 'text-white/80'
                       }`}
                     >
                       {step.title}
                     </h3>
-                    <p className="text-sm text-[color:var(--c-text-body)] leading-relaxed">{step.desc}</p>
+                    <p className="text-sm text-white/55 leading-[1.7] font-light">
+                      {step.desc}
+                    </p>
                   </div>
                 </div>
               );

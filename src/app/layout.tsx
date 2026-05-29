@@ -1,19 +1,20 @@
 import type { Metadata } from 'next';
-import { Inter, JetBrains_Mono } from 'next/font/google';
+import { Outfit } from 'next/font/google';
+import localFont from 'next/font/local';
 import './globals.css';
 
-const inter = Inter({
-  variable: '--font-inter',
+const outfit = Outfit({
+  variable: '--font-outfit',
   subsets: ['latin'],
   display: 'swap',
   weight: ['400', '500', '600', '700', '800'],
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  variable: '--font-jetbrains-mono',
-  subsets: ['latin'],
+const pretendard = localFont({
+  src: '../../public/fonts/PretendardVariable.woff2',
+  variable: '--font-pretendard',
   display: 'swap',
-  weight: ['400', '500', '600', '700'],
+  weight: '400 800',
 });
 
 const SITE_TITLE = '차트원샷 — 한국어 EMR 환자 단위 시계열 요약';
@@ -52,6 +53,8 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
+
+  themeColor: '#0A1118',
   openGraph: {
     type: 'website',
     locale: 'ko_KR',
@@ -83,21 +86,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="ko"
-      data-theme="dark"
-      suppressHydrationWarning
-      className={`${inter.variable} ${jetbrainsMono.variable}`}
-    >
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();`,
-          }}
-        />
-      </head>
-      <body className="min-h-screen bg-[var(--c-page)] text-[color:var(--c-text)] font-body antialiased">
-        {children}
+    <html lang="ko" className={`${outfit.variable} ${pretendard.variable}`}>
+      {/*
+        bg-[#0A1118]  → Base: Ice Blue Navy (디자인 시스템 1번)
+        text-white/90 → Neutral 01 기반, 본문은 살짝 낮춰 위계 확보
+        font-sans     → Pretendard + Outfit 합쳐서 사용 (globals.css에서 정의)
+      */}
+      <body 
+  className="min-h-screen bg-[#0A1118] text-white/90 antialiased"
+  style={{ fontFamily: 'var(--font-body)' }}
+  >
+  {children}
       </body>
     </html>
   );

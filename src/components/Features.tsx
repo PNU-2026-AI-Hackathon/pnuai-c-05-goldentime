@@ -20,33 +20,33 @@ function SplitViewExtra() {
       <div
         className="flex-1 rounded-lg px-2.5 py-2"
         style={{
-          background: 'rgb(var(--surface-rgb) / 0.5)',
-          border: '1px solid rgb(var(--border-rgb) / 0.4)',
+          background: 'transparent',
+          border: '1px solid rgba(255,255,255,0.3)',
         }}
       >
-        <div className="text-[9px] font-mono uppercase tracking-widest text-[color:var(--c-text-muted)] mb-1.5">
+        <div className="text-[9px] font-mono uppercase tracking-widest text-white/50 mb-1.5">
           원본
         </div>
         <div className="space-y-1">
-          <div className="h-[3px] rounded-full w-full" style={{ background: 'rgb(var(--textbody-rgb) / 0.3)' }} />
-          <div className="h-[3px] rounded-full w-5/6" style={{ background: 'rgb(var(--textbody-rgb) / 0.3)' }} />
-          <div className="h-[3px] rounded-full w-3/4" style={{ background: 'rgb(var(--textbody-rgb) / 0.3)' }} />
+          <div className="h-[3px] rounded-full w-full" style={{ background: 'rgba(255,255,255,0.3)' }} />
+          <div className="h-[3px] rounded-full w-5/6" style={{ background: 'rgba(255,255,255,0.3)' }} />
+          <div className="h-[3px] rounded-full w-3/4" style={{ background: 'rgba(255,255,255,0.3)' }} />
         </div>
       </div>
-      <ArrowRight size={14} className="text-[color:var(--color-accent)] flex-shrink-0" strokeWidth={2} />
+      <ArrowRight size={14} className="text-white flex-shrink-0" strokeWidth={2} />
       <div
         className="flex-1 rounded-lg px-2.5 py-2"
         style={{
-          background: 'rgb(var(--accent-rgb) / 0.10)',
-          border: '1px solid rgb(var(--accent-rgb) / 0.30)',
+          background: 'transparent',
+          border: '1px solid rgba(255,255,255,0.4)',
         }}
       >
-        <div className="text-[9px] font-mono uppercase tracking-widest text-[color:var(--c-accent-bright)] mb-1.5">
+        <div className="text-[9px] font-mono uppercase tracking-widest text-white mb-1.5">
           요약
         </div>
         <div className="space-y-1">
-          <div className="h-[3px] rounded-full w-2/3" style={{ background: 'rgb(var(--accent-rgb) / 0.5)' }} />
-          <div className="h-[3px] rounded-full w-1/2" style={{ background: 'rgb(var(--accent-rgb) / 0.5)' }} />
+          <div className="h-[3px] rounded-full w-2/3" style={{ background: 'rgba(255,255,255,0.8)' }} />
+          <div className="h-[3px] rounded-full w-1/2" style={{ background: 'rgba(255,255,255,0.8)' }} />
         </div>
       </div>
     </div>
@@ -68,7 +68,7 @@ function TimelineMiniExtra() {
         className="absolute left-1 right-3 top-1/2 -translate-y-1/2 h-px"
         style={{
           background:
-            'linear-gradient(90deg, rgb(var(--accent-rgb) / 0.3), rgb(var(--accent-rgb) / 0.6))',
+            'linear-gradient(90deg, rgba(255,255,255,0.20), rgba(255,255,255,0.6))',
         }}
       />
       <div
@@ -76,7 +76,7 @@ function TimelineMiniExtra() {
         style={{
           width: 0,
           height: 0,
-          borderLeft: '6px solid rgb(var(--accent-rgb) / 0.6)',
+          borderLeft: '6px solid rgba(255,255,255,0.6)',
           borderTop: '4px solid transparent',
           borderBottom: '4px solid transparent',
         }}
@@ -89,10 +89,10 @@ function TimelineMiniExtra() {
               <div
                 className={`rounded-full ${isPrimary ? 'w-2.5 h-2.5' : 'w-1.5 h-1.5'}`}
                 style={{
-                  background: isPrimary ? 'var(--c-accent)' : 'var(--c-warning)',
-                  boxShadow: `0 0 5px ${
-                    isPrimary ? 'rgb(var(--accent-rgb) / 0.7)' : 'rgb(var(--warning-rgb) / 0.6)'
-                  }`,
+                  background: isPrimary ? '#FFFFFF' : 'rgba(255,255,255,0.40)',
+                  boxShadow: isPrimary
+                    ? '0 0 8px rgba(255,255,255,0.7), 0 0 2px rgba(255,255,255,0.5)'
+                    : '0 0 4px rgba(255,255,255,0.3)',
                 }}
               />
             </div>
@@ -107,22 +107,22 @@ function AbbrevMiniExtra() {
   return (
     <div className="mt-5 space-y-1.5">
       <div className="flex items-center gap-2 text-xs">
-        <CheckCircle2 size={12} className="text-[color:var(--c-accent)] flex-shrink-0" strokeWidth={2.5} />
-        <code className="text-[color:var(--c-accent-bright)] font-mono font-bold">f/u</code>
-        <span className="text-[color:var(--c-text-dim)]">→</span>
-        <span className="text-[color:var(--c-text-body)] truncate">follow-up</span>
+        <CheckCircle2 size={12} className="text-white flex-shrink-0" strokeWidth={2.25} />
+        <code className="text-white font-mono font-semibold">f/u</code>
+        <span className="text-white/30">→</span>
+        <span className="text-white/70 truncate">follow-up</span>
       </div>
       <div className="flex items-center gap-2 text-xs">
-        <CheckCircle2 size={12} className="text-[color:var(--c-accent)] flex-shrink-0" strokeWidth={2.5} />
-        <code className="text-[color:var(--c-accent-bright)] font-mono font-bold">BID</code>
-        <span className="text-[color:var(--c-text-dim)]">→</span>
-        <span className="text-[color:var(--c-text-body)] truncate">1일 2회</span>
+        <CheckCircle2 size={12} className="text-white flex-shrink-0" strokeWidth={2.25} />
+        <code className="text-white font-mono font-semibold">BID</code>
+        <span className="text-white/30">→</span>
+        <span className="text-white/70 truncate">1일 2회</span>
       </div>
       <div className="flex items-center gap-2 text-xs">
-        <AlertCircle size={12} className="text-[color:var(--c-warning)] flex-shrink-0" strokeWidth={2.5} />
-        <code className="text-[color:var(--c-warning)] font-mono font-bold">HLD</code>
-        <span className="text-[color:var(--c-text-dim)]">→</span>
-        <span className="text-[color:var(--c-warning)] italic truncate">미등재 · 은어 추정</span>
+        <AlertCircle size={12} className="text-white/80 flex-shrink-0" strokeWidth={2.25} />
+        <code className="text-white/80 font-mono font-semibold">HLD</code>
+        <span className="text-white/30">→</span>
+        <span className="text-white/80 italic truncate">미등재 · 은어 추정</span>
       </div>
     </div>
   );
@@ -132,23 +132,23 @@ function DataSovereigntyExtra() {
   return (
     <div className="mt-5 flex items-center gap-2 flex-wrap">
       <div
-        className="flex items-center gap-2 px-3 py-1.5 rounded-lg"
+        className="flex items-center gap-2 px-3 py-1.5 rounded-full"
         style={{
-          background: 'rgb(var(--stable-rgb) / 0.10)',
-          border: '1px solid rgb(var(--stable-rgb) / 0.30)',
+          background: 'transparent',
+          border: '1px solid rgba(255, 255, 255, 0.4)',
         }}
       >
         <span
           className="w-1.5 h-1.5 rounded-full animate-accent-pulse"
-          style={{ background: 'var(--c-stable)', boxShadow: '0 0 6px var(--c-stable)' }}
+          style={{ background: '#FFFFFF', boxShadow: '0 0 6px rgba(255,255,255,0.8)' }}
         />
-        <span className="text-[11px] font-mono font-medium text-[color:var(--c-stable)]">
+        <span className="text-[11px] font-mono font-medium text-white">
           폐쇄망 · LIVE
         </span>
       </div>
-      <div className="text-[10px] font-mono text-[color:var(--c-text-muted)] whitespace-nowrap">
+      <div className="text-[10px] font-mono text-white/50 whitespace-nowrap">
         외부 송신:{' '}
-        <span className="text-[color:var(--c-text-body)] font-bold tabular-nums">0건</span>
+        <span className="text-white font-semibold tabular-nums">0건</span>
       </div>
     </div>
   );
@@ -158,31 +158,27 @@ function DataSovereigntyExtra() {
 
 const features = [
   {
-    icon: Columns2,
+    iconSrc: '/icons/feature-split-view.svg',
     title: 'Split View 비교',
-    description:
-      '원본 EMR과 AI 요약을 한 화면에서 대조해 신뢰성을 검증합니다. 길고 반복되는 차트가 핵심 trend로 압축되는 과정을 한눈에.',
+    description: '원본 EMR과 AI 요약을 한 화면에서 대조해 신뢰성을 검증합니다.',
     extra: <SplitViewExtra />,
   },
   {
-    icon: Activity,
+    iconSrc: '/icons/feature-timeline-summary.svg',
     title: '환자 단위 시계열 요약',
-    description:
-      '여러 차수의 외래·입원 기록 중 핵심 질환만 추출. 주요 trend는 화살표 위, 부수 이슈는 아래에 분리해 보여줍니다.',
+    description: '여러 차수의 외래·입원 기록 중 핵심 질환만 추출합니다.',
     extra: <TimelineMiniExtra />,
   },
   {
-    icon: BookOpen,
-    title: '약어 · 은어 결정론적 해소',
-    description:
-      '분과별 약어/은어 사전을 lookup해 풀이. 사전에 없는 항목은 LLM 추측 없이 원문 그대로 유지하고 "은어 추정" 표시 — 환각 차단.',
+    iconSrc: '/icons/feature-abbrev-resolver.svg',
+    title: '약어·은어 결정론적 해소',
+    description: '약어/은어 사전을 lookup해 환각 없이 풀이합니다.',
     extra: <AbbrevMiniExtra />,
   },
   {
-    icon: Shield,
+    iconSrc: '/icons/feature-data-sovereignty.svg',
     title: '데이터 주권',
-    description:
-      'MedGemma 27B + 양산부산대학교병원 자체 데이터로 학습한 분과별 특화 어댑터. 환자 데이터·가중치 모두 폐쇄망 안에 잠금(lock-in)',
+    description: '환자 데이터와 모델 가중치를 모두 폐쇄망 안에서 보호합니다.',
     extra: <DataSovereigntyExtra />,
   },
 ];
@@ -190,34 +186,50 @@ const features = [
 /* ─── Feature card ─── */
 
 function FeatureCard({ feature }: { feature: (typeof features)[number] }) {
-  const Icon = feature.icon;
   return (
-    <div
-      className="group relative p-6 rounded-2xl flex flex-col h-full transition-all duration-300"
-      style={{
-        background: 'rgb(var(--card-rgb) / 0.55)',
-        border: '1px solid rgb(var(--surface-rgb) / 0.65)',
-        boxShadow: 'var(--glow-card-soft)',
-        backdropFilter: 'blur(8px)',
-      }}
-    >
-      <div
-        className="w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-105"
-        style={{
-          background: 'rgb(var(--accent-rgb) / 0.10)',
-          border: '1px solid rgb(var(--accent-rgb) / 0.25)',
-          boxShadow: '0 0 12px rgb(var(--accent-rgb) / 0.10)',
-        }}
-      >
-        <Icon size={20} strokeWidth={1.5} className="text-[color:var(--color-accent)]" />
+    <div className="group h-[345px] [perspective:1200px]">
+      <div className="relative h-full w-full transition-transform duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+        
+        {/* Front */}
+        <div
+          className="absolute inset-0 flex flex-col items-center justify-center rounded-3xl [backface-visibility:hidden]"
+          style={{
+            background: 'transparent',
+            border: '1px solid rgba(255,255,255,0.4)',
+          }}
+        >
+          <img
+            src={feature.iconSrc}
+            alt=""
+            className="w-[120px] h-[120px] object-contain mb-8"
+          />
+
+          <h3 className="text-white text-[24px] font-semibold tracking-[-0.03em] text-center">
+            {feature.title}
+          </h3>
+        </div>
+
+        {/* Back */}
+        <div
+          className="absolute inset-0 rounded-3xl p-6 flex flex-col [transform:rotateY(180deg)] [backface-visibility:hidden]"
+          style={{
+            background: 'transparent',
+            border: '1px solid rgba(255,255,255,0.4)',
+            backdropFilter: 'blur(30px)',
+            WebkitBackdropFilter: 'blur(30px)',
+          }}
+        >
+          <h3 className="font-display text-lg font-semibold text-white mb-3 tracking-[-0.01em]">
+            {feature.title}
+          </h3>
+
+          <p className="text-[13px] text-white/70 leading-[1.65] flex-1 font-light">
+            {feature.description}
+          </p>
+
+          {feature.extra}
+        </div>
       </div>
-      <h3 className="font-display text-base font-semibold text-[color:var(--c-text)] mb-2.5 mt-4 tracking-tight">
-        {feature.title}
-      </h3>
-      <p className="text-[13px] text-[color:var(--c-text-body)] leading-relaxed flex-1">
-        {feature.description}
-      </p>
-      {feature.extra}
     </div>
   );
 }
@@ -231,25 +243,39 @@ export default function Features() {
   return (
     <section
       id="features"
-      className="relative py-20 lg:py-28"
-      style={{ background: 'var(--c-page)' }}
+      className="relative py-20 lg:py-28 overflow-hidden bg-transparent"
     >
-      <div ref={ref} className="mx-auto max-w-7xl px-5 md:px-8">
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          top: '20%',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '700px',
+          height: '500px',
+          background:
+            'radial-gradient(ellipse, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 70%)',
+          filter: 'blur(40px)',
+        }}
+      />
+
+      <div ref={ref} className="relative mx-auto max-w-7xl px-5 md:px-8">
         {/* Header */}
         <div className="text-center mb-16">
           <span
             data-animate="fade-up"
-            className="inline-block mb-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-[color:var(--color-accent)]"
+            className="section-label inline-flex items-center gap-2 mb-5 text-white/80"
           >
+            <span className="w-1 h-1 rounded-full bg-white shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
             Capabilities
           </span>
           <h2
             data-animate="fade-up"
-            className="font-display text-[2rem] font-bold text-[color:var(--c-text)] mb-5 tracking-tight"
+            className="font-display text-[2.25rem] lg:text-[2.5rem] font-semibold text-white mb-4 tracking-[-0.025em]"
           >
             Features
           </h2>
-          <p data-animate="fade-up-1" className="text-[color:var(--c-text-body)] text-base">
+          <p data-animate="fade-up-1" className="text-white/60 text-[15px] font-light">
             긴 EMR을 정확하게 압축하는 4가지 핵심 기능
           </p>
         </div>

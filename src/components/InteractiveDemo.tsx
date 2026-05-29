@@ -30,6 +30,46 @@ import type {
   CaseCategory,
 } from '@/types';
 
+/* ════════════════════════════════════════════════════════════════
+   DESIGN TOKENS — Soft UI · Glassmorphism · Neumorphism (Light Blue)
+   ════════════════════════════════════════════════════════════════ */
+const ui = {
+  /* page atmosphere */
+  pageBg:
+    'radial-gradient(1200px 600px at 20% -10%, #f3f7ff 0%, rgba(243,247,255,0) 60%), radial-gradient(1000px 500px at 100% 0%, #e2ecff 0%, rgba(226,236,255,0) 55%), linear-gradient(180deg, #eaf1ff 0%, #dde9ff 55%, #eef4ff 100%)',
+
+  /* glass white card */
+  card: 'rgba(255,255,255,0.72)',
+  cardBorder: '1px solid rgba(255,255,255,0.9)',
+  blur: 'blur(16px)',
+
+  /* soft shadows */
+  shadowRest:
+    '0 14px 34px -16px rgba(56,103,214,0.30), 0 2px 6px rgba(56,103,214,0.05)',
+  shadowHover:
+    '0 26px 50px -18px rgba(56,103,214,0.42), 0 6px 14px rgba(56,103,214,0.08)',
+  shadowSoft: '0 16px 40px -18px rgba(56,103,214,0.26)',
+
+  /* neumorphism */
+  neuRaised:
+    '7px 7px 18px rgba(163,184,225,0.50), -7px -7px 18px rgba(255,255,255,0.95)',
+  neuInset:
+    'inset 5px 5px 12px rgba(163,184,225,0.45), inset -5px -5px 12px rgba(255,255,255,0.92)',
+  neuInsetSm:
+    'inset 3px 3px 7px rgba(163,184,225,0.40), inset -3px -3px 7px rgba(255,255,255,0.9)',
+
+  /* blue gradient CTA */
+  cta: 'linear-gradient(135deg, #6aa0ff 0%, #2f6bff 52%, #1d4fff 100%)',
+  ctaShadow:
+    '0 14px 28px -8px rgba(37,99,235,0.55), inset 0 1px 0 rgba(255,255,255,0.45)',
+
+  divider: 'rgba(148,163,184,0.22)',
+  accent: '#2563ff',
+  accentSoft: '#3b82f6',
+};
+
+const transition = { duration: 0.5, ease: [0.4, 0, 0.2, 1] as const };
+
 /* ─── Workflow steps reflect LangGraph inference pipeline ─── */
 const initialSteps: WorkflowStep[] = [
   { label: 'EMR 텍스트 로드 및 문서 단위 청킹', status: 'pending' },
@@ -39,14 +79,67 @@ const initialSteps: WorkflowStep[] = [
   { label: '원문 인용 검증 및 JSON 구조화', status: 'pending' },
 ];
 
-const transition = { duration: 0.5, ease: [0.4, 0, 0.2, 1] as const };
-
 /* ─── Pick 3 patients with category diversity ─── */
 function pickThree(exclude: string[]): Patient[] {
   let pool = patients.filter((p) => !exclude.includes(p.id));
   if (pool.length < 3) pool = patients;
   const shuffled = [...pool].sort(() => Math.random() - 0.5);
   return shuffled.slice(0, 3);
+}
+
+/* ─── Reusable button styles ─── */
+function PrimaryButton({
+  children,
+  disabled,
+  className = '',
+  ...rest
+}: React.ButtonHTMLAttributes<HTMLButtonElement>) {
+  return (
+    <button
+      {...rest}
+      disabled={disabled}
+      className={`relative inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-2.5 text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 ${className}`}
+      style={{
+        background: ui.cta,
+        boxShadow: disabled ? '0 4px 12px -6px rgba(37,99,235,0.35)' : ui.ctaShadow,
+        opacity: disabled ? 0.45 : 1,
+        cursor: disabled ? 'not-allowed' : 'pointer',
+      }}
+    >
+      {children}
+    </button>
+  );
+}
+
+function GhostButton({
+  children,
+  className = '',
+  ...rest
+}: React.ButtonHTMLAttributes<HTMLButtonElement>) {
+  return (
+    <button
+      {...rest}
+      className={`inline-flex items-center gap-1.5 rounded-2xl px-4 py-2.5 text-sm font-semibold text-slate-600 transition-all duration-300 hover:-translate-y-0.5 hover:text-[#2563ff] ${className}`}
+      style={{
+        background: 'rgba(255,255,255,0.7)',
+        border: '1px solid rgba(255,255,255,0.9)',
+        boxShadow: '0 8px 20px -12px rgba(56,103,214,0.45)',
+        backdropFilter: 'blur(10px)',
+      }}
+    >
+      {children}
+    </button>
+  );
+}
+
+/* ─── Glass card shell ─── */
+function glassStyle(extraShadow?: string): React.CSSProperties {
+  return {
+    background: ui.card,
+    border: ui.cardBorder,
+    boxShadow: extraShadow ?? ui.shadowRest,
+    backdropFilter: ui.blur,
+  };
 }
 
 /* ─── Synthea Generator UI ─── */
@@ -74,121 +167,123 @@ function SyntheaGenerator({ onComplete }: { onComplete: () => void }) {
   }, [onComplete]);
 
   return (
-    <div
-      className="rounded-2xl p-6 max-w-lg mx-auto"
-      style={{
-        background: 'rgb(var(--card-rgb) / 0.6)',
-        border: '1px solid rgb(var(--surface-rgb) / 0.7)',
-        boxShadow: 'var(--glow-card-soft)',
-        backdropFilter: 'blur(8px)',
-      }}
-    >
+    <div className="rounded-3xl p-7 max-w-lg mx-auto" style={glassStyle(ui.shadowSoft)}>
       <div className="flex items-center gap-2 mb-4">
-        <span className="text-sm text-[color:var(--color-accent)]">⚕</span>
-        <span className="font-display text-sm font-semibold text-[color:var(--c-text)]">
+        <span
+          className="flex h-7 w-7 items-center justify-center rounded-xl text-sm text-white"
+          style={{ background: ui.cta, boxShadow: '0 6px 14px -6px rgba(37,99,235,0.6)' }}
+        >
+          ⚕
+        </span>
+        <span className="font-display text-sm font-semibold text-slate-800">
           Synthea&trade; Longitudinal Patient Generator
         </span>
       </div>
-      <p className="text-sm text-[color:var(--c-text-body)] mb-4">
+      <p className="text-sm text-slate-500 mb-5">
         Generating synthetic multi-visit patient record...
       </p>
 
-      <div className="h-2 rounded-full mb-4 overflow-hidden" style={{ background: 'rgb(var(--surface-rgb) / 0.7)' }}>
+      <div
+        className="h-3 rounded-full mb-5 overflow-hidden"
+        style={{ background: '#e3ecfb', boxShadow: ui.neuInsetSm }}
+      >
         <div
           className="h-full rounded-full transition-all duration-100 ease-out"
           style={{
             width: `${progress}%`,
-            background: 'linear-gradient(90deg, var(--c-accent-strong), var(--c-accent))',
-            boxShadow: '0 0 12px rgb(var(--accent-rgb) / 0.5)',
+            background: ui.cta,
+            boxShadow: '0 0 14px rgba(47,107,255,0.45)',
           }}
         />
       </div>
 
-      <div className="space-y-2 mb-4">
+      <div className="space-y-2.5 mb-5">
         {genSteps.map((step, i) => (
-          <div key={i} className="flex items-center gap-2 text-sm">
+          <div key={i} className="flex items-center gap-2.5 text-sm">
             {i < completedSteps ? (
-              <span className="text-[color:var(--c-stable)] font-bold">✓</span>
+              <span className="text-[#10b981] font-bold">✓</span>
             ) : i === completedSteps ? (
-              <span className="text-[color:var(--color-accent)] animate-accent-pulse font-bold">◉</span>
+              <span className="text-[#2563ff] animate-accent-pulse font-bold">◉</span>
             ) : (
-              <span className="text-[color:var(--c-text-faint)]">○</span>
+              <span className="text-slate-300">○</span>
             )}
-            <span className={i <= completedSteps ? 'text-[color:var(--c-text-body)]' : 'text-[color:var(--c-text-dim)]'}>{step}</span>
+            <span className={i <= completedSteps ? 'text-slate-600' : 'text-slate-400'}>
+              {step}
+            </span>
           </div>
         ))}
       </div>
 
-      <p className="text-[10px] text-[color:var(--c-text-dim)] font-mono">
+      <p className="text-[10px] text-slate-400 font-mono">
         Powered by MITRE Synthea&trade; · Synthetic Longitudinal Engine
       </p>
     </div>
   );
 }
 
-/* ─── Case category visual config ─── */
+/* ─── Case category visual config (light theme) ─── */
 const categoryConfig: Record<
   CaseCategory,
   { label: string; dot: string; bg: string; hoverBg: string; border: string; glow: string; text: string }
 > = {
   chronic: {
     label: '만성질환',
-    dot: 'var(--c-accent)',
-    bg: 'rgb(var(--accent-rgb) / 0.15)',
-    hoverBg: 'rgb(var(--accent-rgb) / 0.10)',
-    border: 'rgb(var(--accent-rgb) / 0.45)',
-    glow: '0 0 0 1px rgb(var(--accent-rgb) / 0.45), 0 0 28px rgb(var(--accent-rgb) / 0.28)',
-    text: 'var(--c-accent-bright)',
+    dot: '#3b6fff',
+    bg: 'rgba(59,111,255,0.10)',
+    hoverBg: 'rgba(59,111,255,0.06)',
+    border: 'rgba(59,111,255,0.40)',
+    glow: '0 0 0 1.5px rgba(59,111,255,0.40), 0 20px 40px -14px rgba(59,111,255,0.45)',
+    text: '#2456e6',
   },
   multidrug: {
     label: '다약제',
-    dot: 'var(--c-warning)',
-    bg: 'rgb(var(--warning-rgb) / 0.15)',
-    hoverBg: 'rgb(var(--warning-rgb) / 0.10)',
-    border: 'rgb(var(--warning-rgb) / 0.45)',
-    glow: '0 0 0 1px rgb(var(--warning-rgb) / 0.45), 0 0 28px rgb(var(--warning-rgb) / 0.28)',
-    text: 'var(--c-warning)',
+    dot: '#f59e0b',
+    bg: 'rgba(245,158,11,0.12)',
+    hoverBg: 'rgba(245,158,11,0.07)',
+    border: 'rgba(245,158,11,0.45)',
+    glow: '0 0 0 1.5px rgba(245,158,11,0.45), 0 20px 40px -14px rgba(245,158,11,0.42)',
+    text: '#b45309',
   },
   multispec: {
     label: '다분과 협진',
-    dot: 'var(--c-violet)',
-    bg: 'rgb(var(--violet-rgb) / 0.15)',
-    hoverBg: 'rgb(var(--violet-rgb) / 0.10)',
-    border: 'rgb(var(--violet-rgb) / 0.45)',
-    glow: '0 0 0 1px rgb(var(--violet-rgb) / 0.45), 0 0 28px rgb(var(--violet-rgb) / 0.28)',
-    text: 'var(--c-violet)',
+    dot: '#8b5cf6',
+    bg: 'rgba(139,92,246,0.12)',
+    hoverBg: 'rgba(139,92,246,0.07)',
+    border: 'rgba(139,92,246,0.42)',
+    glow: '0 0 0 1.5px rgba(139,92,246,0.42), 0 20px 40px -14px rgba(139,92,246,0.42)',
+    text: '#6d28d9',
   },
   postop: {
     label: '수술 후 추적',
-    dot: 'var(--c-rose)',
-    bg: 'rgb(var(--rose-rgb) / 0.15)',
-    hoverBg: 'rgb(var(--rose-rgb) / 0.10)',
-    border: 'rgb(var(--rose-rgb) / 0.45)',
-    glow: '0 0 0 1px rgb(var(--rose-rgb) / 0.45), 0 0 28px rgb(var(--rose-rgb) / 0.28)',
-    text: 'var(--c-rose)',
+    dot: '#fb7185',
+    bg: 'rgba(244,63,94,0.10)',
+    hoverBg: 'rgba(244,63,94,0.06)',
+    border: 'rgba(244,63,94,0.40)',
+    glow: '0 0 0 1.5px rgba(244,63,94,0.40), 0 20px 40px -14px rgba(244,63,94,0.42)',
+    text: '#e11d48',
   },
   oncology: {
     label: '종양 추적',
-    dot: 'var(--c-pink)',
-    bg: 'rgb(var(--pink-rgb) / 0.15)',
-    hoverBg: 'rgb(var(--pink-rgb) / 0.10)',
-    border: 'rgb(var(--pink-rgb) / 0.45)',
-    glow: '0 0 0 1px rgb(var(--pink-rgb) / 0.45), 0 0 28px rgb(var(--pink-rgb) / 0.28)',
-    text: 'var(--c-pink)',
+    dot: '#ec4899',
+    bg: 'rgba(236,72,153,0.10)',
+    hoverBg: 'rgba(236,72,153,0.06)',
+    border: 'rgba(236,72,153,0.40)',
+    glow: '0 0 0 1.5px rgba(236,72,153,0.40), 0 20px 40px -14px rgba(236,72,153,0.42)',
+    text: '#be185d',
   },
   observation: {
     label: '일반 외래',
-    dot: 'var(--c-stable)',
-    bg: 'rgb(var(--stable-rgb) / 0.15)',
-    hoverBg: 'rgb(var(--stable-rgb) / 0.10)',
-    border: 'rgb(var(--stable-rgb) / 0.45)',
-    glow: '0 0 0 1px rgb(var(--stable-rgb) / 0.45), 0 0 28px rgb(var(--stable-rgb) / 0.28)',
-    text: 'var(--c-stable)',
+    dot: '#10b981',
+    bg: 'rgba(16,185,129,0.10)',
+    hoverBg: 'rgba(16,185,129,0.06)',
+    border: 'rgba(16,185,129,0.40)',
+    glow: '0 0 0 1.5px rgba(16,185,129,0.40), 0 20px 40px -14px rgba(16,185,129,0.40)',
+    text: '#047857',
   },
 };
 
-const noShadow = '0 0 0 0 rgb(var(--black-rgb) / 0)';
-const hoverShadow = '0 6px 20px 0 rgb(var(--black-rgb) / 0.45), 0 0 18px 0 rgb(var(--accent-rgb) / 0.10)';
+const restShadow = ui.shadowRest;
+const hoverShadow = ui.shadowHover;
 
 /* ─── Patient Card — Option B interaction (per project memory) ─── */
 function PatientCard({
@@ -201,7 +296,7 @@ function PatientCard({
   onClick: () => void;
 }) {
   const cat = categoryConfig[patient.caseCategory];
-  const strongerGlow = cat.glow.replace('0.28)', '0.45)');
+  const strongerGlow = cat.glow.replace('0.45)', '0.60)').replace('0.42)', '0.58)').replace('0.40)', '0.56)');
 
   return (
     <motion.button
@@ -209,30 +304,30 @@ function PatientCard({
       initial={false}
       animate={{
         y: selected ? -4 : 0,
-        boxShadow: selected ? cat.glow : noShadow,
-        borderColor: selected ? cat.border : 'rgb(var(--surface-rgb) / 0.65)',
-        backgroundColor: selected ? cat.bg : 'rgb(var(--card-rgb) / 0.55)',
+        boxShadow: selected ? cat.glow : restShadow,
+        borderColor: selected ? cat.border : 'rgba(255,255,255,0.9)',
+        backgroundColor: selected ? cat.bg : 'rgba(255,255,255,0.78)',
       }}
       whileHover={
         selected
           ? {
               // 선택된 카드도 hover 시 lift — 미선택과 같은 방향(위)으로
-              // 일관성 + 더 강한 lift(-6) + 강한 glow로 '이미 선택됨'을 강조
               y: -6,
               boxShadow: strongerGlow,
             }
           : {
               y: -4,
               boxShadow: hoverShadow,
-              borderColor: 'rgb(var(--border-rgb) / 0.7)',
+              borderColor: 'rgba(255,255,255,1)',
               backgroundColor: cat.hoverBg,
             }
       }
       transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
-      className="w-full text-left p-5 rounded-2xl cursor-pointer min-w-[260px] snap-center flex-shrink-0 md:min-w-0 md:flex-shrink relative overflow-hidden border"
+      className="w-full text-left p-5 rounded-3xl cursor-pointer min-w-[260px] snap-center flex-shrink-0 md:min-w-0 md:flex-shrink relative overflow-hidden border"
+      style={{ backdropFilter: 'blur(12px)' }}
     >
       <span
-        className="inline-flex items-center gap-1.5 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest rounded font-mono mb-3"
+        className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest rounded-full font-mono mb-3"
         style={{ color: cat.text, background: cat.bg, border: `1px solid ${cat.border}` }}
       >
         <span
@@ -241,11 +336,11 @@ function PatientCard({
         />
         {cat.label}
       </span>
-      <h4 className="font-display text-base font-semibold text-[color:var(--c-text)]">
+      <h4 className="font-display text-base font-semibold text-slate-800">
         {patient.demographics}
       </h4>
-      <p className="text-sm text-[color:var(--c-text-body)] mt-1">{patient.caseSummary}</p>
-      <p className="text-[11px] text-[color:var(--c-text-muted)] mt-3 font-mono">
+      <p className="text-sm text-slate-600 mt-1">{patient.caseSummary}</p>
+      <p className="text-[11px] text-slate-400 mt-3 font-mono">
         {patient.expectedResult.timeline.length}회 차수 · 약어{' '}
         {patient.expectedResult.abbreviations.length}건
       </p>
@@ -263,9 +358,9 @@ function WorkflowProgress({ steps }: { steps: WorkflowStep[] }) {
             <span
               className="mt-0.5 flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold flex-shrink-0"
               style={{
-                background: 'rgb(var(--stable-rgb) / 0.18)',
-                color: 'var(--c-stable)',
-                border: '1px solid rgb(var(--stable-rgb) / 0.35)',
+                background: 'rgba(16,185,129,0.14)',
+                color: '#059669',
+                border: '1px solid rgba(16,185,129,0.35)',
               }}
             >
               ✓
@@ -273,12 +368,10 @@ function WorkflowProgress({ steps }: { steps: WorkflowStep[] }) {
           )}
           {step.status === 'in_progress' && (
             <span
-              className="mt-0.5 flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold animate-accent-pulse flex-shrink-0"
+              className="mt-0.5 flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold animate-accent-pulse flex-shrink-0 text-white"
               style={{
-                background: 'rgb(var(--accent-rgb) / 0.20)',
-                color: 'var(--c-accent)',
-                border: '1px solid rgb(var(--accent-rgb) / 0.40)',
-                boxShadow: '0 0 12px rgb(var(--accent-rgb) / 0.45)',
+                background: ui.cta,
+                boxShadow: '0 0 14px rgba(47,107,255,0.55)',
               }}
             >
               ◉
@@ -288,15 +381,15 @@ function WorkflowProgress({ steps }: { steps: WorkflowStep[] }) {
             <span
               className="mt-0.5 flex h-5 w-5 items-center justify-center rounded-full text-xs flex-shrink-0"
               style={{
-                background: 'rgb(var(--surface-rgb) / 0.6)',
-                color: 'var(--c-text-muted)',
-                border: '1px solid rgb(var(--border-rgb) / 0.5)',
+                background: '#eef3fb',
+                color: '#94a3b8',
+                boxShadow: ui.neuInsetSm,
               }}
             >
               ○
             </span>
           )}
-          <span className={`text-sm ${step.status === 'pending' ? 'text-[color:var(--c-text-dim)]' : 'text-[color:var(--c-text-body)]'}`}>
+          <span className={`text-sm ${step.status === 'pending' ? 'text-slate-400' : 'text-slate-700'}`}>
             {step.label}
           </span>
         </div>
@@ -326,10 +419,10 @@ function EMRViewer({ patient }: { patient: Patient }) {
           <mark
             key={i}
             style={{
-              background: 'rgb(var(--accent-rgb) / 0.30)',
-              color: 'var(--c-accent-bright)',
+              background: 'rgba(37,99,235,0.18)',
+              color: '#1d4ed8',
               padding: '0 2px',
-              borderRadius: '2px',
+              borderRadius: '3px',
             }}
           >
             {part}
@@ -340,81 +433,69 @@ function EMRViewer({ patient }: { patient: Patient }) {
       );
 
   return (
-    <div
-      className="rounded-2xl overflow-hidden min-h-[640px] flex flex-col"
-      style={{
-        background: 'rgb(var(--card-rgb) / 0.55)',
-        border: '1px solid rgb(var(--surface-rgb) / 0.7)',
-        boxShadow: 'var(--glow-card-soft)',
-        backdropFilter: 'blur(8px)',
-      }}
-    >
+    <div className="rounded-3xl overflow-hidden min-h-[640px] flex flex-col" style={glassStyle()}>
       <div
         className="flex items-center justify-between px-4 py-3 border-b"
-        style={{ background: 'rgb(var(--surface-rgb) / 0.4)', borderColor: 'rgb(var(--surface-rgb) / 0.7)' }}
+        style={{ background: 'rgba(255,255,255,0.5)', borderColor: ui.divider }}
       >
         <div className="flex items-center gap-2 min-w-0">
-          <FileText size={14} className="text-[color:var(--c-text-muted)] flex-shrink-0" strokeWidth={1.5} />
-          <span className="text-xs font-medium text-[color:var(--c-text-body)] truncate">
+          <FileText size={14} className="text-slate-400 flex-shrink-0" strokeWidth={1.75} />
+          <span className="text-xs font-medium text-slate-600 truncate">
             {patient.demographics} · {patient.caseSummary}
           </span>
         </div>
-        <div className="flex items-center gap-2 flex-shrink-0">
+        <div className="flex items-center gap-1.5 flex-shrink-0">
           <button
             onClick={() => setSearchOpen((s) => !s)}
             aria-label="EMR 텍스트 검색"
             aria-pressed={searchOpen}
-            className={`p-1 transition-colors ${
+            className="flex h-7 w-7 items-center justify-center rounded-xl transition-all"
+            style={
               searchOpen
-                ? 'text-[color:var(--color-accent)]'
-                : 'text-[color:var(--c-text-muted)] hover:text-[color:var(--color-accent)]'
-            }`}
+                ? { background: 'rgba(37,99,235,0.12)', color: '#2563ff', boxShadow: ui.neuInsetSm }
+                : { color: '#94a3b8' }
+            }
           >
-            <Search size={14} strokeWidth={1.5} />
+            <Search size={14} strokeWidth={1.75} />
           </button>
           <button
             onClick={() => setZoomLevel((z) => ((z + 1) % 3) as 0 | 1 | 2)}
             aria-label={`글자 크기 변경 (현재 ${zoomLevel + 1}/3)`}
-            className="p-1 text-[color:var(--c-text-muted)] hover:text-[color:var(--color-accent)] transition-colors"
+            className="flex h-7 w-7 items-center justify-center rounded-xl text-slate-400 hover:text-[#2563ff] transition-colors"
           >
-            <ZoomIn size={14} strokeWidth={1.5} />
+            <ZoomIn size={14} strokeWidth={1.75} />
           </button>
         </div>
       </div>
 
       {searchOpen && (
-        <div
-          className="px-4 py-2 border-b"
-          style={{
-            borderColor: 'rgb(var(--surface-rgb) / 0.7)',
-            background: 'rgb(var(--surface-rgb) / 0.3)',
-          }}
-        >
-          <div className="flex items-center gap-2">
-            <Search size={12} className="text-[color:var(--c-text-muted)] flex-shrink-0" strokeWidth={1.5} />
+        <div className="px-4 py-2 border-b" style={{ borderColor: ui.divider, background: 'rgba(255,255,255,0.45)' }}>
+          <div
+            className="flex items-center gap-2 rounded-xl px-3 py-1.5"
+            style={{ background: '#eef3fb', boxShadow: ui.neuInsetSm }}
+          >
+            <Search size={12} className="text-slate-400 flex-shrink-0" strokeWidth={1.75} />
             <input
               autoFocus
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="EMR 텍스트 검색..."
-              className="flex-1 bg-transparent text-xs text-[color:var(--c-text)] placeholder:text-[color:var(--c-text-dim)] outline-none"
+              className="flex-1 bg-transparent text-xs text-slate-700 placeholder:text-slate-400 outline-none"
             />
             {searchTerm && (
-              <span className="text-[10px] text-[color:var(--c-text-muted)] font-mono flex-shrink-0">
-                {matchCount}건
-              </span>
+              <span className="text-[10px] text-slate-400 font-mono flex-shrink-0">{matchCount}건</span>
             )}
           </div>
         </div>
       )}
 
       <div className="flex-1 overflow-y-auto px-5 py-4">
-        <pre className={`${zoomClass} leading-[1.7] text-[color:var(--c-text-body)] whitespace-pre-wrap font-body`}>
+        <pre className={`${zoomClass} leading-[1.7] text-slate-600 whitespace-pre-wrap font-body`}>
           {renderedText}
         </pre>
-        <div className="mt-6 pt-4 border-t border-[color:var(--color-divider)]">
-          <span className="text-[10px] text-[color:var(--c-text-dim)] font-medium uppercase tracking-widest font-mono">
+        <div className="mt-6 pt-4 border-t" style={{ borderColor: ui.divider }}>
+          <span className="text-[10px] text-slate-400 font-medium uppercase tracking-widest font-mono">
             문서 단위 청킹 → pgvector 저장 → 환자 ID 필터 검색
           </span>
         </div>
@@ -427,11 +508,11 @@ function EMRViewer({ patient }: { patient: Patient }) {
 function ChunkChip({ id }: { id: string }) {
   return (
     <span
-      className="inline-flex items-center px-1.5 py-0.5 text-[9px] font-mono rounded"
+      className="inline-flex items-center px-1.5 py-0.5 text-[9px] font-mono rounded-md"
       style={{
-        background: 'rgb(var(--accent-rgb) / 0.10)',
-        border: '1px solid rgb(var(--accent-rgb) / 0.25)',
-        color: 'var(--c-accent-bright)',
+        background: 'rgba(37,99,235,0.08)',
+        border: '1px solid rgba(37,99,235,0.22)',
+        color: '#1d4ed8',
       }}
       title="원문 인용 청크 ID"
     >
@@ -444,44 +525,43 @@ function ChunkChip({ id }: { id: string }) {
 function PrimaryConcernCard({ concern }: { concern: PrimaryConcern }) {
   return (
     <div
-      className="relative rounded-xl p-5 overflow-hidden"
+      className="relative rounded-2xl p-5 overflow-hidden"
       style={{
         background:
-          'linear-gradient(135deg, rgb(var(--accent-rgb) / 0.12) 0%, rgb(var(--accent-rgb) / 0.04) 100%)',
-        border: '1px solid rgb(var(--accent-rgb) / 0.40)',
-        boxShadow: '0 0 28px rgb(var(--accent-rgb) / 0.18)',
+          'linear-gradient(135deg, rgba(106,160,255,0.16) 0%, rgba(255,255,255,0.55) 100%)',
+        border: '1px solid rgba(47,107,255,0.30)',
+        boxShadow: '0 18px 40px -18px rgba(47,107,255,0.40)',
+        backdropFilter: 'blur(8px)',
       }}
     >
       {/* accent glow blob */}
       <div
-        className="absolute -top-12 -right-12 w-32 h-32 rounded-full pointer-events-none opacity-50 blur-2xl"
-        style={{ background: 'rgb(var(--accent-rgb) / 0.30)' }}
+        className="absolute -top-12 -right-12 w-36 h-36 rounded-full pointer-events-none opacity-60 blur-2xl"
+        style={{ background: 'rgba(106,160,255,0.45)' }}
       />
 
       <div className="relative">
         <div className="flex items-center gap-2 mb-2">
-          <Star size={14} className="text-[color:var(--c-accent-bright)]" strokeWidth={2.25} />
-          <span className="text-[10px] font-bold uppercase tracking-widest text-[color:var(--c-accent-bright)] font-mono">
+          <Star size={14} className="text-[#2563ff]" strokeWidth={2.25} fill="#2563ff" />
+          <span className="text-[10px] font-bold uppercase tracking-widest text-[#2456e6] font-mono">
             주요 질환 (Primary Concern)
           </span>
         </div>
-        <h3 className="font-display text-lg font-bold text-[color:var(--c-text)] mb-2 tracking-tight">
+        <h3 className="font-display text-lg font-bold text-slate-800 mb-2 tracking-tight">
           {concern.title}
         </h3>
-        <p className="text-sm text-[color:var(--c-text-body)] leading-relaxed mb-4">
-          {concern.summary}
-        </p>
+        <p className="text-sm text-slate-600 leading-relaxed mb-4">{concern.summary}</p>
 
-        <div className="border-t border-[rgb(var(--accent-rgb)_/_0.20)] pt-3">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-[color:var(--c-text-muted)] font-mono">
+        <div className="border-t pt-3" style={{ borderColor: 'rgba(47,107,255,0.18)' }}>
+          <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 font-mono">
             Key Trends
           </span>
           <ul className="mt-2.5 space-y-2">
             {concern.key_trends.map((t, i) => (
-              <li key={i} className="text-sm text-[color:var(--c-text)] flex items-start gap-2.5 leading-relaxed">
+              <li key={i} className="text-sm text-slate-700 flex items-start gap-2.5 leading-relaxed">
                 <span
                   className="mt-1.5 flex-shrink-0 w-1.5 h-1.5 rounded-full"
-                  style={{ background: 'var(--c-accent-bright)', boxShadow: '0 0 6px rgb(var(--accent-rgb) / 0.7)' }}
+                  style={{ background: '#2563ff', boxShadow: '0 0 6px rgba(37,99,235,0.6)' }}
                 />
                 <span>{t}</span>
               </li>
@@ -501,7 +581,6 @@ function compareDates(a: string, b: string): number {
 }
 
 function shortLabel(event: string, max = 18): string {
-  // 첫 줄/첫 구절만
   const cut = event.split(/[·,—\-]|, /)[0];
   return cut.length > max ? cut.slice(0, max).trim() + '…' : cut;
 }
@@ -512,165 +591,161 @@ function HorizontalTimeline({ events }: { events: TimelineEvent[] }) {
 
   return (
     <div>
-    <div className="overflow-x-auto -mx-5 px-5 pb-3">
-      <div
-        className="relative pt-36 pb-36"
-        style={{ minWidth: `${Math.max(sorted.length * 110, 600)}px` }}
-      >
-        {/* axis line */}
+      <div className="overflow-x-auto -mx-5 px-5 pb-3">
         <div
-          className="absolute left-0 right-7 top-1/2 -translate-y-1/2 h-[2px] rounded-full"
-          style={{
-            background:
-              'linear-gradient(90deg, rgb(var(--accent-rgb) / 0.30) 0%, rgb(var(--accent-rgb) / 0.65) 100%)',
-          }}
-        />
-        {/* arrow head */}
-        <div
-          className="absolute right-0 top-1/2 -translate-y-1/2"
-          style={{
-            width: 0,
-            height: 0,
-            borderLeft: '10px solid rgb(var(--accent-rgb) / 0.65)',
-            borderTop: '6px solid transparent',
-            borderBottom: '6px solid transparent',
-          }}
-        />
+          className="relative pt-36 pb-36"
+          style={{ minWidth: `${Math.max(sorted.length * 110, 600)}px` }}
+        >
+          {/* axis line */}
+          <div
+            className="absolute left-0 right-7 top-1/2 -translate-y-1/2 h-[3px] rounded-full"
+            style={{
+              background: 'linear-gradient(90deg, rgba(59,130,246,0.30) 0%, rgba(37,99,235,0.75) 100%)',
+            }}
+          />
+          {/* arrow head */}
+          <div
+            className="absolute right-0 top-1/2 -translate-y-1/2"
+            style={{
+              width: 0,
+              height: 0,
+              borderLeft: '10px solid rgba(37,99,235,0.75)',
+              borderTop: '6px solid transparent',
+              borderBottom: '6px solid transparent',
+            }}
+          />
 
-        {/* event columns */}
-        <div className="relative flex">
-          {sorted.map((ev, i) => {
-            const isPrimary = ev.layer === 'primary';
-            const isHov = hovered === i;
-            return (
-              <div
-                key={`${ev.date}-${i}`}
-                className="flex-1 relative flex items-center justify-center"
-                style={{ minWidth: '110px', height: '6px' }}
-              >
-                {/* connector line (dot ↔ label) */}
+          {/* event columns */}
+          <div className="relative flex">
+            {sorted.map((ev, i) => {
+              const isPrimary = ev.layer === 'primary';
+              const isHov = hovered === i;
+              return (
                 <div
-                  className="absolute left-1/2 -translate-x-1/2 w-px"
-                  style={{
-                    top: isPrimary ? '-86px' : '6px',
-                    height: '86px',
-                    background: isPrimary
-                      ? 'rgb(var(--accent-rgb) / 0.35)'
-                      : 'rgb(var(--warning-rgb) / 0.35)',
-                  }}
-                />
-
-                {/* date + short label (above for primary, below for incidental) */}
-                <div
-                  className={`absolute left-1/2 -translate-x-1/2 text-center px-1 cursor-pointer ${
-                    isPrimary ? 'bottom-full mb-[88px]' : 'top-full mt-[88px]'
-                  }`}
-                  style={{ minWidth: '92px' }}
-                  onMouseEnter={() => setHovered(i)}
-                  onMouseLeave={() => setHovered(null)}
-                  onClick={() => setHovered((prev) => (prev === i ? null : i))}
+                  key={`${ev.date}-${i}`}
+                  className="flex-1 relative flex items-center justify-center"
+                  style={{ minWidth: '110px', height: '6px' }}
                 >
+                  {/* connector line (dot ↔ label) */}
                   <div
-                    className="text-[10px] font-mono font-bold whitespace-nowrap"
-                    style={{ color: isPrimary ? 'var(--c-accent)' : 'var(--c-warning)' }}
-                  >
-                    {ev.date}
-                  </div>
-                  {isPrimary ? (
-                    <div className="text-[10px] mt-0.5 leading-tight text-[color:var(--c-text-body)]">
-                      {shortLabel(ev.event, 16)}
-                    </div>
-                  ) : (
-                    <div className="text-[9px] mt-0.5 text-[color:var(--c-text-muted)] italic">[부수]</div>
-                  )}
-                </div>
-
-                {/* dot at axis */}
-                <motion.div
-                  className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer"
-                  onMouseEnter={() => setHovered(i)}
-                  onMouseLeave={() => setHovered(null)}
-                  onClick={() => setHovered((prev) => (prev === i ? null : i))}
-                  animate={{ scale: isHov ? 1.3 : 1 }}
-                  transition={{ duration: 0.15 }}
-                >
-                  <div
-                    className={`rounded-full ${isPrimary ? 'w-4 h-4' : 'w-2.5 h-2.5'}`}
+                    className="absolute left-1/2 -translate-x-1/2 w-px"
                     style={{
-                      background: isPrimary ? 'var(--c-accent)' : 'var(--c-warning)',
-                      boxShadow: isHov
-                        ? `0 0 16px ${isPrimary ? 'var(--c-accent)' : 'var(--c-warning)'}`
-                        : `0 0 6px ${isPrimary ? 'rgb(var(--accent-rgb) / 0.6)' : 'rgb(var(--warning-rgb) / 0.55)'}`,
+                      top: isPrimary ? '-86px' : '6px',
+                      height: '86px',
+                      background: isPrimary ? 'rgba(37,99,235,0.30)' : 'rgba(245,158,11,0.35)',
                     }}
                   />
-                </motion.div>
 
-                {/* hover popover */}
-                <AnimatePresence>
-                  {isHov && (
-                    <motion.div
-                      initial={{ opacity: 0, y: isPrimary ? 6 : -6, scale: 0.96 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: isPrimary ? 6 : -6, scale: 0.96 }}
-                      transition={{ duration: 0.15 }}
-                      className={`absolute left-1/2 -translate-x-1/2 z-30 pointer-events-none ${
-                        isPrimary ? 'bottom-full mb-2' : 'top-full mt-2'
-                      }`}
-                      style={{ width: '240px' }}
+                  {/* date + short label */}
+                  <div
+                    className={`absolute left-1/2 -translate-x-1/2 text-center px-1 cursor-pointer ${
+                      isPrimary ? 'bottom-full mb-[88px]' : 'top-full mt-[88px]'
+                    }`}
+                    style={{ minWidth: '92px' }}
+                    onMouseEnter={() => setHovered(i)}
+                    onMouseLeave={() => setHovered(null)}
+                    onClick={() => setHovered((prev) => (prev === i ? null : i))}
+                  >
+                    <div
+                      className="text-[10px] font-mono font-bold whitespace-nowrap"
+                      style={{ color: isPrimary ? '#2563ff' : '#d97706' }}
                     >
-                      <div
-                        className="rounded-lg p-3"
-                        style={{
-                          background: 'rgb(var(--card-rgb) / 0.96)',
-                          border: `1px solid ${
-                            isPrimary ? 'rgb(var(--accent-rgb) / 0.55)' : 'rgb(var(--warning-rgb) / 0.55)'
-                          }`,
-                          boxShadow: `0 12px 32px rgb(var(--black-rgb) / 0.7), 0 0 24px ${
-                            isPrimary ? 'rgb(var(--accent-rgb) / 0.22)' : 'rgb(var(--warning-rgb) / 0.22)'
-                          }`,
-                          backdropFilter: 'blur(10px)',
-                        }}
-                      >
-                        <div className="flex items-center justify-between gap-2 mb-1.5">
-                          <span
-                            className="text-[10px] font-bold uppercase tracking-widest font-mono"
-                            style={{ color: isPrimary ? 'var(--c-accent-bright)' : 'var(--c-warning)' }}
-                          >
-                            {isPrimary ? '주요 · Primary' : '부수 · Incidental'}
-                          </span>
-                          <ChunkChip id={ev.sourceChunkId} />
-                        </div>
-                        <div className="text-[11px] font-mono font-bold text-[color:var(--c-text-body)] mb-1">
-                          {ev.date}
-                        </div>
-                        <p className="text-xs text-[color:var(--c-text)] leading-relaxed">{ev.event}</p>
+                      {ev.date}
+                    </div>
+                    {isPrimary ? (
+                      <div className="text-[10px] mt-0.5 leading-tight text-slate-600">
+                        {shortLabel(ev.event, 16)}
                       </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            );
-          })}
+                    ) : (
+                      <div className="text-[9px] mt-0.5 text-slate-400 italic">[부수]</div>
+                    )}
+                  </div>
+
+                  {/* dot at axis */}
+                  <motion.div
+                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer"
+                    onMouseEnter={() => setHovered(i)}
+                    onMouseLeave={() => setHovered(null)}
+                    onClick={() => setHovered((prev) => (prev === i ? null : i))}
+                    animate={{ scale: isHov ? 1.3 : 1 }}
+                    transition={{ duration: 0.15 }}
+                  >
+                    <div
+                      className={`rounded-full ${isPrimary ? 'w-4 h-4' : 'w-2.5 h-2.5'}`}
+                      style={{
+                        background: isPrimary ? '#2563ff' : '#f59e0b',
+                        border: '2px solid rgba(255,255,255,0.9)',
+                        boxShadow: isHov
+                          ? `0 0 16px ${isPrimary ? '#2563ff' : '#f59e0b'}`
+                          : `0 4px 10px ${isPrimary ? 'rgba(37,99,235,0.45)' : 'rgba(245,158,11,0.45)'}`,
+                      }}
+                    />
+                  </motion.div>
+
+                  {/* hover popover */}
+                  <AnimatePresence>
+                    {isHov && (
+                      <motion.div
+                        initial={{ opacity: 0, y: isPrimary ? 6 : -6, scale: 0.96 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: isPrimary ? 6 : -6, scale: 0.96 }}
+                        transition={{ duration: 0.15 }}
+                        className={`absolute left-1/2 -translate-x-1/2 z-30 pointer-events-none ${
+                          isPrimary ? 'bottom-full mb-2' : 'top-full mt-2'
+                        }`}
+                        style={{ width: '240px' }}
+                      >
+                        <div
+                          className="rounded-2xl p-3"
+                          style={{
+                            background: 'rgba(255,255,255,0.92)',
+                            border: `1px solid ${
+                              isPrimary ? 'rgba(37,99,235,0.35)' : 'rgba(245,158,11,0.40)'
+                            }`,
+                            boxShadow: `0 18px 40px -14px rgba(56,103,214,0.45), 0 0 0 1px rgba(255,255,255,0.6)`,
+                            backdropFilter: 'blur(12px)',
+                          }}
+                        >
+                          <div className="flex items-center justify-between gap-2 mb-1.5">
+                            <span
+                              className="text-[10px] font-bold uppercase tracking-widest font-mono"
+                              style={{ color: isPrimary ? '#2456e6' : '#b45309' }}
+                            >
+                              {isPrimary ? '주요 · Primary' : '부수 · Incidental'}
+                            </span>
+                            <ChunkChip id={ev.sourceChunkId} />
+                          </div>
+                          <div className="text-[11px] font-mono font-bold text-slate-400 mb-1">
+                            {ev.date}
+                          </div>
+                          <p className="text-xs text-slate-700 leading-relaxed">{ev.event}</p>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
-    </div>
-    {/* legend (below timeline) */}
-    <div className="flex items-center justify-end gap-3 text-[10px] font-mono mt-2 pr-1">
-      <div className="flex items-center gap-1.5">
-        <span
-          className="w-2.5 h-2.5 rounded-full"
-          style={{ background: 'var(--c-accent)', boxShadow: '0 0 6px rgb(var(--accent-rgb) / 0.7)' }}
-        />
-        <span className="text-[color:var(--c-text-body)]">주요 (always shown)</span>
+      {/* legend */}
+      <div className="flex items-center justify-end gap-3 text-[10px] font-mono mt-2 pr-1">
+        <div className="flex items-center gap-1.5">
+          <span
+            className="w-2.5 h-2.5 rounded-full"
+            style={{ background: '#2563ff', boxShadow: '0 0 6px rgba(37,99,235,0.6)' }}
+          />
+          <span className="text-slate-500">주요 (always shown)</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <span
+            className="w-2 h-2 rounded-full"
+            style={{ background: '#f59e0b', boxShadow: '0 0 6px rgba(245,158,11,0.6)' }}
+          />
+          <span className="text-slate-500">부수 (hover)</span>
+        </div>
       </div>
-      <div className="flex items-center gap-1.5">
-        <span
-          className="w-2 h-2 rounded-full"
-          style={{ background: 'var(--c-warning)', boxShadow: '0 0 6px rgb(var(--warning-rgb) / 0.6)' }}
-        />
-        <span className="text-[color:var(--c-text-body)]">부수 (hover)</span>
-      </div>
-    </div>
     </div>
   );
 }
@@ -701,18 +776,13 @@ function TimelineSummaryCard({
 
   return (
     <div
-      className="rounded-2xl overflow-hidden min-h-[640px] flex flex-col"
-      style={{
-        background: 'rgb(var(--card-rgb) / 0.55)',
-        border: '1px solid rgb(var(--surface-rgb) / 0.7)',
-        boxShadow: '0 0 32px rgb(var(--accent-rgb) / 0.10)',
-        backdropFilter: 'blur(8px)',
-      }}
+      className="rounded-3xl overflow-hidden min-h-[640px] flex flex-col"
+      style={glassStyle('0 22px 50px -20px rgba(47,107,255,0.30)')}
     >
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-[color:var(--color-divider)]">
+      <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: ui.divider }}>
         <span
-          className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest rounded font-mono"
+          className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest rounded-full font-mono"
           style={{ background: cat.bg, color: cat.text, border: `1px solid ${cat.border}` }}
         >
           <span
@@ -722,20 +792,16 @@ function TimelineSummaryCard({
           {cat.label}
         </span>
         <div className="flex items-center gap-3">
-          <span className="text-xs text-[color:var(--c-text-muted)] font-mono">
-            Analysis: {analysisTime.toFixed(1)}s
-          </span>
+          <span className="text-xs text-slate-400 font-mono">Analysis: {analysisTime.toFixed(1)}s</span>
           {shareCopied ? (
-            <span className="text-[10px] text-[color:var(--c-accent-bright)] font-mono whitespace-nowrap">
-              URL 복사됨
-            </span>
+            <span className="text-[10px] text-[#2563ff] font-mono whitespace-nowrap">URL 복사됨</span>
           ) : (
             <button
               onClick={handleShare}
-              className="p-1 text-[color:var(--c-text-muted)] hover:text-[color:var(--color-accent)] transition-colors"
+              className="flex h-7 w-7 items-center justify-center rounded-xl text-slate-400 hover:text-[#2563ff] transition-colors"
               aria-label="현재 페이지 URL 복사"
             >
-              <Share2 size={14} strokeWidth={1.5} />
+              <Share2 size={14} strokeWidth={1.75} />
             </button>
           )}
         </div>
@@ -744,17 +810,15 @@ function TimelineSummaryCard({
       <div className="flex-1 overflow-y-auto px-5 py-5 space-y-6">
         {/* Patient label */}
         <div>
-          <h3 className="font-display text-lg font-semibold text-[color:var(--c-text)]">
-            {data.patient_label}
-          </h3>
-          <p className="text-sm text-[color:var(--c-text-body)] leading-relaxed mt-2">
+          <h3 className="font-display text-lg font-semibold text-slate-800">{data.patient_label}</h3>
+          <p className="text-sm text-slate-600 leading-relaxed mt-2">
             {displayed}
             {!done && (
               <span
                 className="inline-block w-px h-4 ml-0.5 align-middle"
                 style={{
-                  background: 'var(--c-accent)',
-                  boxShadow: '0 0 6px rgb(var(--accent-rgb) / 0.7)',
+                  background: '#2563ff',
+                  boxShadow: '0 0 6px rgba(37,99,235,0.7)',
                   animation: 'blink-cursor 0.8s infinite',
                 }}
               />
@@ -767,7 +831,7 @@ function TimelineSummaryCard({
 
         {/* Horizontal swimlane timeline */}
         <div>
-          <p className="text-[10px] font-semibold uppercase tracking-widest text-[color:var(--color-accent)] mb-2 font-mono">
+          <p className="text-[10px] font-semibold uppercase tracking-widest text-[#2563ff] mb-2 font-mono">
             타임라인 (가로축: 시간 / 위: 주요, 아래: 부수 호버)
           </p>
           <HorizontalTimeline events={data.timeline} />
@@ -775,49 +839,44 @@ function TimelineSummaryCard({
 
         {/* Current state */}
         <div>
-          <p className="text-[10px] font-semibold uppercase tracking-widest text-[color:var(--color-accent)] mb-3 font-mono">
+          <p className="text-[10px] font-semibold uppercase tracking-widest text-[#2563ff] mb-3 font-mono">
             현재 상태
           </p>
           <div className="space-y-4">
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-[color:var(--c-text-muted)] mb-1.5 font-mono">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 mb-1.5 font-mono">
                 주요 진단
               </p>
               <ul className="space-y-1">
                 {data.current_state.diagnoses.map((dx, i) => (
-                  <li key={i} className="text-sm text-[color:var(--c-text)] flex items-start gap-2">
-                    <span className="text-[color:var(--color-accent)] mt-1 opacity-60">•</span>
+                  <li key={i} className="text-sm text-slate-700 flex items-start gap-2">
+                    <span className="text-[#2563ff] mt-1 opacity-70">•</span>
                     {dx}
                   </li>
                 ))}
               </ul>
             </div>
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-[color:var(--c-text-muted)] mb-1.5 font-mono">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 mb-1.5 font-mono">
                 현재 호소
               </p>
-              <p className="text-sm text-[color:var(--c-text)] leading-relaxed">
-                {data.current_state.complaint}
-              </p>
+              <p className="text-sm text-slate-700 leading-relaxed">{data.current_state.complaint}</p>
             </div>
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-[color:var(--c-text-muted)] mb-2 font-mono">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 mb-2 font-mono">
                 최근 검사
               </p>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
                 {Object.entries(data.current_state.recent_labs).map(([k, v]) => (
                   <div
                     key={k}
-                    className="rounded-lg p-2.5"
-                    style={{
-                      background: 'rgb(var(--surface-rgb) / 0.6)',
-                      border: '1px solid rgb(var(--border-rgb) / 0.4)',
-                    }}
+                    className="rounded-2xl p-2.5"
+                    style={{ background: '#eef3fb', boxShadow: ui.neuInsetSm }}
                   >
-                    <div className="text-[9px] font-semibold uppercase tracking-widest text-[color:var(--c-text-muted)] font-mono">
+                    <div className="text-[9px] font-semibold uppercase tracking-widest text-slate-400 font-mono">
                       {k}
                     </div>
-                    <div className="text-sm font-bold mt-0.5 tabular-nums font-mono text-[color:var(--c-text)]">
+                    <div className="text-sm font-bold mt-0.5 tabular-nums font-mono text-slate-800">
                       {v}
                     </div>
                   </div>
@@ -825,13 +884,13 @@ function TimelineSummaryCard({
               </div>
             </div>
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-wider text-[color:var(--c-text-muted)] mb-1.5 font-mono">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 mb-1.5 font-mono">
                 복약 중
               </p>
               <ul className="space-y-1">
                 {data.current_state.medications.map((m, i) => (
-                  <li key={i} className="text-sm text-[color:var(--c-text-body)] flex items-start gap-2">
-                    <span className="text-[color:var(--color-accent)] mt-1 opacity-60">•</span>
+                  <li key={i} className="text-sm text-slate-600 flex items-start gap-2">
+                    <span className="text-[#2563ff] mt-1 opacity-70">•</span>
                     {m}
                   </li>
                 ))}
@@ -843,26 +902,26 @@ function TimelineSummaryCard({
         {/* Resolved past issues */}
         {data.resolved_issues.length > 0 && (
           <div>
-            <p className="text-[10px] font-semibold uppercase tracking-widest text-[color:var(--color-accent)] mb-3 font-mono">
+            <p className="text-[10px] font-semibold uppercase tracking-widest text-[#2563ff] mb-3 font-mono">
               해결된 과거 이슈
             </p>
             <div className="space-y-2.5">
               {data.resolved_issues.map((iss, i) => (
                 <div
                   key={i}
-                  className="p-3 rounded-lg"
+                  className="p-3 rounded-2xl"
                   style={{
-                    background: 'rgb(var(--stable-rgb) / 0.06)',
-                    borderLeft: '2px solid rgb(var(--stable-rgb) / 0.45)',
+                    background: 'rgba(16,185,129,0.08)',
+                    borderLeft: '3px solid rgba(16,185,129,0.55)',
                   }}
                 >
                   <div className="flex items-start justify-between gap-2 mb-1">
-                    <h5 className="text-sm font-semibold text-[color:var(--c-text)]">{iss.issue}</h5>
+                    <h5 className="text-sm font-semibold text-slate-800">{iss.issue}</h5>
                     <ChunkChip id={iss.sourceChunkId} />
                   </div>
-                  <p className="text-xs text-[color:var(--c-text-body)] font-mono">{iss.duration}</p>
+                  <p className="text-xs text-slate-400 font-mono">{iss.duration}</p>
                   {iss.note && (
-                    <p className="text-xs text-[color:var(--c-text-body)] mt-1.5 leading-relaxed">{iss.note}</p>
+                    <p className="text-xs text-slate-600 mt-1.5 leading-relaxed">{iss.note}</p>
                   )}
                 </div>
               ))}
@@ -872,46 +931,40 @@ function TimelineSummaryCard({
 
         {/* Abbreviation resolution */}
         <div>
-          <p className="text-[10px] font-semibold uppercase tracking-widest text-[color:var(--color-accent)] mb-3 font-mono">
+          <p className="text-[10px] font-semibold uppercase tracking-widest text-[#2563ff] mb-3 font-mono">
             약어 및 은어 풀이 (사전 결정론적)
           </p>
           <div className="space-y-1.5">
             {data.abbreviations.map((a, i) => (
               <div
                 key={i}
-                className="flex items-center gap-3 p-2.5 rounded-lg"
+                className="flex items-center gap-3 p-2.5 rounded-2xl"
                 style={
                   a.status === 'resolved'
-                    ? {
-                        background: 'rgb(var(--accent-rgb) / 0.06)',
-                        border: '1px solid rgb(var(--accent-rgb) / 0.20)',
-                      }
-                    : {
-                        background: 'rgb(var(--warning-rgb) / 0.08)',
-                        border: '1px solid rgb(var(--warning-rgb) / 0.30)',
-                      }
+                    ? { background: 'rgba(37,99,235,0.06)', border: '1px solid rgba(37,99,235,0.20)' }
+                    : { background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.32)' }
                 }
               >
                 {a.status === 'resolved' ? (
-                  <CheckCircle2 size={14} className="text-[color:var(--c-accent)] flex-shrink-0" strokeWidth={2} />
+                  <CheckCircle2 size={14} className="text-[#2563ff] flex-shrink-0" strokeWidth={2} />
                 ) : (
-                  <AlertCircle size={14} className="text-[color:var(--c-warning)] flex-shrink-0" strokeWidth={2} />
+                  <AlertCircle size={14} className="text-[#d97706] flex-shrink-0" strokeWidth={2} />
                 )}
                 <code
                   className="text-xs font-mono font-bold flex-shrink-0"
-                  style={{ color: a.status === 'resolved' ? 'var(--c-accent-bright)' : 'var(--c-warning)' }}
+                  style={{ color: a.status === 'resolved' ? '#1d4ed8' : '#b45309' }}
                 >
                   {a.abbrev}
                 </code>
-                <span className="text-[color:var(--c-text-dim)]">→</span>
+                <span className="text-slate-300">→</span>
                 {a.status === 'resolved' ? (
-                  <span className="text-xs text-[color:var(--c-text-body)]">{a.expansion}</span>
+                  <span className="text-xs text-slate-600">{a.expansion}</span>
                 ) : (
                   <div className="flex flex-col gap-0.5 min-w-0">
-                    <span className="text-xs text-[color:var(--c-warning)] font-medium">
+                    <span className="text-xs text-[#b45309] font-medium">
                       미등재 · 원문 유지 (환각 방지)
                     </span>
-                    <span className="text-[10px] text-[color:var(--c-warning)] opacity-80 italic">
+                    <span className="text-[10px] text-[#d97706] opacity-90 italic">
                       &quot;은어 추정&quot; 확인 바람
                     </span>
                   </div>
@@ -922,15 +975,15 @@ function TimelineSummaryCard({
         </div>
       </div>
 
-      <div className="px-5 py-4 border-t border-[color:var(--color-divider)]">
+      <div className="px-5 py-4 border-t" style={{ borderColor: ui.divider }}>
         <div className="flex items-center justify-between mb-3">
-          <span className="text-[10px] text-[color:var(--c-text-muted)] font-mono">
+          <span className="text-[10px] text-slate-400 font-mono">
             원문 인용 {data.citations_count}건 부착 · MedGemma 27B + QLoRA
           </span>
         </div>
-        <button className="btn-primary w-full flex items-center justify-center gap-2">
+        <PrimaryButton className="w-full">
           전문의 승인 및 차트 전송 <ArrowRight size={14} strokeWidth={1.75} />
-        </button>
+        </PrimaryButton>
       </div>
     </div>
   );
@@ -946,14 +999,15 @@ function ErrorDisplay({ error, message }: { error: string; message?: string }) {
   };
   return (
     <div
-      className="rounded-2xl p-8 text-center"
+      className="rounded-3xl p-8 text-center"
       style={{
-        background: 'rgb(var(--card-rgb) / 0.55)',
-        border: '1px solid rgb(var(--critical-rgb) / 0.30)',
-        boxShadow: '0 0 24px rgb(var(--critical-rgb) / 0.10)',
+        background: 'rgba(255,255,255,0.72)',
+        border: '1px solid rgba(244,63,94,0.30)',
+        boxShadow: '0 18px 40px -18px rgba(244,63,94,0.30)',
+        backdropFilter: 'blur(12px)',
       }}
     >
-      <p className="text-sm text-[color:var(--c-text)] font-medium">
+      <p className="text-sm text-slate-700 font-medium">
         {msgs[error] || message || '오류가 발생했습니다.'}
       </p>
     </div>
@@ -974,37 +1028,30 @@ function SplitViewResult({
   return (
     <>
       <div
-        className="lg:hidden flex rounded-lg p-1 mb-4"
-        style={{ background: 'rgb(var(--surface-rgb) / 0.6)' }}
+        className="lg:hidden flex rounded-2xl p-1.5 mb-4"
+        style={{ background: '#e6eefb', boxShadow: ui.neuInset }}
       >
-        <button
-          onClick={() => setTab('original')}
-          className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${
-            tab === 'original' ? 'text-[color:var(--c-text)]' : 'text-[color:var(--c-text-muted)]'
-          }`}
-          style={
-            tab === 'original'
-              ? { background: 'rgb(var(--card-rgb) / 0.85)', boxShadow: '0 0 8px rgb(var(--accent-rgb) / 0.15)' }
-              : undefined
-          }
-        >
-          원본 EMR
-        </button>
-        <button
-          onClick={() => setTab('summary')}
-          className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${
-            tab === 'summary' ? 'text-[color:var(--c-text)]' : 'text-[color:var(--c-text-muted)]'
-          }`}
-          style={
-            tab === 'summary'
-              ? { background: 'rgb(var(--card-rgb) / 0.85)', boxShadow: '0 0 8px rgb(var(--accent-rgb) / 0.15)' }
-              : undefined
-          }
-        >
-          시계열 요약
-        </button>
+        {(['original', 'summary'] as const).map((t) => {
+          const active = tab === t;
+          return (
+            <button
+              key={t}
+              onClick={() => setTab(t)}
+              className={`flex-1 py-2 text-sm font-semibold rounded-xl transition-all ${
+                active ? 'text-[#2563ff]' : 'text-slate-400'
+              }`}
+              style={
+                active
+                  ? { background: 'rgba(255,255,255,0.95)', boxShadow: ui.neuRaised }
+                  : undefined
+              }
+            >
+              {t === 'original' ? '원본 EMR' : '시계열 요약'}
+            </button>
+          );
+        })}
       </div>
-      <div className="hidden lg:grid lg:grid-cols-2 gap-4">
+      <div className="hidden lg:grid lg:grid-cols-2 gap-5">
         <EMRViewer patient={patient} />
         <TimelineSummaryCard patient={patient} data={data} analysisTime={analysisTime} />
       </div>
@@ -1095,8 +1142,18 @@ export default function InteractiveDemo() {
   }, [usedIds]);
 
   return (
-    <section id="demo" className="relative py-20 lg:py-28" style={{ background: 'var(--c-page)' }}>
-      <div ref={ref} className="mx-auto max-w-7xl px-5 md:px-8">
+    <section id="demo" className="relative py-20 lg:py-28" style={{ background: ui.pageBg }}>
+      {/* soft decorative blobs for atmosphere */}
+      <div
+        className="pointer-events-none absolute -top-24 -left-24 w-[28rem] h-[28rem] rounded-full blur-3xl opacity-50"
+        style={{ background: 'radial-gradient(circle, rgba(106,160,255,0.35) 0%, rgba(106,160,255,0) 70%)' }}
+      />
+      <div
+        className="pointer-events-none absolute bottom-0 right-0 w-[32rem] h-[32rem] rounded-full blur-3xl opacity-40"
+        style={{ background: 'radial-gradient(circle, rgba(147,197,253,0.4) 0%, rgba(147,197,253,0) 70%)' }}
+      />
+
+      <div ref={ref} className="relative mx-auto max-w-7xl px-5 md:px-8">
         {/* Header */}
         <div
           className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-4"
@@ -1106,61 +1163,55 @@ export default function InteractiveDemo() {
             <span
               className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest rounded-full font-mono"
               style={{
-                color: 'var(--c-accent)',
-                background: 'rgb(var(--accent-rgb) / 0.10)',
-                border: '1px solid rgb(var(--accent-rgb) / 0.30)',
+                color: '#2456e6',
+                background: 'rgba(37,99,235,0.10)',
+                border: '1px solid rgba(37,99,235,0.28)',
               }}
             >
               Synthea&trade; Powered
             </span>
-            <h2 className="font-display text-[2rem] font-bold tracking-[-0.02em] text-[color:var(--c-text)]">
+            <h2 className="font-display text-[2rem] font-bold tracking-[-0.02em] text-slate-800">
               Interactive Demo
             </h2>
           </div>
           <div className="flex gap-3 flex-wrap">
             {!loading && !result && !generating && (
-              <button onClick={handleGenerate} className="btn-ghost text-sm inline-flex items-center gap-1.5">
-                <RefreshCw size={14} strokeWidth={1.5} /> 새 환자 생성
-              </button>
+              <GhostButton onClick={handleGenerate}>
+                <RefreshCw size={14} strokeWidth={1.75} /> 새 환자 생성
+              </GhostButton>
             )}
             {(result || loading) && (
-              <button onClick={handleReset} className="btn-ghost text-sm inline-flex items-center gap-1.5">
-                <RotateCcw size={14} strokeWidth={1.5} /> 다시 선택
-              </button>
+              <GhostButton onClick={handleReset}>
+                <RotateCcw size={14} strokeWidth={1.75} /> 다시 선택
+              </GhostButton>
             )}
-            <button
-              onClick={handleRun}
-              disabled={!selected || loading || generating}
-              className={`btn-primary inline-flex items-center gap-2 text-sm transition-all duration-300 ${
-                !selected || loading || generating ? 'opacity-40 cursor-not-allowed' : ''
-              }`}
-            >
+            <PrimaryButton onClick={handleRun} disabled={!selected || loading || generating}>
               {loading ? (
                 <>
-                  <Loader2 size={14} className="animate-spin" strokeWidth={1.5} /> 시계열 요약 생성 중...
+                  <Loader2 size={14} className="animate-spin" strokeWidth={1.75} /> 시계열 요약 생성 중...
                 </>
               ) : selected ? (
                 <>
-                  <Play size={14} strokeWidth={1.5} />
+                  <Play size={14} strokeWidth={1.75} />
                   시계열 요약 실행
                   <span
                     className="w-2 h-2 rounded-full ml-1"
                     style={{
-                      background: categoryConfig[selected.caseCategory].dot,
-                      boxShadow: `0 0 8px ${categoryConfig[selected.caseCategory].dot}`,
+                      background: '#fff',
+                      boxShadow: `0 0 8px rgba(255,255,255,0.9)`,
                     }}
                   />
                 </>
               ) : (
                 <>
-                  <Play size={14} strokeWidth={1.5} /> 환자를 선택하세요
+                  <Play size={14} strokeWidth={1.75} /> 환자를 선택하세요
                 </>
               )}
-            </button>
+            </PrimaryButton>
           </div>
         </div>
 
-        <p className="text-sm text-[color:var(--c-text-muted)] mb-10" data-animate="fade-up-1">
+        <p className="text-sm text-slate-500 mb-10" data-animate="fade-up-1">
           MITRE Synthea&trade;로 생성된 가상 환자 데이터입니다. 실제 환자 정보가 아닙니다.
         </p>
 
@@ -1187,7 +1238,7 @@ export default function InteractiveDemo() {
               exit={{ opacity: 0, y: -20 }}
               transition={transition}
             >
-              <div className="hidden md:grid md:grid-cols-3 gap-4 mb-8">
+              <div className="hidden md:grid md:grid-cols-3 gap-5 mb-8">
                 {displayedPatients.map((p) => (
                   <PatientCard
                     key={p.id}
@@ -1212,9 +1263,10 @@ export default function InteractiveDemo() {
                   {displayedPatients.map((p) => (
                     <div
                       key={p.id}
-                      className={`w-1.5 h-1.5 rounded-full transition-colors ${
-                        selected?.id === p.id ? 'bg-[color:var(--color-accent)]' : 'bg-[color:var(--color-surface-strong)]'
-                      }`}
+                      className="w-1.5 h-1.5 rounded-full transition-colors"
+                      style={{
+                        background: selected?.id === p.id ? '#2563ff' : '#cbd5e1',
+                      }}
                     />
                   ))}
                 </div>
@@ -1230,15 +1282,10 @@ export default function InteractiveDemo() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
               transition={transition}
-              className="rounded-2xl p-6 mb-6"
-              style={{
-                background: 'rgb(var(--card-rgb) / 0.55)',
-                border: '1px solid rgb(var(--surface-rgb) / 0.7)',
-                boxShadow: 'var(--glow-card-soft)',
-                backdropFilter: 'blur(8px)',
-              }}
+              className="rounded-3xl p-6 mb-6"
+              style={glassStyle(ui.shadowSoft)}
             >
-              <h3 className="font-display text-sm font-semibold text-[color:var(--color-accent)] mb-2 uppercase tracking-widest font-mono">
+              <h3 className="font-display text-sm font-semibold text-[#2563ff] mb-2 uppercase tracking-widest font-mono">
                 LangGraph 추론 파이프라인
               </h3>
               <WorkflowProgress steps={steps} />
