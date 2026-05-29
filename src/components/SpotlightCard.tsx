@@ -24,7 +24,7 @@ export default function SpotlightCard({
   return (
     <div
       ref={ref}
-      className={`relative overflow-hidden h-full ${className}`}
+      className={`relative h-full ${className}`}
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setVisible(true)}
       onMouseLeave={() => setVisible(false)}
