@@ -42,8 +42,11 @@ export default function Hero() {
               차트원샷
             </h1>
 
-            <p className="mb-12 text-lg font-light leading-tight text-white/90 sm:text-xl lg:text-2xl">
+            <p className="mb-4 text-lg font-medium leading-tight text-white/90 sm:text-xl lg:text-2xl">
               길고 복잡한 EMR도 5초 안에 읽습니다
+            </p>
+            <p className="mb-12 max-w-md text-[14px] font-light leading-relaxed tracking-[-0.01em] text-white/60 sm:text-[15px] lg:text-base">
+              PK 의대생과 전공의에게 차트를 읽는 가이드라인을 제공합니다!
             </p>
 
             <div className="mb-16 flex flex-wrap items-center justify-center gap-4">
@@ -98,12 +101,11 @@ export default function Hero() {
           }}
         />
 
-        <div className="relative z-8 mx-auto max-w-xl text-center">
-          <h3 className="text-[28px] font-midium leading-[1.5] tracking-[-0.05em] text-[#FFF5EF]">
-            의사가 복잡한 케이스를 검토하는 데 걸리는 시간 25분. <br/>
-            
-            <span className="text-[#1F5BFF] font-semibold ">차트원샷</span>은 이를{' '}
-            <span className="text-[#1F5BFF] font-semibold">5초</span>로 단축하여 <br/> 골든타임을 지킵니다.
+        <div className="relative z-10 mx-auto max-w-xl text-center">
+          <h3 className="text-[28px] font-medium leading-[1.5] tracking-[-0.05em] text-[#FFF5EF]">
+            의사가 복잡한 케이스를 검토하는 데 걸리는 시간 25분. <br />
+            <span className="text-[#1F5BFF] font-semibold">차트원샷</span>은 이를{' '}
+            <span className="text-[#1F5BFF] font-semibold">5초</span>로 단축하여 <br /> 골든타임을 지킵니다.
           </h3>
 
           <p className="mt-10 text-[12px] font-light tracking-[-0.03em] text-white/55">
