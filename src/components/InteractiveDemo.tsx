@@ -70,13 +70,13 @@ const ui = {
 
 const transition = { duration: 0.5, ease: [0.4, 0, 0.2, 1] as const };
 
-/* ─── Workflow steps reflect LangGraph inference pipeline ─── */
+/* ─── Workflow steps reflect the real de-id → summary → citation pipeline ─── */
 const initialSteps: WorkflowStep[] = [
-  { label: 'EMR 텍스트 로드 및 문서 단위 청킹', status: 'pending' },
-  { label: '약어 사전 lookup (분과 등재 사전 기반)', status: 'pending' },
-  { label: 'RAG 검색 (pgvector + EmbeddingGemma 300M)', status: 'pending' },
-  { label: 'MedGemma 27B 시계열 요약 (QLoRA 분과 어댑터)', status: 'pending' },
-  { label: '원문 인용 검증 및 JSON 구조화', status: 'pending' },
+  { label: '비식별 마스킹 (성명·주민번호·전화·병록번호 등)', status: 'pending' },
+  { label: 'EMR 텍스트 청킹 (청크별 인용 id 부여)', status: 'pending' },
+  { label: '분과 관점 요약 (렌즈·cannotMiss·시계열 추이)', status: 'pending' },
+  { label: '문장별 원문 인용 검증 (미인용 문장 제거)', status: 'pending' },
+  { label: 'JSON 구조화 및 Split View 반환', status: 'pending' },
 ];
 
 /* ─── Pick 3 patients with category diversity ─── */
@@ -142,8 +142,8 @@ function glassStyle(extraShadow?: string): React.CSSProperties {
   };
 }
 
-/* ─── Synthea Generator UI ─── */
-function SyntheaGenerator({ onComplete }: { onComplete: () => void }) {
+/* ─── AI Patient Generator UI ─── */
+function AiPatientGenerator({ onComplete }: { onComplete: () => void }) {
   const [progress, setProgress] = useState(0);
   const genSteps = [
     'Demographics generated',
@@ -176,7 +176,7 @@ function SyntheaGenerator({ onComplete }: { onComplete: () => void }) {
           ⚕
         </span>
         <span className="font-display text-sm font-semibold text-slate-800">
-          Synthea&trade; Longitudinal Patient Generator
+          AI 기반 시계열 환자 생성기
         </span>
       </div>
       <p className="text-sm text-slate-500 mb-5">
@@ -215,7 +215,7 @@ function SyntheaGenerator({ onComplete }: { onComplete: () => void }) {
       </div>
 
       <p className="text-[10px] text-slate-400 font-mono">
-        Powered by MITRE Synthea&trade; · Synthetic Longitudinal Engine
+        AI로 생성 · 시계열 합성 엔진
       </p>
     </div>
   );
@@ -496,7 +496,7 @@ function EMRViewer({ patient }: { patient: Patient }) {
         </pre>
         <div className="mt-6 pt-4 border-t" style={{ borderColor: ui.divider }}>
           <span className="text-[10px] text-slate-400 font-medium uppercase tracking-widest font-mono">
-            문서 단위 청킹 → pgvector 저장 → 환자 ID 필터 검색
+            비식별 마스킹 → 문서 청킹 → 청크별 인용 id 부여
           </span>
         </div>
       </div>
@@ -750,6 +750,69 @@ function HorizontalTimeline({ events }: { events: TimelineEvent[] }) {
   );
 }
 
+
+/* ─── 검사 추이 스파크라인 ───
+   의사가 차트에서 실제로 보는 건 "지금 AST 27"이 아니라 "22→58→26→27로 튀었다 돌아왔다"다.
+   [규율] 값은 데이터(lab_series)에 있는 것만 그린다 — 보간·추정 없음. 정상범위를 넘은
+   시점은 색으로 구분하고, 그 시점의 임상 해석은 원문에 있던 표현만 붙인다. */
+function LabSparkline({ series }: { series: import('@/types').LabSeries }) {
+  const pts = series.points;
+  if (pts.length < 2) return null;
+  const vals = pts.map((p) => p.value);
+  const hi = Math.max(...vals, series.refHigh ?? -Infinity);
+  const lo = Math.min(...vals, series.refLow ?? Infinity);
+  const pad = (hi - lo) * 0.18 || 1;
+  const top = hi + pad, bot = lo - pad;
+  const W = 100, H = 34;
+  const x = (i: number) => (i / (pts.length - 1)) * W;
+  const y = (v: number) => H - ((v - bot) / (top - bot)) * H;
+  const path = pts.map((p, i) => `${i === 0 ? 'M' : 'L'}${x(i).toFixed(1)},${y(p.value).toFixed(1)}`).join(' ');
+  const abnormal = (v: number) =>
+    (series.refHigh !== undefined && v > series.refHigh) || (series.refLow !== undefined && v < series.refLow);
+  const last = pts[pts.length - 1];
+  const first = pts[0];
+  const dir = last.value === first.value ? '유지' : last.value > first.value ? '상승' : '하락';
+
+  return (
+    <div className="rounded-2xl p-3" style={{ background: '#eef3fb', boxShadow: ui.neuInsetSm }}>
+      <div className="flex items-baseline justify-between gap-2">
+        <span className="text-[10px] font-semibold uppercase tracking-widest text-slate-500 font-mono">
+          {series.name}{series.unit ? ` (${series.unit})` : ''}
+        </span>
+        <span className="text-[10px] font-mono text-slate-400">
+          {first.value} → {last.value} · {dir}
+        </span>
+      </div>
+
+      <svg viewBox={`0 0 ${W} ${H}`} className="mt-1.5 h-[38px] w-full" preserveAspectRatio="none" aria-hidden>
+        {/* 정상범위 밴드 — 넘었는지 한눈에 */}
+        {series.refHigh !== undefined && (
+          <rect x="0" y={y(series.refHigh)} width={W} height={Math.max(0, H - y(series.refHigh))}
+            fill="rgba(16,185,129,0.10)" />
+        )}
+        {series.refLow !== undefined && (
+          <rect x="0" y="0" width={W} height={Math.max(0, y(series.refLow))} fill="rgba(16,185,129,0.10)" />
+        )}
+        <path d={path} fill="none" stroke="#2563ff" strokeWidth="1.6" vectorEffect="non-scaling-stroke"
+          strokeLinejoin="round" strokeLinecap="round" />
+        {pts.map((p, i) => (
+          <circle key={i} cx={x(i)} cy={y(p.value)} r="2.2" vectorEffect="non-scaling-stroke"
+            fill={abnormal(p.value) ? '#e11d48' : '#2563ff'} />
+        ))}
+      </svg>
+
+      <div className="mt-1 flex flex-wrap gap-x-2 gap-y-0.5">
+        {pts.map((p, i) => (
+          <span key={i} className="text-[9.5px] font-mono" style={{ color: abnormal(p.value) ? '#e11d48' : '#64748b' }}>
+            {p.date.slice(5)} {p.value}
+          </span>
+        ))}
+      </div>
+      {last.note && <div className="mt-1 text-[10.5px] text-slate-500">{last.note}</div>}
+    </div>
+  );
+}
+
 /* ─── Timeline Summary Card ─── */
 function TimelineSummaryCard({
   patient,
@@ -862,6 +925,19 @@ function TimelineSummaryCard({
               </p>
               <p className="text-sm text-slate-700 leading-relaxed">{data.current_state.complaint}</p>
             </div>
+            {/* 검사 추이 — "지금 값"보다 먼저 온다. 추이 데이터가 없는 케이스는 표시하지 않고,
+                대신 아래 '최근 검사'만 남는다(없는 걸 만들어 그리지 않는다). */}
+            {data.lab_series && data.lab_series.length > 0 && (
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 mb-2 font-mono">
+                  검사 추이
+                </p>
+                <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+                  {data.lab_series.map((ls) => <LabSparkline key={ls.name} series={ls} />)}
+                </div>
+              </div>
+            )}
+
             <div>
               <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 mb-2 font-mono">
                 최근 검사
@@ -932,7 +1008,7 @@ function TimelineSummaryCard({
         {/* Abbreviation resolution */}
         <div>
           <p className="text-[10px] font-semibold uppercase tracking-widest text-[#2563ff] mb-3 font-mono">
-            약어 및 은어 풀이 (사전 결정론적)
+            약어 및 은어 풀이 (미확인 시 원문 유지)
           </p>
           <div className="space-y-1.5">
             {data.abbreviations.map((a, i) => (
@@ -962,7 +1038,7 @@ function TimelineSummaryCard({
                 ) : (
                   <div className="flex flex-col gap-0.5 min-w-0">
                     <span className="text-xs text-[#b45309] font-medium">
-                      미등재 · 원문 유지 (환각 방지)
+                      미등재 · 원문 유지
                     </span>
                     <span className="text-[10px] text-[#d97706] opacity-90 italic">
                       &quot;은어 추정&quot; 확인 바람
@@ -978,7 +1054,7 @@ function TimelineSummaryCard({
       <div className="px-5 py-4 border-t" style={{ borderColor: ui.divider }}>
         <div className="flex items-center justify-between mb-3">
           <span className="text-[10px] text-slate-400 font-mono">
-            원문 인용 {data.citations_count}건 부착 · MedGemma 27B + QLoRA
+            원문 인용 {data.citations_count}건 부착 · 문장마다 근거 청크 인용
           </span>
         </div>
         <PrimaryButton className="w-full">
@@ -1168,7 +1244,7 @@ export default function InteractiveDemo() {
                 border: '1px solid rgba(37,99,235,0.28)',
               }}
             >
-              Synthea&trade; Powered
+              AI 생성
             </span>
             <h2 className="font-display text-[2rem] font-bold tracking-[-0.02em] text-slate-800">
               Interactive Demo
@@ -1212,11 +1288,11 @@ export default function InteractiveDemo() {
         </div>
 
         <p className="text-sm text-slate-500 mb-10" data-animate="fade-up-1">
-          MITRE Synthea&trade;로 생성된 가상 환자 데이터입니다. 실제 환자 정보가 아닙니다.
+          AI로 생성된 가상 환자 데이터입니다. 실제 환자 정보가 아닙니다.
         </p>
 
         <AnimatePresence mode="wait">
-          {/* Synthea Generator */}
+          {/* AI Patient Generator */}
           {generating && (
             <motion.div
               key="generator"
@@ -1225,7 +1301,7 @@ export default function InteractiveDemo() {
               exit={{ opacity: 0 }}
               transition={transition}
             >
-              <SyntheaGenerator onComplete={handleGenerateComplete} />
+              <AiPatientGenerator onComplete={handleGenerateComplete} />
             </motion.div>
           )}
 
@@ -1286,7 +1362,7 @@ export default function InteractiveDemo() {
               style={glassStyle(ui.shadowSoft)}
             >
               <h3 className="font-display text-sm font-semibold text-[#2563ff] mb-2 uppercase tracking-widest font-mono">
-                LangGraph 추론 파이프라인
+                비식별 → 요약 → 인용 검증 파이프라인
               </h3>
               <WorkflowProgress steps={steps} />
             </motion.div>

@@ -1,32 +1,14 @@
-import { Shield, Activity } from 'lucide-react';
+import { Activity, Mail } from 'lucide-react';
 
 export default function Footer() {
   return (
     <footer>
-      {/* Data ethics banner */}
-      <div
-        className="py-5 border-t"
-        style={{
-          background: '#050a16',
-          borderColor: 'rgba(31,41,55,0.6)',
-        }}
-      >
-        <div className="mx-auto max-w-7xl px-5 md:px-8 flex items-center justify-center gap-3">
-          <Shield size={16} strokeWidth={1.5} className="text-gray-500 flex-shrink-0" />
-          <p className="text-center text-xs text-gray-500 leading-relaxed">
-            All patient data in this demo is 100% synthetically generated via
-            MITRE Synthea&trade; and does not contain any real Protected Health
-            Information (PHI).
-          </p>
-        </div>
-      </div>
-
       {/* Dark footer */}
       <div
         className="relative noise-bg border-t"
         style={{
-          background: '#020610',
-          borderColor: 'rgba(31,41,55,0.6)',
+          background: '#0A1B34',
+          borderColor: 'rgba(24,74,255,0.20)',
         }}
       >
         <div className="relative z-10 max-w-7xl mx-auto px-5 md:px-8 py-8">
@@ -60,39 +42,70 @@ export default function Footer() {
                   </span>
                 </div>
                 <p className="text-xs text-gray-600 font-mono mt-1">
-                  &copy; 2026 Team Golden Time · 양산부산대학교병원 임상 연구
-                  · Synthea&trade; Powered
+                  &copy; 2026 Team Golden Time
                 </p>
                 <p className="text-[11px] text-gray-500 font-mono mt-1.5">
                   <span className="text-gray-600">Members:</span>{' '}
-                  조호영 · 박보은 · 박준이 · 김용하
+                  조호영 · 박보은 · 김용하
+                </p>
+                {/* Flaticon 무료 라이선스 출처표기(의사 아이콘) */}
+                <p className="mt-1 text-[10px] text-gray-600">
+                  Doctor icon by{' '}
+                  <a href="https://www.flaticon.com/free-icon/doctor_469466" className="underline-offset-2 hover:underline hover:text-gray-400" rel="noopener noreferrer" target="_blank">
+                    Freepik — Flaticon
+                  </a>
                 </p>
               </div>
             </div>
 
-            {/* Right: Links */}
-            <div className="flex items-center gap-6">
-              <span
-                className="text-xs text-gray-600 opacity-50 cursor-not-allowed select-none"
-                title="준비 중"
-                aria-disabled="true"
-              >
-                Privacy Policy
-              </span>
-              <span
-                className="text-xs text-gray-600 opacity-50 cursor-not-allowed select-none"
-                title="준비 중"
-                aria-disabled="true"
-              >
-                Terms of Service
-              </span>
-              <span
-                className="text-xs text-gray-600 opacity-50 cursor-not-allowed select-none"
-                title="준비 중"
-                aria-disabled="true"
-              >
-                Clinical Documentation
-              </span>
+            {/* Right: Contact + links */}
+            <div className="flex flex-col items-center gap-3 md:items-end">
+              <div className="flex items-center gap-3">
+                <a
+                  href="mailto:Goldentime119119@gmail.com"
+                  className="inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-semibold text-white transition-all hover:brightness-110"
+                  style={{ background: '#184AFF', boxShadow: '0 2px 12px rgba(24,74,255,0.35)' }}
+                >
+                  <Mail size={13} strokeWidth={2.2} /> Contact Us
+                </a>
+                <a
+                  href="mailto:Goldentime119119@gmail.com"
+                  className="text-[11px] font-mono text-gray-500 transition-colors hover:text-gray-300"
+                >
+                  Goldentime119119@gmail.com
+                </a>
+              </div>
+              <div className="flex items-center gap-6">
+                <span
+                  className="text-xs text-gray-600 opacity-50 cursor-not-allowed select-none"
+                  title="준비 중"
+                  aria-disabled="true"
+                >
+                  Privacy Policy
+                </span>
+                <span
+                  className="text-xs text-gray-600 opacity-50 cursor-not-allowed select-none"
+                  title="준비 중"
+                  aria-disabled="true"
+                >
+                  Terms of Service
+                </span>
+                <span
+                  className="text-xs text-gray-600 opacity-50 cursor-not-allowed select-none"
+                  title="준비 중"
+                  aria-disabled="true"
+                >
+                  Clinical Documentation
+                </span>
+                {/* 운영자용 — 방문자 동선이 아니라 푸터 유틸리티로만 노출 */}
+                <a
+                  href="/admin"
+                  className="text-xs text-gray-500 transition-colors hover:text-gray-300"
+                  aria-label="관리자 콘솔"
+                >
+                  Admin
+                </a>
+              </div>
             </div>
           </div>
         </div>

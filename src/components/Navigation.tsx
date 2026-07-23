@@ -1,191 +1,153 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import {
-  Activity,
-  Menu,
-  X,
-  Lightbulb,
-  Sparkles,
-  MonitorPlay,
-} from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { Activity, Menu, X, ShieldCheck } from 'lucide-react';
+import { openPeerReview } from './PeerReviewModal';
 
-const navLinks = [
-  {
-    label: 'How It Works',
-    href: '#how-it-works',
-    icon: Lightbulb,
-  },
-  {
-    label: 'Features',
-    href: '#features',
-    icon: Sparkles,
-  },
-  {
-    label: 'Demo',
-    href: '#demo',
-    icon: MonitorPlay,
-  },
+const TABS: { label: string; href: string; cta?: boolean }[] = [
+  { label: '홈', href: '/' },
+  { label: '제품소개', href: '/product' },
+  { label: '실측 리포트', href: '/evidence' },
+  { label: 'About us', href: '/team' },
+  { label: 'Start', href: '/submit', cta: true },
 ];
 
+function isActive(pathname: string, href: string) {
+  return href === '/' ? pathname === '/' : pathname.startsWith(href);
+}
+
 export default function Navigation() {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('#how-it-works');
 
   useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 20);
-
-      const current = navLinks.find((link) => {
-        const section = document.querySelector(link.href);
-        if (!section) return false;
-
-        const rect = section.getBoundingClientRect();
-        return rect.top <= 120 && rect.bottom >= 120;
-      });
-
-      if (current) {
-        setActiveSection(current.href);
-      }
-    };
-
+    const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
-
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const handleNavClick = (href: string) => {
-    setActiveSection(href);
+  // close the mobile menu whenever the route changes
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMobileOpen(false);
-  };
+  }, [pathname]);
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'pt-3' : 'pt-5'
-      }`}
-    >
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'pt-3' : 'pt-5'}`}>
       <div className="mx-auto max-w-7xl px-5 md:px-8">
-        <div className="relative flex h-[72px] items-center justify-between">
-          {/* Logo */}
-          <a href="#" className="flex items-center gap-2 group">
-            <div
-              className="flex h-8 w-8 items-center justify-center rounded-lg border border-[color:var(--color-accent-border)]"
+        <div
+          className="relative flex h-[64px] items-center justify-between rounded-[20px] border px-4 md:px-5"
+          style={{
+            borderColor: 'var(--color-border)',
+            background: scrolled ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.45)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+          }}
+        >
+          {/* Logo → 홈 */}
+          <Link href="/" className="flex items-center gap-2.5 group" aria-label="차트원샷 홈">
+            <span
+              className="flex h-8 w-8 items-center justify-center rounded-lg border"
               style={{
-                background: 'rgba(20,184,166,0.15)',
-                boxShadow: '0 0 14px rgba(20,184,166,0.35)',
+                borderColor: 'var(--color-accent-border)',
+                background: 'var(--color-accent-subtle)',
+                boxShadow: '0 0 10px rgba(24,74,255,0.20)',
               }}
             >
-              <Activity
-                size={16}
-                strokeWidth={1.75}
-                className="text-[color:var(--color-accent)]"
-              />
-            </div>
-
-            <span className="font-display text-base font-bold text-gray-100 tracking-tight">
-              차트원샷
+              <Activity size={18} className="text-[color:var(--color-accent)]" strokeWidth={2.4} />
             </span>
-          </a>
+            <span className="text-[17px] font-bold tracking-tight text-[color:var(--color-text-primary)]">차트원샷</span>
+          </Link>
 
-          {/* Desktop pill navigation */}
-          <div className="hidden md:flex absolute left-1/2 -translate-x-1/2">
-            <div
-              className="
-                flex items-center rounded-full border border-white/70
-                bg-white/80 p-1 shadow-[0_18px_45px_rgba(37,99,235,0.22)]
-                backdrop-blur-xl
-              "
-            >
-              {navLinks.map((link) => {
-                const Icon = link.icon;
-                const isActive = activeSection === link.href;
-
+          {/* Desktop tabs */}
+          <div className="hidden md:flex items-center gap-1">
+            {TABS.map((t) => {
+              const active = isActive(pathname, t.href);
+              if (t.cta) {
                 return (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    onClick={() => handleNavClick(link.href)}
-                    className={`
-                      inline-flex h-11 items-center gap-2 rounded-full px-6
-                      text-sm font-medium transition-all duration-300
-                      ${
-                        isActive
-                          ? 'bg-blue-600 text-white shadow-[0_12px_28px_rgba(37,99,235,0.35)]'
-                          : 'text-slate-400 hover:text-slate-600'
-                      }
-                    `}
+                  <Link
+                    key={t.href}
+                    href={t.href}
+                    className="ml-2 rounded-full px-4 py-2 text-[14px] font-semibold transition-all duration-200 hover:-translate-y-px"
+                    style={{
+                      background: active ? 'var(--color-accent)' : 'var(--color-accent-soft)',
+                      color: active ? '#fff' : 'var(--color-accent-hover)',
+                      border: '1px solid var(--color-accent-border)',
+                    }}
                   >
-                    <Icon
-                      size={19}
-                      strokeWidth={1.7}
-                      className={isActive ? 'text-white' : 'text-slate-300'}
-                    />
-                    <span>{link.label}</span>
-                  </a>
+                    {t.label}
+                  </Link>
                 );
-              })}
-            </div>
+              }
+              return (
+                <Link
+                  key={t.href}
+                  href={t.href}
+                  className="relative rounded-full px-3.5 py-2 text-[14px] font-medium transition-colors"
+                  style={{ color: active ? 'var(--color-accent)' : 'var(--color-text-body)' }}
+                >
+                  {t.label}
+                  {active && (
+                    <span
+                      className="absolute left-3.5 right-3.5 -bottom-0.5 h-[2px] rounded-full"
+                      style={{ background: 'var(--color-accent)' }}
+                    />
+                  )}
+                </Link>
+              );
+            })}
+            {/* Peer Review — 슈퍼 프라이머리: 페이지 이동 없이 즉시 실행 모달. Liquid Prism C 확정안. */}
+            <button type="button" onClick={openPeerReview} className="peer-cta peer-cta--nav ml-1.5" aria-label="Peer Review 실행">
+              <ShieldCheck size={15} strokeWidth={2.4} /> Peer Review
+            </button>
           </div>
 
-          {/* CTA */}
-          <div className="hidden md:block">
-            <a href="#demo" className="btn-primary inline-flex items-center text-[13px]">
-              Try Now
-            </a>
-          </div>
-
-          {/* Mobile menu button */}
+          {/* Mobile toggle */}
           <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden p-2 text-gray-400 hover:text-gray-200 transition-colors"
-            aria-label="Toggle menu"
+            className="md:hidden flex h-9 w-9 items-center justify-center rounded-lg text-[color:var(--color-text-body)]"
+            aria-label="메뉴"
+            aria-expanded={mobileOpen}
+            onClick={() => setMobileOpen((o) => !o)}
           >
-            {mobileOpen ? (
-              <X size={24} strokeWidth={1.5} />
-            ) : (
-              <Menu size={24} strokeWidth={1.5} />
-            )}
+            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
 
         {/* Mobile menu */}
         {mobileOpen && (
-          <div className="md:hidden mt-2 rounded-2xl border border-white/10 bg-black/70 p-2 backdrop-blur-xl">
-            {navLinks.map((link) => {
-              const Icon = link.icon;
-              const isActive = activeSection === link.href;
-
+          <div
+            className="md:hidden mt-2 rounded-2xl border p-2"
+            style={{
+              borderColor: 'var(--color-border)',
+              background: 'rgba(255,255,255,0.96)',
+              backdropFilter: 'blur(20px)',
+              WebkitBackdropFilter: 'blur(20px)',
+            }}
+          >
+            {TABS.map((t) => {
+              const active = isActive(pathname, t.href);
               return (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => handleNavClick(link.href)}
-                  className={`
-                    flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium
-                    transition-colors
-                    ${
-                      isActive
-                        ? 'bg-blue-600 text-white'
-                        : 'text-gray-300 hover:bg-white/10 hover:text-white'
-                    }
-                  `}
+                <Link
+                  key={t.href}
+                  href={t.href}
+                  className="flex items-center justify-between rounded-xl px-4 py-3 text-[15px] font-medium"
+                  style={{
+                    color: active ? 'var(--color-accent)' : 'var(--color-text-body)',
+                    background: active ? 'var(--color-accent-subtle)' : 'transparent',
+                  }}
                 >
-                  <Icon size={18} strokeWidth={1.7} />
-                  {link.label}
-                </a>
+                  {t.label}
+                  {t.cta && <span className="text-[color:var(--color-accent-hover)]">→</span>}
+                </Link>
               );
             })}
-
-            <a
-              href="#demo"
-              onClick={() => setMobileOpen(false)}
-              className="btn-primary mt-2 block text-center"
-            >
-              Try Now
-            </a>
+            <button type="button" onClick={() => { setMobileOpen(false); openPeerReview(); }} className="peer-cta mt-1 w-full">
+              <ShieldCheck size={16} strokeWidth={2.4} /> Peer Review
+            </button>
           </div>
         )}
       </div>

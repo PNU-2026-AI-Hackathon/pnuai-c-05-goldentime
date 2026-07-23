@@ -34,6 +34,24 @@ export interface CurrentState {
   medications: string[];
 }
 
+/* 검사 수치 추이 — 의사가 실제로 보는 건 "지금 값"이 아니라 "어떻게 움직였나"다.
+   [규율] 값은 창작하지 않는다. 이미 timeline 이벤트 문장 안에 있던 수치를 필드로
+   옮겨 담은 것뿐이며(재배치), 추이 데이터가 없는 케이스는 비워 둔다 — 억지로
+   만들지 않고 "추세 데이터 없음"으로 남기는 게 누락 투명 원칙에 맞다. */
+export interface LabPoint {
+  date: string;   // "2026.02.20" — timeline 이벤트 날짜와 동일 표기
+  value: number;
+  note?: string;  // "일시 상승", "정상 복귀" 등 그 시점의 임상 해석(원문에 있던 표현만)
+}
+export interface LabSeries {
+  name: string;            // "AST"
+  unit?: string;           // "U/L"
+  points: LabPoint[];      // 2개 이상일 때만 추이로 표시
+  refHigh?: number;        // 정상 상한 — 있으면 밴드로 표시
+  refLow?: number;
+  sourceChunkId?: string;  // 근거 청크(원문 추적)
+}
+
 export interface AbbreviationEntry {
   abbrev: string;                     // "f/u"
   expansion: string | null;           // "follow-up" — null이면 미등재
@@ -56,6 +74,7 @@ export interface PatientTimelineSummary {
   resolved_issues: ResolvedIssue[];
   timeline: TimelineEvent[];          // layer로 primary/incidental 분리
   abbreviations: AbbreviationEntry[];
+  lab_series?: LabSeries[];           // 검사 추이(있는 케이스만 — 없으면 화면에서 그렇게 밝힌다)
   citations_count: number;            // 원문 인용 청크 총 개수
 }
 

@@ -1,10 +1,11 @@
 @import "tailwindcss";
 
 /* ─────────────────────────────────────
-   차트원샷 (Chart One Shot) — Design System v1.0
-   Premium Wellness × AI EMR Summary
-   Base: Ice Blue Navy #0A1118
+   차트원샷 (Chart One Shot) — Design System v2.0 (Light)
+   Figma 기준 라이트모드 통일
+   Base: Ice Blue White #EAF1FF
    Primary: Royal Vivid Blue #184AFF
+   Ink: #101822 / Body slate #3F4C5E
 ───────────────────────────────────── */
 
 :root {
@@ -15,55 +16,55 @@
   --primary-rgb: 24 74 255;
 
   /* Semantic */
-  --semantic-success: #1F5EFF;  
+  --semantic-success: #1F5EFF;
   --semantic-warning: #F59E0B;  /* Amber */
   --semantic-error:   #F43F5E;  /* Rose Red */
 
-  /* Glows — Royal Vivid Blue 기반의 깊이감 (Do: 카드 뒤편 은은한 빛) */
-  --glow-card-soft:    0 0 28px rgba(24,74,255,0.10);
-  --glow-card-hover:   0 12px 40px rgba(0,0,0,0.5), 0 0 32px rgba(24,74,255,0.22);
-  --glow-button-rest:  0 0 16px rgba(255,255,255,0.10);
-  --glow-button-hover: 0 0 28px rgba(255,255,255,0.20);
-  --glow-text:         drop-shadow(0 0 6px rgba(24,74,255,0.5)) drop-shadow(0 0 14px rgba(24,74,255,0.25));
-  --glow-cell-hover:   0 0 14px rgba(24,74,255,0.45);
+  /* Glows/Shadows — 라이트모드: 부드러운 블루-그레이 그림자 */
+  --glow-card-soft:    0 1px 3px rgba(16,24,34,0.05), 0 10px 30px rgba(24,74,255,0.06);
+  --glow-card-hover:   0 8px 30px rgba(24,74,255,0.14), 0 2px 8px rgba(16,24,34,0.08);
+  --glow-button-rest:  0 1px 2px rgba(16,24,34,0.10);
+  --glow-button-hover: 0 4px 16px rgba(24,74,255,0.28);
+  --glow-text:         drop-shadow(0 1px 2px rgba(24,74,255,0.18));
+  --glow-cell-hover:   0 0 0 1px rgba(24,74,255,0.25);
 
-  --blur-glass: 30px;
+  --blur-glass: 14px;
   --blur-nav: 20px;
 }
 
 @theme {
-  /* ── Base & Surface ── */
-  --color-page-bg:        #0A1118;                    /* Ice Blue Navy */
-  --color-card-bg:        rgba(22,34,47,0.50);        /* Glass Navy 50% */
-  --color-card-bg-hover:  rgba(22,34,47,0.65);
-  --color-surface:        rgba(22,34,47,0.40);
-  --color-surface-strong: rgba(22,34,47,0.70);
-  --color-elevated:       rgba(22,34,47,0.60);
+  /* ── Base & Surface (라이트) ── */
+  --color-page-bg:        #EAF1FF;                    /* Ice Blue White */
+  --color-card-bg:        rgba(255,255,255,0.82);     /* White glass 82% */
+  --color-card-bg-hover:  rgba(255,255,255,0.96);
+  --color-surface:        rgba(137,168,234,0.12);     /* 연한 블루 틴트 */
+  --color-surface-strong: rgba(137,168,234,0.20);
+  --color-elevated:       rgba(255,255,255,0.92);
 
-  /* ── Borders (White 10~15%) ── */
-  --color-divider:        rgba(255,255,255,0.08);
-  --color-border-soft:    rgba(255,255,255,0.10);
-  --color-border:         rgba(255,255,255,0.12);
-  --color-border-strong:  rgba(255,255,255,0.18);
+  /* ── Borders (Blue 8~22%) ── */
+  --color-divider:        rgba(24,74,255,0.08);
+  --color-border-soft:    rgba(24,74,255,0.10);
+  --color-border:         rgba(24,74,255,0.14);
+  --color-border-strong:  rgba(24,74,255,0.22);
 
-  /* ── Text (위계는 투명도로) ── */
-  --color-text-primary: #FFFFFF;                /* Neutral 01 — 100% */
-  --color-text-body:    rgba(255,255,255,0.60); /* Neutral 02 — 60%  */
-  --color-text-muted:   rgba(255,255,255,0.40);
-  --color-text-dim:     rgba(255,255,255,0.28);
-  --color-text-faint:   rgba(255,255,255,0.16);
+  /* ── Text (Ink — 위계는 투명도로) ── */
+  --color-text-primary: #101822;                /* Ink 01 — near-black */
+  --color-text-body:    rgba(16,24,34,0.66);    /* Slate ~ #3F4C5E */
+  --color-text-muted:   rgba(16,24,34,0.46);
+  --color-text-dim:     rgba(16,24,34,0.32);
+  --color-text-faint:   rgba(16,24,34,0.18);
 
   /* ── Primary (Royal Vivid Blue) ── */
   --color-accent:         #184AFF;
   --color-accent-strong:  #1240E6;
-  --color-accent-soft:    rgba(24,74,255,0.18);
+  --color-accent-soft:    rgba(24,74,255,0.16);
   --color-accent-subtle:  rgba(24,74,255,0.10);
-  --color-accent-border:  rgba(24,74,255,0.35);
+  --color-accent-border:  rgba(24,74,255,0.28);
   --color-accent-hover:   #4A6FFF;
 
-  /* ── Accent (Pure White — CTA용) ── */
-  --color-cta-bg:   #FFFFFF;
-  --color-cta-text: #0A1118;
+  /* ── Accent (Royal Blue — CTA용) ── */
+  --color-cta-bg:   #184AFF;
+  --color-cta-text: #FFFFFF;
 
   /* ── Semantic ── */
   --color-critical:        #F43F5E;
@@ -103,10 +104,10 @@
 
   
 
-  /* ── Fonts (Outfit + Pretendard) ── */
-  --font-display: var(--font-pretendard), var(--font-outfit), system-ui, sans-serif;
-  --font-body:    var(--font-pretendard), var(--font-outfit), system-ui, sans-serif;
-  --font-mono:    var(--font-outfit), ui-monospace, 'SF Mono', Menlo, monospace;
+  /* ── Fonts (IBM Plex — gatherEMR와 통일) ── */
+  --font-display: var(--font-plex-sans), var(--font-plex-kr), 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  --font-body:    var(--font-plex-sans), var(--font-plex-kr), 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  --font-mono:    var(--font-plex-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /* ── Shadows ── */
   --shadow-xs: 0 1px 2px rgba(0,0,0,0.4);
@@ -119,19 +120,19 @@
 html { scroll-behavior: smooth; }
 
 body {
-  background: #0A1118;
-  color: #FFFFFF;
+  background: #EAF1FF;
+  color: #101822;
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 /* 선택/스크롤바 — Primary Blue 적용 */
-::selection { background: rgba(24,74,255,0.32); color: #FFFFFF; }
+::selection { background: rgba(24,74,255,0.20); color: #101822; }
 ::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: #0A1118; }
-::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.22); }
+::-webkit-scrollbar-track { background: #EAF1FF; }
+::-webkit-scrollbar-thumb { background: rgba(24,74,255,0.20); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(24,74,255,0.35); }
 
 /* ─── Animations ─── */
 @keyframes fadeScaleIn {
@@ -154,26 +155,26 @@ body {
    - Secondary:   Royal Vivid Blue 배경 + 흰 텍스트
    - 형태: 알약(pill, radius 999px) */
 .btn-primary {
-  background: #FFFFFF;
-  color: #0A1118;
-  border: 1px solid rgba(255,255,255,0.0);
+  background: #184AFF;
+  color: #FFFFFF;
+  border: 1px solid rgba(24,74,255,0.0);
   border-radius: 999px;
   font-weight: 600;
   font-size: 14px;
   padding: 12px 28px;
   letter-spacing: 0.01em;
-  box-shadow: var(--glow-button-rest);
+  box-shadow: 0 2px 10px rgba(24,74,255,0.25);
   transition: all 0.2s;
 }
 .btn-primary:hover {
-  background: #F5F5F5;
+  background: #1240E6;
   box-shadow: var(--glow-button-hover);
   transform: translateY(-1px);
 }
 .btn-primary:disabled,
 .btn-primary[disabled] {
-  background: rgba(255,255,255,0.12);
-  color: rgba(255,255,255,0.40);
+  background: rgba(16,24,34,0.12);
+  color: rgba(16,24,34,0.40);
   box-shadow: none;
   cursor: not-allowed;
   transform: none;
@@ -198,9 +199,9 @@ body {
 }
 
 .btn-ghost {
-  background: rgba(255,255,255,0.04);
-  color: rgba(255,255,255,0.80);
-  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(24,74,255,0.05);
+  color: rgba(16,24,34,0.80);
+  border: 1px solid rgba(24,74,255,0.16);
   border-radius: 999px;
   font-weight: 500;
   font-size: 14px;
@@ -208,9 +209,9 @@ body {
   transition: all 0.2s;
 }
 .btn-ghost:hover {
-  border-color: rgba(255,255,255,0.22);
-  background: rgba(255,255,255,0.08);
-  color: #FFFFFF;
+  border-color: rgba(24,74,255,0.30);
+  background: rgba(24,74,255,0.09);
+  color: #101822;
 }
 
 /* ─── Card (Bento Box) ───
@@ -219,26 +220,26 @@ body {
    - 라운딩: 24px (또는 32px)
    - 테두리: White 10~15% (항상 1px) */
 .card {
-  background: rgba(22,34,47,0.50);
-  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.82);
+  border: 1px solid rgba(24,74,255,0.12);
   border-radius: 24px;
   box-shadow: var(--glow-card-soft);
-  backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(30px);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   transition: all 0.3s;
 }
 .card:hover {
-  border-color: rgba(255,255,255,0.18);
+  border-color: rgba(24,74,255,0.22);
   box-shadow: var(--glow-card-hover);
 }
 
 .card-lg {
-  background: rgba(22,34,47,0.50);
-  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.82);
+  border: 1px solid rgba(24,74,255,0.12);
   border-radius: 32px;
   box-shadow: var(--glow-card-soft);
-  backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(30px);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   transition: all 0.3s;
 }
 
@@ -247,28 +248,28 @@ body {
    - 라운딩 16px
    - 기본 투명도 10%, 포커스 시 20% + Primary 테두리 */
 .input {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.80);
+  border: 1px solid rgba(24,74,255,0.14);
   border-radius: 16px;
-  color: #FFFFFF;
+  color: #101822;
   font-size: 16px;
   padding: 14px 18px;
   transition: all 0.2s;
 }
-.input::placeholder { color: rgba(255,255,255,0.40); }
+.input::placeholder { color: rgba(16,24,34,0.40); }
 .input:focus {
   outline: none;
-  background: rgba(255,255,255,0.10);
+  background: #FFFFFF;
   border-color: #184AFF;
   box-shadow: 0 0 0 3px rgba(24,74,255,0.15);
 }
 
 /* ─── Glass nav ─── */
 .glass-nav {
-  background: rgba(10,17,24,0.72);
+  background: rgba(234,241,255,0.72);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255,255,255,0.08);
+  border-bottom: 1px solid rgba(24,74,255,0.10);
 }
 
 /* ─── Noise texture ─── */
@@ -365,9 +366,9 @@ body {
   font-weight: 500;
   padding: 4px 12px;
   border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.20);
-  background: transparent;
-  color: rgba(255,255,255,0.80);
+  border: 1px solid rgba(24,74,255,0.22);
+  background: rgba(24,74,255,0.04);
+  color: rgba(16,24,34,0.70);
 }
 
 .tag-primary {
@@ -377,9 +378,9 @@ body {
   font-weight: 500;
   padding: 4px 12px;
   border-radius: 999px;
-  border: 1px solid rgba(24,74,255,0.35);
-  background: rgba(24,74,255,0.15);
-  color: #4A6FFF;
+  border: 1px solid rgba(24,74,255,0.30);
+  background: rgba(24,74,255,0.10);
+  color: #184AFF;
 }
 
 /* ─── Typography helpers (디자인 시스템 2번) ─── */
@@ -390,13 +391,123 @@ body {
 .text-body-sub   { font-size: 14px; font-weight: 400; line-height: 1.60; }
 .text-caption    { font-size: 12px; font-weight: 400; line-height: 1.50; }
 
-@font-face {
-  font-family: 'Pretendard Variable';
-  font-weight: 100 900; /* 범위 지정 필수 */
-  font-display: swap;
-  src: url('/fonts/PretendardVariable.woff2') format('woff2-variations');
+body {
+  font-family: var(--font-body);
 }
 
-body {
-  font-family: 'Pretendard Variable', sans-serif;
+/* ── Peer Review 슈퍼 프라이머리 CTA — Liquid Prism 'C · Prism Bold'
+   (/peer-preview 4안 중 사용자 확정 2026-07-18. 흰/아이스 알약 + 진한 이리데센스 flow
+   + 홀로 글로우 + 강한 금속 sheen sweep) ── */
+.peer-cta {
+  position: relative; isolation: isolate; overflow: hidden;
+  display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+  min-height: 46px; padding: 0 22px; border-radius: 999px;
+  border: 1px solid rgba(24,74,255,0.20); color: var(--color-accent);
+  font-size: 15px; font-weight: 800; line-height: 1; cursor: pointer;
+  text-shadow: 0 1px 6px rgba(255,255,255,0.72);
+  background: linear-gradient(135deg, #ffffff 0%, #eef3ff 44%, #ffffff 60%, #e9f0ff 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.96), 0 12px 34px rgba(24,74,255,0.24), 0 0 26px rgba(116,90,255,0.26);
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.peer-cta::before {
+  content: ""; position: absolute; inset: -2px; z-index: 0;
+  background: linear-gradient(115deg, rgba(24,74,255,0.85), rgba(116,90,255,0.8), rgba(74,196,255,0.72), rgba(255,110,196,0.7), rgba(255,196,90,0.6), rgba(24,74,255,0.85));
+  background-size: 260% 100%; mix-blend-mode: multiply; opacity: 0.44;
+  animation: peer-cta-flow 3.2s linear infinite;
+}
+.peer-cta::after {
+  content: ""; position: absolute; top: -32%; bottom: -32%; left: -62%; width: 40%; z-index: 1;
+  transform: skewX(-18deg);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.95), transparent);
+  animation: peer-cta-sheen 2s cubic-bezier(.25,.7,.25,1) infinite; pointer-events: none;
+}
+.peer-cta > * { position: relative; z-index: 2; }
+.peer-cta:hover {
+  transform: translateY(-2px); border-color: rgba(24,74,255,0.38);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.98), 0 2px 5px rgba(16,24,34,0.10), 0 16px 40px rgba(24,74,255,0.32), 0 0 30px rgba(116,90,255,0.28);
+}
+.peer-cta--nav { min-height: 38px; padding: 0 16px; gap: 7px; font-size: 14px; font-weight: 700; }
+@keyframes peer-cta-flow { to { background-position: 260% 0; } }
+@keyframes peer-cta-sheen { 0% { left: -62%; opacity: 0; } 12% { opacity: 1; } 58% { opacity: 1; } 100% { left: 122%; opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .peer-cta, .peer-cta::before, .peer-cta::after { animation: none; transition: none; }
+}
+
+/* ── 검증 파이프라인 다이어그램(VerificationPipeline — /product 검증 섹션) ── */
+.vp { max-width: 760px; margin: 0 auto; }
+.vp-conn { display: block; width: 100%; }
+.vp-scene { width: 56px; height: 56px; flex-shrink: 0; }
+.vp-nd { background: rgba(255,255,255,0.88); border: 1px solid rgba(16,24,34,0.10); border-radius: 18px;
+  box-shadow: 0 10px 26px rgba(24,74,255,0.07); backdrop-filter: blur(10px); position: relative; }
+/* io 노드 폭 = 모델 카드 1장(~245px)보다 약 20% 넓게 — 풀폭 마진 과다 피드백 반영 */
+/* 아이콘 열 고정(좌측 정렬) — 텍스트 길이와 무관하게 전 노드 픽토그램이 같은 세로축에 정렬 */
+.vp-io { display: flex; align-items: center; justify-content: flex-start; gap: 18px; padding: 16px 24px;
+  width: min(100%, 296px); margin-inline: auto; }
+.vp-tx { text-align: left; }
+.vp-k { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.10em; color: rgba(16,24,34,0.42); }
+.vp-krow { display: inline-flex; align-items: center; gap: 6px; }
+.vp-t { font-family: var(--font-display); font-weight: 800; font-size: 16.5px; color: #101822; line-height: 1.25; margin-top: 4px; }
+.vp-io, .vp-slot { opacity: 0.38; transform: translateY(8px) scale(0.985);
+  transition: opacity .55s ease, transform .55s ease, box-shadow .55s ease, border-color .55s ease; }
+.vp-nd.lit { opacity: 1; transform: none; }
+.vp-io.lit { box-shadow: 0 12px 32px rgba(24,74,255,0.13); }
+.vp-ink { background: #101822; border-color: #101822; }
+.vp-ink .vp-k { color: rgba(255,255,255,0.5); }
+.vp-ink .vp-t { color: #fff; }
+.vp-ink.lit { box-shadow: 0 16px 44px rgba(16,24,34,0.35); }
+.vp-beam { opacity: 0; }
+.vp-beam.on { animation: vp-beam-sweep 1.5s ease-in-out forwards; }
+@keyframes vp-beam-sweep {
+  0% { transform: translateY(-15px); opacity: 0; }
+  15% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translateY(11px); opacity: 0.85; }
+}
+.vp-orbit { transform-box: view-box; transform-origin: 28px 28px;
+  animation: vp-orbit-once 1s cubic-bezier(.45,.15,.45,.85) forwards; }
+@keyframes vp-orbit-once { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.vp-models { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+.vp-vname { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.07em; font-weight: 600; }
+@media (max-width: 720px) {
+  .vp-io { flex-direction: column; gap: 10px; }
+  .vp-tx { text-align: center; }
+  /* 모바일: 3분기 팬은 좌표가 무의미(카드 세로 스택) → 숨기고 카드 사이 세로 점선으로 연속성 유지 */
+  .vp-fan { display: none; }
+  .vp-models { grid-template-columns: 1fr; gap: 26px; padding: 14px 0; }
+  .vp-slot + .vp-slot::after { content: ""; position: absolute; top: -20px; left: 50%; height: 14px;
+    border-left: 2px dotted rgba(24,74,255,0.35); }
+}
+
+/* 파이프라인 reduced-motion: 완성 정적 다이어그램 — 하위 전부(인라인 포함) 강제 정지 */
+@media (prefers-reduced-motion: reduce) {
+  .vp, .vp *, .vp *::before, .vp *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .vp-beam, .vp-beam.on { opacity: 0.85; transform: translateY(11px); }
+}
+
+/* 모델 노드 variant — slot(1B: 컴팩트 슬롯) · rail(2B: 브랜드 레일 관통) */
+.vp-slot { display: flex; align-items: center; justify-content: center; gap: 11px; padding: 13px 15px; border-radius: 14px; }
+.vp-slot.lit { box-shadow: 0 14px 36px var(--glow); }
+.vp-slot-chip { width: 36px; height: 36px; border-radius: 10px; background: rgba(255,255,255,0.78);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.vp-slot-tx { display: flex; flex-direction: column; text-align: left; gap: 1px; }
+
+/* ── 프리즘 헤어라인 (Peer Review 승급 — Codex 회의 2026-07-19: A-lite) ──
+   핵심 카드 '한 장'에만 허용 — 프리즘은 super primary 언어라 희소해야 위계가 산다.
+   기본 정적, hover/focus-within에서만 느린 흐름. */
+.prism-hairline {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(rgba(255,255,255,0.94), rgba(255,255,255,0.94)) padding-box,
+    linear-gradient(120deg, #184AFF 0%, #7C3AED 35%, #00B7FF 68%, #FF6BCB 100%) border-box;
+  background-size: 100% 100%, 260% 100%;
+}
+.prism-hairline:hover, .prism-hairline:focus-within {
+  animation: prism-hairline-flow 7s linear infinite;
+}
+@keyframes prism-hairline-flow { to { background-position: 0 0, 260% 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .prism-hairline, .prism-hairline:hover, .prism-hairline:focus-within { animation: none; }
 }

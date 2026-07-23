@@ -36,8 +36,8 @@ function buildChoices(target: Patient): Choice[] {
   return [correct, ...wrongs].sort(() => Math.random() - 0.5);
 }
 
-/* ─── Mini Synthea Loader ─── */
-function MiniSyntheaLoader({ onComplete }: { onComplete: () => void }) {
+/* ─── 합성 케이스 로더 ─── */
+function MiniCaseLoader({ onComplete }: { onComplete: () => void }) {
   const [progress, setProgress] = useState(0);
   const miniSteps = ['Patient profile loaded', 'Longitudinal records ready'];
   const [completedSteps, setCompletedSteps] = useState(0);
@@ -59,21 +59,21 @@ function MiniSyntheaLoader({ onComplete }: { onComplete: () => void }) {
     <div
       className="rounded-2xl p-5 max-w-sm mx-auto"
       style={{
-        background: 'rgba(17,24,39,0.6)',
-        border: '1px solid rgba(31,41,55,0.7)',
+        background: 'var(--color-card-bg)',
+        border: '1px solid var(--color-border)',
         boxShadow: 'var(--glow-card-soft)',
         backdropFilter: 'blur(8px)',
       }}
     >
       <div className="flex items-center gap-2 mb-3">
         <span className="text-sm text-[color:var(--color-accent)]">⚕</span>
-        <span className="text-xs font-semibold text-gray-200 font-mono uppercase tracking-widest">
-          Synthea&trade; Quick Load
+        <span className="text-xs font-semibold text-[color:var(--color-text-primary)] font-mono uppercase tracking-widest">
+          합성 케이스 불러오기
         </span>
       </div>
       <div
         className="h-1.5 rounded-full mb-3 overflow-hidden"
-        style={{ background: 'rgba(31,41,55,0.7)' }}
+        style={{ background: 'var(--color-surface)' }}
       >
         <div
           className="h-full rounded-full transition-all duration-75"
@@ -88,13 +88,13 @@ function MiniSyntheaLoader({ onComplete }: { onComplete: () => void }) {
         {miniSteps.map((step, i) => (
           <div key={i} className="flex items-center gap-2 text-xs">
             {i < completedSteps ? (
-              <span className="text-[#34d399] font-bold">✓</span>
+              <span className="text-[#047857] font-bold">✓</span>
             ) : i === completedSteps ? (
               <span className="text-[color:var(--color-accent)] animate-accent-pulse font-bold">◉</span>
             ) : (
-              <span className="text-gray-700">○</span>
+              <span className="text-[color:var(--color-text-dim)]">○</span>
             )}
-            <span className={i <= completedSteps ? 'text-gray-300' : 'text-gray-600'}>{step}</span>
+            <span className={i <= completedSteps ? 'text-[color:var(--color-text-body)]' : 'text-[color:var(--color-text-muted)]'}>{step}</span>
           </div>
         ))}
       </div>
@@ -119,30 +119,30 @@ function ChoiceCard({
   const letter = String.fromCharCode(65 + index); // A, B, C, D
 
   // Color logic based on reveal state
-  let bg = 'rgba(17,24,39,0.55)';
-  let border = 'rgba(55,65,81,0.55)';
-  let textColor = '#e5e7eb';
-  let dotColor = '#9ca3af';
+  let bg = 'var(--color-card-bg)';
+  let border = 'var(--color-border)';
+  let textColor = 'var(--color-text-primary)';
+  let dotColor = 'var(--color-text-muted)';
   let glow = 'none';
 
   if (revealed) {
     if (choice.isCorrect) {
       bg = 'rgba(22,163,74,0.15)';
       border = 'rgba(22,163,74,0.55)';
-      textColor = '#d1fae5';
-      dotColor = '#34d399';
+      textColor = '#047857';
+      dotColor = '#047857';
       glow = '0 0 22px rgba(22,163,74,0.40)';
     } else if (picked) {
       bg = 'rgba(220,38,38,0.15)';
       border = 'rgba(220,38,38,0.55)';
-      textColor = '#fecaca';
-      dotColor = '#f87171';
+      textColor = '#dc2626';
+      dotColor = '#dc2626';
       glow = '0 0 22px rgba(220,38,38,0.40)';
     } else {
-      bg = 'rgba(17,24,39,0.35)';
-      border = 'rgba(55,65,81,0.30)';
-      textColor = '#6b7280';
-      dotColor = '#4b5563';
+      bg = 'var(--color-surface)';
+      border = 'var(--color-border)';
+      textColor = 'var(--color-text-muted)';
+      dotColor = 'var(--color-text-dim)';
     }
   }
 
@@ -162,7 +162,7 @@ function ChoiceCard({
               y: -2,
               borderColor: 'rgba(20,184,166,0.60)',
               backgroundColor: 'rgba(20,184,166,0.08)',
-              boxShadow: '0 6px 20px rgba(0,0,0,0.45), 0 0 18px rgba(20,184,166,0.20)',
+              boxShadow: '0 8px 20px -12px rgba(56,103,214,0.30), 0 0 18px rgba(20,184,166,0.20)',
             }
       }
       transition={{ duration: 0.18, ease: [0.4, 0, 0.2, 1] }}
@@ -176,7 +176,7 @@ function ChoiceCard({
             ? 'rgba(22,163,74,0.25)'
             : revealed && picked
             ? 'rgba(220,38,38,0.25)'
-            : 'rgba(31,41,55,0.7)',
+            : 'var(--color-surface)',
           color: dotColor,
           border: `1px solid ${border}`,
         }}
@@ -190,10 +190,10 @@ function ChoiceCard({
         {choice.title}
       </span>
       {revealed && choice.isCorrect && (
-        <Check size={18} className="text-[#34d399] flex-shrink-0" strokeWidth={2.5} />
+        <Check size={18} className="text-[#047857] flex-shrink-0" strokeWidth={2.5} />
       )}
       {revealed && picked && !choice.isCorrect && (
-        <X size={18} className="text-[#f87171] flex-shrink-0" strokeWidth={2.5} />
+        <X size={18} className="text-[#dc2626] flex-shrink-0" strokeWidth={2.5} />
       )}
     </motion.button>
   );
@@ -204,7 +204,9 @@ export default function DoctorChallenge() {
   const ref = useScrollAnimation();
   const stopwatch = useStopwatch();
   const stopwatchRef = useRef(stopwatch);
-  stopwatchRef.current = stopwatch;
+  useEffect(() => {
+    stopwatchRef.current = stopwatch;
+  });
 
   const [phase, setPhase] = useState<Phase>('idle');
   const [patient, setPatient] = useState<Patient | null>(null);
@@ -221,6 +223,9 @@ export default function DoctorChallenge() {
     setChoices(buildChoices(p));
     setUsedIds((prev) => [...prev, p.id]);
     setUserChoice(null);
+    // 타이핑 상태 리셋은 이펙트가 아니라 라운드 시작 이벤트에서 (sync setState-in-effect 방지)
+    setTypingDone(false);
+    setDisplayedText('');
     setPhase('loading');
   }, [usedIds]);
 
@@ -247,8 +252,6 @@ export default function DoctorChallenge() {
   // Typing effect for EMR text (긴 차트 대응)
   useEffect(() => {
     if (phase !== 'active' || !patient) return;
-    setTypingDone(false);
-    setDisplayedText('');
     let i = 0;
     const fullText = patient.emrText;
     // EMR 길이에 따라 청크 크기 조절 — 약 2초 정도에 다 출력
@@ -265,7 +268,6 @@ export default function DoctorChallenge() {
       }
     }, 10);
     return () => clearInterval(interval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase, patient]);
 
   // AI time count-up animation
@@ -287,21 +289,21 @@ export default function DoctorChallenge() {
   const speedMultiple = stopwatch.time > 0 ? (stopwatch.time / AI_ANALYSIS_TIME).toFixed(1) : '0';
 
   return (
-    <section className="relative py-20 lg:py-28" style={{ background: '#030712' }}>
+    <section className="relative py-20 lg:py-28" style={{ background: '#EAF1FF' }}>
       <div ref={ref} className="mx-auto max-w-7xl px-5 md:px-8">
         {/* Header */}
         <div className="text-center mb-12" data-animate="fade-up">
           <span className="inline-block mb-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-[color:var(--color-accent)]">
             Challenge
           </span>
-          <h2 className="font-display text-3xl font-bold tracking-[-0.02em] text-gray-100 mb-4">
+          <h2 className="font-display text-3xl font-bold tracking-[-0.02em] text-[color:var(--color-text-primary)] mb-4">
             당신이 의사라면, AI보다 빠를까요?
           </h2>
-          <p className="text-gray-400 text-base max-w-xl mx-auto leading-relaxed">
+          <p className="text-[color:var(--color-text-body)] text-base max-w-xl mx-auto leading-relaxed">
             긴 외래 차트를 읽고 환자의{' '}
-            <strong className="text-[color:var(--color-accent)] font-semibold">주요 질환</strong>을
-            판단해보세요.<br/> 차트원샷이 같은 작업을{' '}
-            <strong className="text-[color:var(--color-accent)] font-mono">5초</strong>에
+            <strong className="text-[color:var(--color-accent)] font-semibold">핵심 정보</strong>를
+            파악해보세요.<br/> 차트원샷이 같은 작업을{' '}
+            <strong className="text-[color:var(--color-accent)] font-mono">초 단위</strong>로
             끝내는 동안, 당신은 몇 초가 걸리는지 비교합니다.
           </p>
         </div>
@@ -337,7 +339,7 @@ export default function DoctorChallenge() {
               exit={{ opacity: 0 }}
               transition={transition}
             >
-              <MiniSyntheaLoader onComplete={() => setPhase('active')} />
+              <MiniCaseLoader onComplete={() => setPhase('active')} />
             </motion.div>
           )}
 
@@ -354,19 +356,19 @@ export default function DoctorChallenge() {
               <div
                 className="rounded-2xl overflow-hidden max-w-3xl mx-auto"
                 style={{
-                  background: 'rgba(17,24,39,0.6)',
-                  border: '1px solid rgba(31,41,55,0.7)',
+                  background: 'var(--color-card-bg)',
+                  border: '1px solid var(--color-border)',
                   boxShadow: 'var(--glow-card-soft)',
                   backdropFilter: 'blur(8px)',
                 }}
               >
                 <div
                   className="flex items-center justify-between px-5 py-3 border-b"
-                  style={{ background: 'rgba(31,41,55,0.4)', borderColor: 'rgba(31,41,55,0.7)' }}
+                  style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}
                 >
                   <div className="flex items-center gap-2 min-w-0">
-                    <FileText size={14} strokeWidth={1.5} className="text-gray-500 flex-shrink-0" />
-                    <span className="text-xs font-medium text-gray-300 truncate">
+                    <FileText size={14} strokeWidth={1.5} className="text-[color:var(--color-text-muted)] flex-shrink-0" />
+                    <span className="text-xs font-medium text-[color:var(--color-text-body)] truncate">
                       {patient.demographics} · {patient.caseSummary}
                     </span>
                   </div>
@@ -377,9 +379,9 @@ export default function DoctorChallenge() {
                       </span>
                     ) : (
                       <>
-                        <Timer size={14} strokeWidth={1.5} className="text-[#f87171]" />
+                        <Timer size={14} strokeWidth={1.5} className="text-[#dc2626]" />
                         <span
-                          className="text-sm font-mono font-bold text-[#f87171] tabular-nums"
+                          className="text-sm font-mono font-bold text-[#dc2626] tabular-nums"
                           style={{ textShadow: '0 0 8px rgba(220,38,38,0.4)' }}
                         >
                           {stopwatch.time.toFixed(1)}초
@@ -389,7 +391,7 @@ export default function DoctorChallenge() {
                   </div>
                 </div>
                 <div className="max-h-[420px] overflow-y-auto px-5 py-4">
-                  <pre className="text-xs leading-[1.7] text-gray-300 whitespace-pre-wrap font-body">
+                  <pre className="text-xs leading-[1.7] text-[color:var(--color-text-body)] whitespace-pre-wrap font-body">
                     {typingDone ? patient.emrText : displayedText}
                     {!typingDone && (
                       <span
@@ -411,8 +413,8 @@ export default function DoctorChallenge() {
                     className="max-w-2xl mx-auto mt-8"
                   >
                     <div className="flex items-center justify-center gap-2 mb-5">
-                      <Star size={16} className="text-[#60A5FA]" strokeWidth={2} />
-                      <h3 className="text-lg md:text-xl font-bold text-gray-100">
+                      <Star size={16} className="text-[color:var(--color-accent)]" strokeWidth={2} />
+                      <h3 className="text-lg md:text-xl font-bold text-[color:var(--color-text-primary)]">
                         이 환자의 주요 질환은?
                       </h3>
                     </div>
@@ -446,8 +448,8 @@ export default function DoctorChallenge() {
               <div
                 className="rounded-2xl p-8"
                 style={{
-                  background: 'rgba(17,24,39,0.6)',
-                  border: '1px solid rgba(31,41,55,0.7)',
+                  background: 'var(--color-card-bg)',
+                  border: '1px solid var(--color-border)',
                   boxShadow: '0 0 32px rgba(20,184,166,0.10)',
                   backdropFilter: 'blur(8px)',
                 }}
@@ -455,17 +457,17 @@ export default function DoctorChallenge() {
                 {/* Time comparison */}
                 <div className="grid grid-cols-2 gap-6 mb-8">
                   <div className="text-center">
-                    <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-500 mb-2 font-mono">
+                    <p className="text-[10px] font-semibold uppercase tracking-widest text-[color:var(--color-text-muted)] mb-2 font-mono">
                       당신
                     </p>
                     <p
                       className={`text-3xl font-bold tabular-nums font-mono ${
-                        isCorrect ? 'text-gray-100' : 'text-[#f87171]'
+                        isCorrect ? 'text-[color:var(--color-text-primary)]' : 'text-[#dc2626]'
                       }`}
                     >
                       {stopwatch.time.toFixed(1)}초
                     </p>
-                    <p className="text-[11px] text-gray-500 mt-1 font-mono">
+                    <p className="text-[11px] text-[color:var(--color-text-muted)] mt-1 font-mono">
                       {isCorrect ? '✓ 정답' : '✗ 오답'}
                     </p>
                   </div>
@@ -479,19 +481,19 @@ export default function DoctorChallenge() {
                     >
                       {aiTimeDisplay}초
                     </p>
-                    <p className="text-[11px] text-[#60A5FA] mt-1 font-mono">✓ 정답</p>
+                    <p className="text-[11px] text-[color:var(--color-accent)] mt-1 font-mono">✓ 정답</p>
                   </div>
                 </div>
 
                 {/* Verdict */}
                 <div className="border-t border-[color:var(--color-divider)] pt-6 mb-6 text-center">
                   {isCorrect ? (
-                    <p className="text-base md:text-lg font-bold text-[#34d399] leading-relaxed">
+                    <p className="text-base md:text-lg font-bold text-[#047857] leading-relaxed">
                       정확합니다. 하지만 차트원샷은 같은 작업을{' '}
                       <span className="font-mono">{AI_ANALYSIS_TIME}초</span>에 끝냈습니다.
                     </p>
                   ) : (
-                    <p className="text-base md:text-lg font-bold text-gray-100 leading-relaxed">
+                    <p className="text-base md:text-lg font-bold text-[color:var(--color-text-primary)] leading-relaxed">
                       차트원샷이 당신보다{' '}
                       <span
                         className="text-[color:var(--color-accent)] font-mono"
@@ -499,14 +501,14 @@ export default function DoctorChallenge() {
                       >
                         {speedMultiple}배
                       </span>{' '}
-                      빠르게 정확한 판단을 내렸습니다.
+                      빠르게 핵심 정보를 정리했습니다.
                     </p>
                   )}
                 </div>
 
                 {/* Choices revealed */}
                 <div className="mb-6">
-                  <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-500 mb-3 font-mono">
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-[color:var(--color-text-muted)] mb-3 font-mono">
                     선택지
                   </p>
                   <div className="grid gap-2">
@@ -531,22 +533,22 @@ export default function DoctorChallenge() {
                   <div
                     className="p-4 rounded-lg"
                     style={{
-                      background: 'rgba(20,184,166,0.06)',
+                      background: 'var(--color-accent-subtle)',
                       borderLeft: '2px solid #184AFF',
                     }}
                   >
-                    <p className="text-sm font-semibold text-gray-100 mb-2">
+                    <p className="text-sm font-semibold text-[color:var(--color-text-primary)] mb-2">
                       {patient.expectedResult.primary_concern.title}
                     </p>
-                    <p className="text-sm text-gray-300 leading-relaxed mb-3">
+                    <p className="text-sm text-[color:var(--color-text-body)] leading-relaxed mb-3">
                       {patient.expectedResult.primary_concern.summary}
                     </p>
                     <ul className="space-y-1.5">
                       {patient.expectedResult.primary_concern.key_trends.map((t, i) => (
-                        <li key={i} className="text-xs text-gray-400 flex items-start gap-2 leading-relaxed">
+                        <li key={i} className="text-xs text-[color:var(--color-text-body)] flex items-start gap-2 leading-relaxed">
                           <span
                             className="mt-1.5 flex-shrink-0 w-1 h-1 rounded-full"
-                            style={{ background: '#60A5FA', boxShadow: '0 0 4px #60A5FA' }}
+                            style={{ background: 'var(--color-accent)', boxShadow: '0 0 4px var(--color-accent)' }}
                           />
                           <span>{t}</span>
                         </li>
@@ -567,9 +569,9 @@ export default function DoctorChallenge() {
                     if (nextPool.length === 0) return null;
                     const next = nextPool[0];
                     return (
-                      <p className="text-xs text-gray-600 mt-4 font-mono">
+                      <p className="text-xs text-[color:var(--color-text-muted)] mt-4 font-mono">
                         다음 환자:{' '}
-                        <span className="font-medium text-gray-400">{next.demographics}</span> ·{' '}
+                        <span className="font-medium text-[color:var(--color-text-body)]">{next.demographics}</span> ·{' '}
                         {next.caseSummary}
                       </p>
                     );

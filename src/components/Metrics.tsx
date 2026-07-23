@@ -13,45 +13,47 @@ interface MetricConfig {
   badge: string;
 }
 
+/* 0707 시안 지표 — 서브카피는 플레이스홀더(시안 래스터 판독 불가), 확정 문구 오면 교체 */
 const leftMetrics: MetricConfig[] = [
   {
-    end: 5,
-    duration: 1000,
-    prefix: '< ',
-    suffix: 's',
-    label: 'EMR 분석 속도',
-    desc: '의사 25분 → 5초',
-    badge: '90% 시간 단축 효과',
+    end: 25,
+    duration: 900,
+    prefix: '',
+    suffix: '분',
+    label: '단축하는 검토 시간',
+    // 출처는 주장이 있는 자리에 붙어 있어야 한다 — Hero 문구 교체로 고아가 된 근거를 이리로 옮김.
+    desc: '25분 걸리던 케이스 리뷰를 초 단위로',
+    badge: '골든타임 확보',
   },
   {
     end: 9,
-    duration: 900,
+    duration: 1000,
     prefix: '',
-    suffix: ' → 1',
-    label: '차수 통합',
-    desc: '9차 외래/입원을 1장 시계열 카드로',
-    badge: '89% 정보 압축',
+    suffix: '→1',
+    label: '여러 차수 → 단일 타임라인',
+    desc: '외래·입원 기록을 환자 단위로 통합',
+    badge: '환자 단위 시계열',
   },
 ];
 
 const rightMetrics: MetricConfig[] = [
   {
     end: 100,
-    duration: 1400,
+    duration: 1200,
     prefix: '',
     suffix: '%',
-    label: '폐쇄망 운영',
-    desc: '외부 송신 0건 · 온프레미스',
-    badge: '임상 신뢰도 극대화',
+    label: '표시 문장 원문 인용',
+    desc: '원문에서 근거를 찾은 문장을 함께 표시',
+    badge: '원문 근거 기반',
   },
   {
     end: 27,
-    duration: 800,
+    duration: 1100,
     prefix: '',
     suffix: 'B+α',
-    label: 'MedGemma 27B 한국 임상 특화',
-    desc: 'MedGemma 27B + 독점 데이터',
-    badge: '지속 성장하는 의료 AI',
+    label: 'MedGemma 27B 기반',
+    desc: '분과 특화 어댑터·폐쇄망 온프렘 지향(목표)',
+    badge: '데이터 주권',
   },
 ];
 
@@ -62,7 +64,7 @@ function MetricItem({ metric }: { metric: MetricConfig }) {
     <div ref={ref} className="text-center flex flex-col items-center px-2">
       {/* Number — single line guaranteed */}
       <div
-        className="font-mono font-extrabold tabular-nums tracking-tight leading-none text-gray-100 whitespace-nowrap"
+        className="font-mono font-extrabold tabular-nums tracking-tight leading-none text-white whitespace-nowrap"
         style={{
           fontSize: 'clamp(2.5rem, 3.8vw, 4rem)',
           textShadow:
@@ -85,12 +87,12 @@ function MetricItem({ metric }: { metric: MetricConfig }) {
       </div>
 
       {/* Label */}
-      <div className="text-sm md:text-base text-gray-100 mt-4 font-semibold tracking-tight whitespace-nowrap">
+      <div className="text-sm md:text-base text-white/90 mt-4 font-semibold tracking-tight whitespace-nowrap">
         {metric.label}
       </div>
 
       {/* Description */}
-      <div className="text-[11px] md:text-xs text-gray-400 mt-1.5 font-light">
+      <div className="text-[11px] md:text-xs text-white/50 mt-1.5 font-light">
         {metric.desc}
       </div>
 
@@ -98,11 +100,11 @@ function MetricItem({ metric }: { metric: MetricConfig }) {
       <div
         className="mt-4 px-3.5 py-1.5 rounded-full text-[10px] md:text-[11px] font-medium tracking-wide whitespace-nowrap"
         style={{
-          background: 'rgba(59,130,246,0.08)',
-          border: '1px solid rgba(59,130,246,0.30)',
-          color: '#93c5fd',
+          background: 'rgba(59,130,246,0.12)',
+          border: '1px solid rgba(96,165,250,0.35)',
+          color: '#93C5FD',
           boxShadow:
-            'inset 0 0 12px rgba(59,130,246,0.10), 0 0 16px rgba(59,130,246,0.08)',
+            'inset 0 0 12px rgba(59,130,246,0.12), 0 0 16px rgba(59,130,246,0.10)',
         }}
       >
         {metric.badge}
@@ -117,7 +119,7 @@ export default function Metrics() {
       className="relative noise-bg py-20 lg:py-28 overflow-hidden"
       style={{
         background:
-          'linear-gradient(180deg, #030712 0%, #050a18 50%, #030712 100%)',
+          'radial-gradient(1200px 500px at 50% 0%, rgba(24,74,255,0.16) 0%, rgba(24,74,255,0) 60%), #060B18',
       }}
     >
       {/* Ambient blue glow — top center */}
@@ -130,7 +132,7 @@ export default function Metrics() {
           width: '1000px',
           height: '600px',
           background:
-            'radial-gradient(ellipse, rgba(37, 99, 235, 0.12) 0%, rgba(59,130,246,0) 70%)',
+            'radial-gradient(ellipse, rgba(37, 99, 235, 0.18) 0%, rgba(59,130,246,0) 70%)',
           filter: 'blur(60px)',
         }}
       />
@@ -194,7 +196,7 @@ export default function Metrics() {
               />
               <Image
                 src="/hero_hologram.png"
-                alt="차트의샷 임상 데이터 통합 시각화"
+                alt="차트원샷 임상 데이터 통합 시각화"
                 width={512}
                 height={768}
                 priority
@@ -214,6 +216,12 @@ export default function Metrics() {
             ))}
           </div>
         </div>
+
+        {/* 근거 각주 — 수치를 내세우는 화면에는 출처가 같이 있어야 한다.
+            (Hero 문구 교체로 이 출처가 고아가 됐던 것을 주장이 남은 자리로 옮겼다) */}
+        <p className="mt-14 text-center text-[11.5px] font-light tracking-[-0.02em] text-white/45">
+          검토 시간 근거: Nolan et al., Mayo Clinic 다기관 설문연구, Applied Clinical Informatics (2017)
+        </p>
       </div>
     </section>
   );

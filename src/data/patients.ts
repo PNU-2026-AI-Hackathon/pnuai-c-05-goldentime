@@ -1,8 +1,8 @@
 import type { Patient } from '@/types';
 
-// 데모용 가상 환자 5명 (Synthea 컨셉)
+// 데모용 가상 환자 5명 (합성 — 실제 환자 아님)
 // 모든 환자가 S/O/A/P 형식 + 6-9 visit + 반복 차트 + 미세 변화
-// 분과명·기관 IRB 정보 비공개, 카테고리/케이스만 노출
+// 분과명·기관 정보 비공개, 카테고리/케이스만 노출
 
 export const patients: Patient[] = [
   /* ────────────────────────── 1. 간이식 추적 (핵심 데모) ────────────────────────── */
@@ -318,6 +318,26 @@ P: 4주 후 정기 검진 (2026.05.23 예정). EpiPen 항상 휴대 교육 재�
         { date: '2026.03.30', event: '간 기능 안정 + 골절 임상적 치유', sourceChunkId: 'chunk-pt01-05', layer: 'primary' },
         { date: '2026.04.10', event: '꿀벌 자상 후 Grade 2 아나필락시스 — EpiPen 1회', sourceChunkId: 'chunk-pt01-06', layer: 'incidental' },
         { date: '2026.04.25', event: '간 기능 안정 (AST 27·ALT 30) + 알레르기 회복', sourceChunkId: 'chunk-pt01-07', layer: 'primary' },
+      ],
+      lab_series: [
+        {
+          name: 'AST', unit: 'U/L', refHigh: 40, sourceChunkId: 'chunk-pt01-03',
+          points: [
+            { date: '2026.01.23', value: 24, note: 'LFT 정상' },
+            { date: '2026.02.20', value: 58, note: '일시 상승 (외상 10일 후)' },
+            { date: '2026.03.02', value: 26, note: '정상 복귀 — 거부반응 배제' },
+            { date: '2026.04.25', value: 27, note: '안정' },
+          ],
+        },
+        {
+          name: 'ALT', unit: 'U/L', refHigh: 41, sourceChunkId: 'chunk-pt01-03',
+          points: [
+            { date: '2026.01.23', value: 22, note: 'LFT 정상' },
+            { date: '2026.02.20', value: 64, note: '일시 상승' },
+            { date: '2026.03.02', value: 29, note: '정상 복귀' },
+            { date: '2026.04.25', value: 30, note: '안정' },
+          ],
+        },
       ],
       abbreviations: [
         { abbrev: 'LC', expansion: 'Liver Cirrhosis (간경변)', status: 'resolved' },
@@ -1011,6 +1031,22 @@ P: DAPT 6개월 추가 유지 (총 1년).
         { date: '2025.11.20', event: '술후 5주: 심장재활 시작, LDL 78', sourceChunkId: 'chunk-pt04-02', layer: 'primary' },
         { date: '2026.01.18', event: '술후 3개월 Echo: LVEF 50→55% 정상화', sourceChunkId: 'chunk-pt04-03', layer: 'primary' },
         { date: '2026.04.20', event: '술후 6개월: LDL 65 목표 도달, 무증상 — DAPT 6개월 추가', sourceChunkId: 'chunk-pt04-04', layer: 'primary' },
+      ],
+      lab_series: [
+        {
+          name: 'LDL', unit: 'mg/dL', refHigh: 70, sourceChunkId: 'chunk-pt04-04',
+          points: [
+            { date: '2025.11.20', value: 78, note: '심장재활 시작 시점' },
+            { date: '2026.04.20', value: 65, note: '목표(<70) 도달' },
+          ],
+        },
+        {
+          name: 'LVEF', unit: '%', refLow: 50, sourceChunkId: 'chunk-pt04-03',
+          points: [
+            { date: '2025.10.12', value: 50, note: 'NSTEMI 직후' },
+            { date: '2026.01.18', value: 55, note: '정상화' },
+          ],
+        },
       ],
       abbreviations: [
         { abbrev: 'NSTEMI', expansion: 'Non-ST-Elevation Myocardial Infarction (비ST상승 심근경색)', status: 'resolved' },

@@ -4,7 +4,7 @@ import { ImageResponse } from 'next/og';
 // (Next.js App Router 규칙: app/opengraph-image.tsx → metadata.openGraph.images 자동 inject)
 // runtime 명시 X (Next 16 default = Fluid Compute Node.js — edge보다 호환 ↑)
 
-export const alt = '차트원샷 — 길고 긴 EMR, 5초 안에 읽습니다';
+export const alt = '차트원샷 — 길고 긴 EMR, 초 단위로 읽습니다';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -106,7 +106,7 @@ export default async function Image() {
           >
             <div style={{ display: 'flex' }}>길고 긴 EMR,</div>
             <div style={{ display: 'flex' }}>
-              <span style={{ color: '#184AFF', marginRight: 24 }}>5초 안에</span>
+              <span style={{ color: '#184AFF', marginRight: 24 }}>초 단위로</span>
               차트원샷이 읽습니다
             </div>
           </div>
@@ -120,7 +120,7 @@ export default async function Image() {
               marginBottom: 'auto',
             }}
           >
-            의사 25분 → 5초 · MedGemma 27B · 폐쇄망 온프레미스
+            의사 25분 → 초 단위 · 분과별 요약 · 문장마다 원문 인용
           </div>
 
           {/* Footer */}
