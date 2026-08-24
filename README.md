@@ -285,7 +285,8 @@ HttpOnly 세션 쿠키를 사용합니다. 서버 환경변수 미설정 시 모
 │   ├── DEVELOPMENT-NOTES.md           문제 · 원인 · 수정 기록
 │   ├── ai-usage.md                    AI 도구 활용 · 검증 방식 명세
 │   ├── verification/
-│   │   └── error-injection-log.md     오류주입 프로토콜 (합성/MIMIC 전용)
+│   │   ├── error-injection-log.md     오류주입 프로토콜 (합성/MIMIC 전용)
+│   │   └── deid-lessons.md            비식별 결함 2건 — 원인과 교훈
 │   ├── onprem/                        온프레미스 파이프라인 설계 · 파인튜닝 실습 안내서
 │   ├── demo-video/                    시연영상 빌드 파이프라인 (카드 렌더 · 자막 · BGM)
 │   ├── 창업트랙_차트원샷_골든타임.hwp     기능명세서
