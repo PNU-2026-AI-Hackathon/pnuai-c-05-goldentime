@@ -1,0 +1,42 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:MG;src:url('file:///home/click/.local/share/fonts/malgun.ttf')}
+@font-face{font-family:MGB;src:url('file:///home/click/.local/share/fonts/malgunbd.ttf')}
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:1440px;height:810px;display:flex;align-items:center;justify-content:center;
+  font-family:MG,sans-serif;background:#EAF0FD;overflow:hidden;position:relative}
+body.dark{background:#0B1220}
+.grid{position:absolute;inset:0;background-image:linear-gradient(#1E5EFF08 1px,transparent 1px),linear-gradient(90deg,#1E5EFF08 1px,transparent 1px);background-size:80px 80px}
+.wrap{position:relative;text-align:center;padding:0 80px}
+.kicker{font-family:MGB;font-size:15px;letter-spacing:.34em;color:#1E5EFF;margin-bottom:26px}
+.dark .kicker{color:#6E9BFF}
+.num{font-family:MGB;font-size:110px;line-height:1;color:#1E5EFF;opacity:.16;margin-bottom:-42px}
+h1{font-family:MGB;font-size:74px;line-height:1.28;color:#0F1B33;letter-spacing:-.02em}
+.dark h1{color:#F3F6FF}
+h1 em{font-style:normal;color:#1E5EFF}
+.dark h1 em{color:#6E9BFF}
+p{margin-top:30px;font-size:25px;line-height:1.75;color:#4A5A78;font-weight:400}
+.dark p{color:#9DB0D4}
+.rule{width:64px;height:4px;background:#1E5EFF;border-radius:2px;margin:36px auto 0}
+.foot{position:absolute;bottom:54px;left:0;right:0;text-align:center;font-size:17px;color:#7A8AA8;letter-spacing:.06em}
+.dark .foot{color:#61738F}
+.badge{display:inline-block;border:1.5px solid #1E5EFF44;color:#1E5EFF;border-radius:999px;
+  padding:9px 22px;font-size:16px;margin-top:34px;letter-spacing:.04em}
+.url{font-family:MGB;font-size:34px;color:#1E5EFF;margin-top:34px;letter-spacing:.01em}
+</style></head>
+<body id="b"><div class="grid"></div><div class="wrap" id="w"></div>
+<div class="foot" id="f"></div>
+<script>
+const P=new URLSearchParams(location.search);
+if(P.get('dark'))document.getElementById('b').className='dark';
+const h=[];
+if(P.get('num'))h.push(`<div class="num">${P.get('num')}</div>`);
+if(P.get('kicker'))h.push(`<div class="kicker">${P.get('kicker')}</div>`);
+if(P.get('t'))h.push(`<h1>${P.get('t')}</h1>`);
+if(P.get('rule'))h.push('<div class="rule"></div>');
+if(P.get('p'))h.push(`<p>${P.get('p')}</p>`);
+if(P.get('badge'))h.push(`<div class="badge">${P.get('badge')}</div>`);
+if(P.get('url'))h.push(`<div class="url">${P.get('url')}</div>`);
+document.getElementById('w').innerHTML=h.join('');
+document.getElementById('f').textContent=P.get('foot')||'';
+</script></body></html>

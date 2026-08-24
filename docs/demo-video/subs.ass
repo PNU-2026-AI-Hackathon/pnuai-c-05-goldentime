@@ -1,0 +1,33 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
+Style: Sub,Malgun Gothic,44,&H00FFFFFF,&H00FFFFFF,&H141A1206,&H00000000,0,0,0,0,100,100,0.4,0,3,7,0,2,180,180,56,1
+
+[Events]
+Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
+Dialogue: 0,0:00:08.60,0:00:12.80,Sub,,0,0,0,,25개 진료과 중 하나를 고릅니다 — 요약 관점이 분과마다 다르기 때문입니다
+Dialogue: 0,0:00:13.20,0:00:17.80,Sub,,0,0,0,,합성 차트를 불러옵니다. 공개 데모는 실제 환자 기록을 쓰지 않습니다
+Dialogue: 0,0:00:18.20,0:00:23.80,Sub,,0,0,0,,응급실 초진기록 2,085자 — 의사는 이걸 전부 읽고 판단해야 합니다
+Dialogue: 0,0:00:28.00,0:00:33.80,Sub,,0,0,0,,먼저 비식별 — 식별자 후보를 자동으로 가리고 날짜를 시프트합니다
+Dialogue: 0,0:00:34.30,0:00:38.80,Sub,,0,0,0,,자동 처리 결과를 사람이 눈으로 확인합니다. 더 가릴 부분은 직접 지정할 수 있습니다
+Dialogue: 0,0:00:39.30,0:00:42.50,Sub,,0,0,0,,원문은 저장하지 않습니다. 비식별본만 요약 단계로 넘어갑니다
+Dialogue: 0,0:00:42.90,0:00:47.90,Sub,,0,0,0,,실제 요약 소요 42초 — 8배속. 속도보다 정확도를 택한 설정입니다
+Dialogue: 0,0:00:48.44,0:00:53.24,Sub,,0,0,0,,분과 관점 요약. 맨 위는 지금 당장 확인해야 할 항목입니다
+Dialogue: 0,0:00:53.64,0:00:59.24,Sub,,0,0,0,,모든 문장에 원문 / 추론 배지가 붙습니다 — 클릭하면 근거 위치로 이동합니다
+Dialogue: 0,0:00:59.64,0:01:06.24,Sub,,0,0,0,,핵심 문제와 투약·치료 변경이 시계열로 정리됩니다
+Dialogue: 0,0:01:06.69,0:01:10.89,Sub,,0,0,0,,그리고 여기 — 기록에 없는 것은 지어내지 않고 '없다'고 적습니다
+Dialogue: 0,0:01:15.94,0:01:21.14,Sub,,0,0,0,,요약은 3개 백본이 각각 독립으로 만듭니다 — GPT-5.6 Sol · Claude Fable 5 · MedGemma 27B
+Dialogue: 0,0:01:21.54,0:01:27.14,Sub,,0,0,0,,세 결과의 불일치만 기계가 뽑아내 자문 교수 검토 대상으로 넘깁니다
+Dialogue: 0,0:01:27.54,0:01:34.84,Sub,,0,0,0,,합성 케이스 실행 기록 — 불일치 건수와 비용까지 그대로 적어둡니다
+Dialogue: 0,0:01:38.74,0:01:46.84,Sub,,0,0,0,,합성 4케이스를 3개 모델로 각각 돌린 실행 기록을 그대로 공개합니다
+Dialogue: 0,0:01:47.34,0:01:51.54,Sub,,0,0,0,,문장 수 · 비용 · 인용 검증 통과율 · 놓친 항목 — MedGemma는 한 케이스에서 실행 실패했습니다
+Dialogue: 0,0:01:52.04,0:01:56.64,Sub,,0,0,0,,지난 판단이 틀렸으면 정정 기록을 남깁니다. 이것이 우리가 신뢰를 쌓는 방식입니다
+Dialogue: 0,0:01:57.14,0:01:59.54,Sub,,0,0,0,,각 모델이 실제로 출력한 문장을 그대로 붙였습니다 — 오탈자도 고치지 않았습니다
+Dialogue: 0,0:02:05.74,0:02:10.94,Sub,,0,0,0,,MedGemma 27B 기반으로 폐쇄망 온프레미스 구성을 목표로 합니다
+Dialogue: 0,0:02:11.34,0:02:15.74,Sub,,0,0,0,,환자 데이터도 모델 가중치도 병원 밖으로 나가지 않는 구조입니다
