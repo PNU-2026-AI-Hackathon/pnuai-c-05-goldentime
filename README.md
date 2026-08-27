@@ -9,7 +9,7 @@
 기록에 없는 것은 지어내지 않고 **「기록 없음」으로 적습니다.**
 
 🔗 **Live · https://chartoneshot.com**
-🎬 **시연 영상 · [6. 소개 및 시연 영상](#6-소개-및-시연-영상)**
+🎬 **시연 영상 · https://www.youtube.com/watch?v=ej8vjah0A9Y** ([구성 보기](#6-소개-및-시연-영상))
 🚀 **향후 계획 · [4. 기술 로드맵과 사업화](#4-향후-계획--기술-로드맵과-사업화)**
 
 <sub>제7회 PNU 창의융합AI해커톤 · 창업트랙 05조 · Team Golden Time · 부산대학교</sub>
@@ -548,9 +548,9 @@ npm run dev        # http://127.0.0.1:3000
 
 **시연 영상 (2분 52초)**
 
-> 🎬 **YouTube — 【교육원 재생목록에서 링크 확인 후 삽입】**
-> AI융합교육원 유튜브 '제7회 PNU 창의융합AI해커톤' 재생목록
-> https://www.youtube.com/playlist?list=PLCM3TKSFVwws
+> 🎬 **YouTube · https://www.youtube.com/watch?v=ej8vjah0A9Y**
+> 부산대학교 AI융합교육원 채널 — 「[제7회 PNU 창의융합AI해커톤(본선)] 창업 05. 골든타임 시연 영상」
+> 전체 재생목록 · https://www.youtube.com/playlist?list=PLCM3TKSFVwws
 
 **영상 구성**
 
